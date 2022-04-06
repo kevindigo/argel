@@ -6,7 +6,7 @@ Based on Ardent Reapers by Gee Barger and Luke Olson
 
 Ardent Reapers is copyright 2022 Gee Barger, Luke Olson, and ProGen Distillery Games and is used with permission. 
 
-More information about Ardent Reapers can be found at ardentreapers.com
+More information about Ardent Reapers can be found at https://ardentreapers.com
 
 ## Creature play effects
     * Automatic
