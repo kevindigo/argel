@@ -19,14 +19,14 @@ import {
 import { OMEGA_CODEX } from './constants';
 import { CardId, DeckId, SetId } from './types';
 
-interface Deck {
+interface DeckList {
     id: DeckId;
     set: SetId;
     name: string;
     contents: CardId[]; // 17 cards
 }
 
-const sampleDeck1: Deck = {
+const sampleDeck1: DeckList = {
     id: '679a6701-d7c3-494e-becb-04e9178aca30',
     set: OMEGA_CODEX,
     name: 'Marla "Buff" Grafani',
@@ -51,7 +51,7 @@ const sampleDeck1: Deck = {
     ],
 };
 
-export function lookupDeck(deckId: DeckId): Deck | undefined {
+export function lookupDeckList(deckId: DeckId): DeckList | undefined {
     if (deckId === sampleDeck1.id) {
         return sampleDeck1;
     }

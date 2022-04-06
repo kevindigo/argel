@@ -1,7 +1,7 @@
 import { OMEGA_CODEX } from './constants';
 import { CardId, CardType } from './types';
 
-export interface CardTemplate {
+export interface Cardef {
     id: CardId;
     type: CardType;
     name: string;
@@ -11,16 +11,16 @@ export interface CardTemplate {
     // bonus
 }
 
-function omegaId(index: number) {
+function omegaId(index: string) {
     return `${OMEGA_CODEX}-${index}`;
 }
 
 function omegaCreature(
-    index: number,
+    index: string,
     name: string,
     power: number,
     vp: number
-): CardTemplate {
+): Cardef {
     return {
         id: omegaId(index),
         type: CardType.CREATURE,
@@ -30,7 +30,7 @@ function omegaCreature(
     };
 }
 
-function omegaRelic(index: number, name: string, vp: number): CardTemplate {
+function omegaRelic(index: string, name: string, vp: number): Cardef {
     return {
         id: omegaId(index),
         type: CardType.RELIC,
@@ -39,7 +39,7 @@ function omegaRelic(index: number, name: string, vp: number): CardTemplate {
     };
 }
 
-function omegaAction(index: number, name: string, vp: number): CardTemplate {
+function omegaAction(index: string, name: string, vp: number): Cardef {
     return {
         id: omegaId(index),
         type: CardType.ACTION,
@@ -49,52 +49,52 @@ function omegaAction(index: number, name: string, vp: number): CardTemplate {
 }
 
 // Creatures
-export const vix = omegaCreature(1, 'Vix', 1, 1);
-export const jater = omegaCreature(2, 'Jater', 1, 1);
-export const payday = omegaCreature(26, 'Payday', 6, 1);
-export const pinwheel = omegaCreature(29, 'Pinwheel', 6, 2);
-export const bamphf = omegaCreature(30, 'Bamphf', 6, 1);
-export const vanx = omegaCreature(38, 'Vanx', 7, 2);
-export const renegade = omegaCreature(41, 'Renegade', 8, 2);
-export const ratSmasher = omegaCreature(42, 'Rat Smasher', 8, 2);
-export const saboteur = omegaCreature(48, 'Saboteur', 9, 1);
+export const vix = omegaCreature('001', 'Vix', 1, 1);
+export const jater = omegaCreature('002', 'Jater', 1, 1);
+export const payday = omegaCreature('026', 'Payday', 6, 1);
+export const pinwheel = omegaCreature('029', 'Pinwheel', 6, 2);
+export const bamphf = omegaCreature('030', 'Bamphf', 6, 1);
+export const vanx = omegaCreature('038', 'Vanx', 7, 2);
+export const renegade = omegaCreature('041', 'Renegade', 8, 2);
+export const ratSmasher = omegaCreature('042', 'Rat Smasher', 8, 2);
+export const saboteur = omegaCreature('048', 'Saboteur', 9, 1);
 
 // Relics
-export const hypervator = omegaRelic(58, 'Hypervator', 1);
+export const hypervator = omegaRelic('058', 'Hypervator', 1);
 
 // Actions
-export const recall = omegaAction(71, 'Recall', 1);
-export const startOver = omegaAction(76, 'Start Over', 2);
-export const corrodeOrShine = omegaAction(77, 'Corrode or Shine', 2);
-export const rollTheDice = omegaAction(82, 'Roll the Dice', 1);
-export const aLittleOffTheTop = omegaAction(88, 'A Little Off the Top', 1);
-export const cheapShot = omegaAction(89, 'Cheap Shot', 1);
-export const duck = omegaAction(99, 'Duck!', 0);
+export const recall = omegaAction('071', 'Recall', 1);
+export const startOver = omegaAction('076', 'Start Over', 2);
+export const corrodeOrShine = omegaAction('077', 'Corrode or Shine', 2);
+export const rollTheDice = omegaAction('082', 'Roll the Dice', 1);
+export const aLittleOffTheTop = omegaAction('088', 'A Little Off the Top', 1);
+export const cheapShot = omegaAction('089', 'Cheap Shot', 1);
+export const duck = omegaAction('099', 'Duck!', 0);
 
-const cardPool = new Map<CardId, CardTemplate>();
+const cardPool = new Map<CardId, Cardef>();
 
-function addCardToPool(cardTemplate: CardTemplate): void {
+function addCardefToPool(cardTemplate: Cardef): void {
     cardPool.set(cardTemplate.id, cardTemplate);
 }
 
-addCardToPool(vix);
-addCardToPool(jater);
-addCardToPool(payday);
-addCardToPool(pinwheel);
-addCardToPool(bamphf);
-addCardToPool(vanx);
-addCardToPool(renegade);
-addCardToPool(ratSmasher);
-addCardToPool(saboteur);
-addCardToPool(hypervator);
-addCardToPool(recall);
-addCardToPool(startOver);
-addCardToPool(corrodeOrShine);
-addCardToPool(rollTheDice);
-addCardToPool(aLittleOffTheTop);
-addCardToPool(cheapShot);
-addCardToPool(duck);
+addCardefToPool(vix);
+addCardefToPool(jater);
+addCardefToPool(payday);
+addCardefToPool(pinwheel);
+addCardefToPool(bamphf);
+addCardefToPool(vanx);
+addCardefToPool(renegade);
+addCardefToPool(ratSmasher);
+addCardefToPool(saboteur);
+addCardefToPool(hypervator);
+addCardefToPool(recall);
+addCardefToPool(startOver);
+addCardefToPool(corrodeOrShine);
+addCardefToPool(rollTheDice);
+addCardefToPool(aLittleOffTheTop);
+addCardefToPool(cheapShot);
+addCardefToPool(duck);
 
-export function lookupCardTemplate(cardId: CardId): CardTemplate | undefined {
+export function lookupCardTemplate(cardId: CardId): Cardef | undefined {
     return cardPool.get(cardId);
 }

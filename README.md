@@ -4,6 +4,9 @@ Code Copyright 2022 by Kevin B. Smith (kevindigo)
 
 Based on Ardent Reapers by Gee Barger and Luke Olson
 
+The name "Ardent Reapers" is their trademark, not mine. Names used are under their copyright, 
+and I hope they will grant me permission to use them in this unofficial work.
+
 ## Creature play effects
     * Automatic
         * draw
