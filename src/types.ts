@@ -1,3 +1,9 @@
+export enum CardType {
+    ACTION = 'Action',
+    CREATURE = 'Creature',
+    RELIC = 'Relic',
+}
+
 export enum CardState {
     DORMANT = 'Dormant',
     READY = 'Ready',
@@ -27,3 +33,4 @@ export type RelicsIndex = number;
 export type ScoredIndex = number;
 export type DeckId = string;
 export type CardId = string;
+export type SetId = string;

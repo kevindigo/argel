@@ -1,5 +1,4 @@
-const worldName = 'world';
+import { showDeck } from './ui';
 
-export function hello(world: string = worldName): string {
-    return `Hello ${world}! `;
-}
+console.log('Argel');
+showDeck('679a6701-d7c3-494e-becb-04e9178aca30');

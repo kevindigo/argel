@@ -28,7 +28,7 @@ export interface CardWithState {
 
 export interface Side {
     player: Player;
-    deck: Card[];
+    drawDeck: Card[];
     discards: Card[];
     hand: Card[];
     scored: Card[];
