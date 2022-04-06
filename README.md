@@ -4,53 +4,6 @@ Code Copyright 2022 by Kevin B. Smith (kevindigo)
 
 Based on Ardent Reapers by Gee Barger and Luke Olson
 
-``` text
-Game state:
-    players[2]
-        name
-        deck id
-    boards[2]
-        deck[]
-        hand[]
-        discards[]
-        scored[]
-        relics[]: CardWithState
-        line[]: CardWithState
-    turn
-        active_player_index
-        has_played_cards
-        does_next_card_enter_active
-        card_being_played
-        queued_additional_play (top, bottom)
-        queued_attack (attacking_line_index)
-
-CardWithState
-    card
-    state (dormant, active, mature) -- note that ready = active OR mature
-
-Actions:
-    PlayAction
-        hand_index
-
-    PlayRelic
-        hand_index
-        relics_index
-
-    PlayCreature
-        hand_index
-        line_index
-
-    Fight
-        attackers[]
-        defenders[]
-
-    HarvestCreature
-        line_index
-
-    HarvestRelic
-        relics_index
-
-
 Creature play effects
     Automatic
         draw
