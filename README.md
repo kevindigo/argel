@@ -1,8 +1,10 @@
-Argel - Ardent Reapers Game Engine Library
+# Argel - Ardent Reapers Game Engine Library
+
 Code Copyright 2022 by Kevin B. Smith
+
 Based on Ardent Reapers by Gee Barger and Luke Olson
 
-
+``` text
 Game state:
     players[2]
         name
@@ -185,3 +187,4 @@ Skills
     Sneak X
     BearHug
     Teamup
+```
