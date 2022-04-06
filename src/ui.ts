@@ -1,19 +1,19 @@
 import { lookupCardTemplate } from './cards';
-import { lookupDeck } from './decks';
+import { lookupDeckList } from './decks';
 import { DeckId } from './types';
 
 export function showDeck(deckId: DeckId): void {
-    const deck = lookupDeck(deckId);
-    if (!deck) {
+    const deckList = lookupDeckList(deckId);
+    if (!deckList) {
         console.log(`Deck ${deckId} was not found`);
         return;
     }
-    console.log(deck.name);
-    console.log(`${deck.set}: ${deck.id}`);
-    deck.contents.forEach((cardId) => {
-        const card = lookupCardTemplate(cardId);
-        if (card) {
-            console.log(`  ${card.name}`);
+    console.log(deckList.name);
+    console.log(`${deckList.set}: ${deckList.id}`);
+    deckList.contents.forEach((cardId) => {
+        const cardef = lookupCardTemplate(cardId);
+        if (cardef) {
+            console.log(`  ${cardef.name}`);
         } else {
             console.log(`  --Card ${cardId} not found`);
         }
