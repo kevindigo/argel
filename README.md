@@ -1,6 +1,6 @@
 # Argel - Ardent Reapers Game Engine Library
 
-Code Copyright 2022 by Kevin B. Smith
+Code Copyright 2022 by Kevin B. Smith (kevindigo)
 
 Based on Ardent Reapers by Gee Barger and Luke Olson
 
