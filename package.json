@@ -1,0 +1,27 @@
+{
+  "name": "argel",
+  "version": "0.0.1",
+  "description": "Ardent Reapers Game Engine Library",
+  "main": "index.js",
+  "dependencies": {
+    "jest": "^27.5.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevindigo/argel.git"
+  },
+  "author": "kevindigo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevindigo/argel/issues"
+  },
+  "homepage": "https://github.com/kevindigo/argel#readme"
+}
