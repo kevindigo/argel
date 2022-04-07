@@ -17,7 +17,7 @@ export function showDeck(deckId: DeckId): void {
         const fullId = `${deckList.setId}-${cardNumber}`;
         const cardef = pool.lookup(fullId);
         if (cardef) {
-            console.log(`  ${cardNumber} -> ${fullId}: ${cardef.name}`);
+            console.log(`  ${fullId}: ${cardef.name}`);
         } else {
             console.log(`  --Card ${cardNumber} not found`);
         }
