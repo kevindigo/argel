@@ -15,7 +15,7 @@ class SideManager {
             this.draw(count - 1);
         }
 
-        const card = this.side.drawDeck.pop();
+        const card = this.side.drawPile.pop();
         if (!card) {
             // TODO: Need to handle an empty deck
             throw new Error('Need to shuffle!');
@@ -29,7 +29,7 @@ class SideManager {
     }
 
     public get drawDeck() {
-        return this.side.drawDeck;
+        return this.side.drawPile;
     }
 
     public get hand() {
@@ -54,7 +54,7 @@ export function initializeSide(player: Player): SideManager {
 
     const side: Side = {
         player,
-        drawDeck: deck,
+        drawPile: deck,
         hand: [],
         scored: [],
         discards: [],
