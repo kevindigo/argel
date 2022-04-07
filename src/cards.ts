@@ -1,10 +1,10 @@
-import { CardId, CardType, SetId } from './types';
+import { CardId, CardNumber, CardType, SetId } from './types';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
 export interface Cardef {
     setId: SetId;
-    id: CardId;
+    cardNumber: CardNumber;
     type: CardType;
     name: string;
     power: number | undefined;
@@ -15,13 +15,13 @@ export interface Cardef {
 
 function createCardef(
     setId?: SetId,
-    id?: CardId,
+    cardNumber?: CardNumber,
     name?: string,
     type?: CardType,
     power?: number,
     vp?: number
 ): Cardef {
-    if (!setId || !id || !name || !type) {
+    if (!setId || !cardNumber || !name || !type) {
         throw new Error('Illegal cardef');
     }
 
@@ -29,7 +29,7 @@ function createCardef(
 
     return {
         setId,
-        id,
+        cardNumber,
         name,
         type,
         power,
@@ -82,7 +82,7 @@ export class CardefPool {
 
         this.pool.clear();
         cardefs.forEach((cardef) => {
-            const fullId = `${cardef.setId}-${cardef.id}`;
+            const fullId = `${cardef.setId}-${cardef.cardNumber}`;
             this.pool.set(fullId, cardef);
         });
     }

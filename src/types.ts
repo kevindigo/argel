@@ -33,4 +33,5 @@ export type RelicsIndex = number;
 export type ScoredIndex = number;
 export type DeckId = string;
 export type CardId = string;
+export type CardNumber = string;
 export type SetId = string;

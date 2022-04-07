@@ -19,7 +19,7 @@ describe('A game', () => {
         expect(sideManager.line.length).toEqual(2);
         sideManager.line.forEach((cardWithState) => {
             expect(cardWithState.state).toEqual(CardState.READY);
-            const fullId = `${setId}-${cardWithState.card.id}`;
+            const fullId = `${setId}-${cardWithState.card.cardId}`;
             const cardef = pool.lookup(fullId);
             expect(cardef?.type).toEqual(CardType.CREATURE);
         });

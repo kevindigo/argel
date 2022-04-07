@@ -39,7 +39,7 @@ export function createDeck(deckList: DeckList): Card[] {
     const deck: Card[] = deckList.contents.map((cardId) => {
         return {
             deckId: deckList.id,
-            id: cardId,
+            cardId,
         };
     });
 

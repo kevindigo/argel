@@ -19,7 +19,7 @@ export interface Player {
 
 export interface Card {
     deckId: DeckId;
-    id: CardId;
+    cardId: CardId;
 }
 
 export interface CardWithState {

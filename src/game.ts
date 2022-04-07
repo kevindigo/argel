@@ -72,7 +72,7 @@ export function initializeSide(player: Player): SideManager {
         if (!card) {
             throw new Error('Drawdeck empty!?');
         }
-        const fullId = `${deckList.setId}-${card.id}`;
+        const fullId = `${deckList.setId}-${card.cardId}`;
         const cardef = pool.lookup(fullId);
         if (cardef?.type === CardType.CREATURE) {
             const readyCard: CardWithState = {
