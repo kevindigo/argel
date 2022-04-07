@@ -1,6 +1,13 @@
 import { OMEGA_CODEX } from './constants';
-import { Card, DeckList } from './models';
-import { DeckId } from './types';
+import { Card } from './models';
+import { CardNumber, DeckId, SetId } from './types';
+
+export interface DeckList {
+    id: DeckId;
+    setId: SetId;
+    name: string;
+    contents: CardNumber[]; // 17 cards
+}
 
 const sampleDeck1: DeckList = {
     id: '679a6701-d7c3-494e-becb-04e9178aca30',

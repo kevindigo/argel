@@ -8,7 +8,6 @@ import {
     LineGap,
     LineIndex,
     RelicsIndex,
-    SetId,
     TopOrBottom,
 } from './types';
 
@@ -58,11 +57,4 @@ export interface Action {
     lineIndex?: LineIndex;
     attackers?: LineIndex[];
     defenders?: LineIndex[];
-}
-
-export interface DeckList {
-    id: DeckId;
-    setId: SetId;
-    name: string;
-    contents: CardId[]; // 17 cards
 }
