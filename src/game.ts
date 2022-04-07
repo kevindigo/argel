@@ -28,7 +28,7 @@ class SideManager {
         return this.side.player.name;
     }
 
-    public get drawDeck() {
+    public get drawPile() {
         return this.side.drawPile;
     }
 
@@ -68,12 +68,11 @@ export function initializeSide(player: Player): SideManager {
     // TODO: Shuffle (which will break my tests)
 
     while (manager.line.length < 2) {
-        const card = manager.drawDeck.pop();
+        const card = manager.drawPile.pop();
         if (!card) {
             throw new Error('Drawdeck empty!?');
         }
-        const fullId = `${deckList.setId}-${card.cardId}`;
-        const cardef = pool.lookup(fullId);
+        const cardef = pool.lookup(card.cardId);
         if (cardef?.type === CardType.CREATURE) {
             const readyCard: CardWithState = {
                 card,

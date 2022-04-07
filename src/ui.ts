@@ -13,13 +13,12 @@ export function showDeck(deckId: DeckId): void {
 
     const pool = new CardefPool();
 
-    deckList.contents.forEach((cardNumber) => {
-        const fullId = `${deckList.setId}-${cardNumber}`;
-        const cardef = pool.lookup(fullId);
+    deckList.cardIds.forEach((cardId) => {
+        const cardef = pool.lookup(cardId);
         if (cardef) {
-            console.log(`  ${fullId}: ${cardef.name}`);
+            console.log(`  ${cardId}: ${cardef.name}`);
         } else {
-            console.log(`  --Card ${cardNumber} not found`);
+            console.log(`  --Card ${cardId} not found`);
         }
     });
 }

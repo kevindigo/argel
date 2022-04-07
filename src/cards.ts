@@ -11,6 +11,7 @@ export interface Cardef {
     vp: number;
     // skills
     // bonus
+    // rarity
 }
 
 function createCardef(
