@@ -95,6 +95,6 @@ addCardefToPool(aLittleOffTheTop);
 addCardefToPool(cheapShot);
 addCardefToPool(duck);
 
-export function lookupCardTemplate(cardId: CardId): Cardef | undefined {
+export function lookupCardef(cardId: CardId): Cardef | undefined {
     return cardPool.get(cardId);
 }

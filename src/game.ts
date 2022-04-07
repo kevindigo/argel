@@ -1,4 +1,4 @@
-import { lookupCardTemplate } from './cards';
+import { lookupCardef } from './cards';
 import { createDeck, lookupDeckList } from './decks';
 import { CardWithState, Player, Side } from './models';
 import { CardState, CardType } from './types';
@@ -71,7 +71,7 @@ export function initializeSide(player: Player): SideManager {
         if (!card) {
             throw new Error('Sample deck not found!?');
         }
-        const cardef = lookupCardTemplate(card.id);
+        const cardef = lookupCardef(card.id);
         if (cardef?.type === CardType.CREATURE) {
             const readyCard: CardWithState = {
                 card,

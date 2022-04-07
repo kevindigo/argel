@@ -1,4 +1,4 @@
-import { lookupCardTemplate } from '../src/cards';
+import { lookupCardef } from '../src/cards';
 import { initializeSide } from '../src/game';
 import { CardState, CardType } from '../src/types';
 
@@ -14,7 +14,7 @@ describe('A game', () => {
         expect(sideManager.line.length).toEqual(2);
         sideManager.line.forEach((cardWithState) => {
             expect(cardWithState.state).toEqual(CardState.READY);
-            const cardef = lookupCardTemplate(cardWithState.card.id);
+            const cardef = lookupCardef(cardWithState.card.id);
             expect(cardef?.type).toEqual(CardType.CREATURE);
         });
     });
