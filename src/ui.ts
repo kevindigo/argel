@@ -1,4 +1,4 @@
-import { lookupCardTemplate } from './cards';
+import { lookupCardef } from './cards';
 import { lookupDeckList } from './decks';
 import { DeckId } from './types';
 
@@ -11,7 +11,7 @@ export function showDeck(deckId: DeckId): void {
     console.log(deckList.name);
     console.log(`${deckList.set}: ${deckList.id}`);
     deckList.contents.forEach((cardId) => {
-        const cardef = lookupCardTemplate(cardId);
+        const cardef = lookupCardef(cardId);
         if (cardef) {
             console.log(`  ${cardef.name}`);
         } else {

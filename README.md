@@ -8,6 +8,38 @@ Ardent Reapers is copyright 2022 Gee Barger, Luke Olson, and ProGen Distillery G
 
 More information about Ardent Reapers can be found at https://ardentreapers.com
 
+## What is this?
+
+Argel is a library (written in typescript) that implements the 
+components and rules of the Ardent Reapers card game. 
+
+The goal 
+is to develop the low-level code that could be used to create 
+a full online implementation (with rules enforcement). That 
+could be a standalone site along the lines of TheCrucible.online, 
+or perhaps it could be used in BoardGameArena or one of the 
+other online gaming sites. Or even in an app. 
+
+## How do I use it?
+
+It's not really usable yet. But in the future, you will be 
+able to build an application around it! Wrap a UI around it, 
+so we can all play AR online, with rules 
+enforcement. The UI could be text-based or graphical, and 
+could be real-time or asynchronous. It could be self-contained 
+or split between client and server. 
+
+In your typescript or javascript appliction, add this library. 
+Docs for the specific calls aren't available yet. Stay tuned. 
+
+## Developer reference
+
+`npm ci` will install the dependencies
+`npm test` will run the unit tests
+`npm run lint` will check for problems
+`npm run build` will build the library
+`npm start` will run whatever demo code is there
+
 ## Creature play effects
     * Automatic
         * draw

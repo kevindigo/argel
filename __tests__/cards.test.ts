@@ -1,4 +1,4 @@
-import { lookupCardTemplate as lookupCardef } from '../src/cards';
+import { lookupCardef as lookupCardef } from '../src/cards';
 
 describe('The cardef pool', () => {
     it('Can lookup a known cardef', () => {
