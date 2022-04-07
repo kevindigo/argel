@@ -1,0 +1,101 @@
+Set	Id	Type	Title	Power	VP
+OmegaCodex	001	Creature	Vix	1	1
+OmegaCodex	002	Creature	Jater	1	1
+OmegaCodex	003	Creature	Luminate	1	3
+OmegaCodex	004	Creature	Budge	1	1
+OmegaCodex	005	Creature	Tessa	2	1
+OmegaCodex	006	Creature	Dark Velum	2	1
+OmegaCodex	007	Creature	Drixel	2	2
+OmegaCodex	008	Creature	Terrible Jack	2	2
+OmegaCodex	009	Creature	Roxxy	3	1
+OmegaCodex	010	Creature	Parasite	3	1
+OmegaCodex	011	Creature	Moth	2	-1
+OmegaCodex	012	Creature	Proud Mama	3	1
+OmegaCodex	013	Creature	Taco	3	1
+OmegaCodex	014	Creature	Yearn	4	1
+OmegaCodex	015	Creature	Pokets	4	1
+OmegaCodex	016	Creature	Sticky Gemma	4	1
+OmegaCodex	017	Creature	Tiny the Tosser	4	2
+OmegaCodex	018	Creature	Deep Carl	4	1
+OmegaCodex	019	Creature	Vile Chap	4	1
+OmegaCodex	020	Creature	Anox	5	1
+OmegaCodex	021	Creature	Millipede	5	1
+OmegaCodex	022	Creature	Brother Bear	5	1
+OmegaCodex	023	Creature	Stubborn Thorn	5	2
+OmegaCodex	024	Creature	Crazy Larry	5	2
+OmegaCodex	025	Creature	Silence Enforcer	5	2
+OmegaCodex	026	Creature	Payday	6	1
+OmegaCodex	027	Creature	Bejewel	6	-1
+OmegaCodex	028	Creature	Gregory Illinivich	6	3
+OmegaCodex	029	Creature	Pinwheel	6	2
+OmegaCodex	030	Creature	Bamphf	6	1
+OmegaCodex	031	Creature	Vile Bear	6	-2
+OmegaCodex	032	Creature	Bigfoot Carl	6	2
+OmegaCodex	033	Creature	Turp	7	1
+OmegaCodex	034	Creature	The Auditor	7	1
+OmegaCodex	035	Creature	Yewcha	7	1
+OmegaCodex	036	Creature	Tede Scrapper	7	1
+OmegaCodex	037	Creature	Trophy Master	7	2
+OmegaCodex	038	Creature	Vanx	7	2
+OmegaCodex	039	Creature	Tujok	7	3
+OmegaCodex	040	Creature	Kazoo	8	1
+OmegaCodex	041	Creature	Renegade	8	2
+OmegaCodex	042	Creature	Droven Jeb	8	2
+OmegaCodex	043	Creature	Silent Master	8	3
+OmegaCodex	044	Creature	Rat Smasher	8	2
+OmegaCodex	045	Creature	Bash	8	1
+OmegaCodex	046	Creature	Greaser	9	2
+OmegaCodex	047	Creature	Roat	9	2
+OmegaCodex	048	Creature	Saboteur	9	1
+OmegaCodex	049	Creature	Eager Martyr	9	1
+OmegaCodex	050	Creature	Jer the Spike	10	-1
+OmegaCodex	051	Creature	Gynormica	10	3
+OmegaCodex	052	Relic	Elixir of Speed		3
+OmegaCodex	053	Relic	Wromhole Generator		1
+OmegaCodex	054	Relic	Sigil of Power		1
+OmegaCodex	055	Relic	The Buddy System		1
+OmegaCodex	056	Relic	Fog Machine		1
+OmegaCodex	057	Relic	Cargo Pants		1
+OmegaCodex	058	Relic	Hypervator		1
+OmegaCodex	059	Relic	Silent Room		1
+OmegaCodex	060	Relic	Meat Shears		1
+OmegaCodex	061	Relic	Sledgehammer		1
+OmegaCodex	062	Relic	Ned's Ladder		1
+OmegaCodex	063	Action	Direct Deposit		-1
+OmegaCodex	064	Action	Book of the Line		1
+OmegaCodex	065	Action	Vault Tunnel		1
+OmegaCodex	066	Action	Dead Drop		1
+OmegaCodex	067	Action	Yoink		1
+OmegaCodex	068	Action	Gentle Nudge		1
+OmegaCodex	069	Action	Not Yet		1
+OmegaCodex	070	Action	Two Birds		1
+OmegaCodex	071	Action	Recall		1
+OmegaCodex	072	Action	Crossed Teleport		1
+OmegaCodex	073	Action	Stink Bomb		1
+OmegaCodex	074	Action	Fast Forward		-2
+OmegaCodex	075	Action	Rewind		1
+OmegaCodex	076	Action	Start Over		2
+OmegaCodex	077	Action	Corrode or Shine		2
+OmegaCodex	078	Action	Wise or Naive		-1
+OmegaCodex	079	Action	Botched Construction		0
+OmegaCodex	080	Action	Return to Sender		1
+OmegaCodex	081	Action	This is Mine		1
+OmegaCodex	082	Action	This is Yours		1
+OmegaCodex	083	Action	Armageddon		1
+OmegaCodex	084	Action	Roll the Dice		1
+OmegaCodex	085	Action	What's This?		1
+OmegaCodex	086	Action	Overcharge		1
+OmegaCodex	087	Action	I Don't Like These		1
+OmegaCodex	088	Action	A Little Off the Top		1
+OmegaCodex	089	Action	Cheap Shot		1
+OmegaCodex	090	Action	Jump Start		0
+OmegaCodex	091	Action	Lullaby		-1
+OmegaCodex	092	Action	Adult Swim		1
+OmegaCodex	093	Action	Reforge		1
+OmegaCodex	094	Action	War Siren		1
+OmegaCodex	095	Action	Redistributed Wealth		0
+OmegaCodex	096	Action	Calm Down		1
+OmegaCodex	097	Action	Pinpoint		1
+OmegaCodex	098	Action	Triple Shot		1
+OmegaCodex	099	Action	Duck!		0
+OmegaCodex	100	Action	Nothing to See		4

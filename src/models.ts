@@ -62,7 +62,7 @@ export interface Action {
 
 export interface DeckList {
     id: DeckId;
-    set: SetId;
+    setId: SetId;
     name: string;
     contents: CardId[]; // 17 cards
 }

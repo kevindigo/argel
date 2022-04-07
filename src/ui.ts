@@ -1,4 +1,4 @@
-import { lookupCardef } from './cards';
+import { CardefPool } from './cards';
 import { lookupDeckList } from './decks';
 import { DeckId } from './types';
 
@@ -9,9 +9,13 @@ export function showDeck(deckId: DeckId): void {
         return;
     }
     console.log(deckList.name);
-    console.log(`${deckList.set}: ${deckList.id}`);
+    console.log(`${deckList.setId}: ${deckList.id}`);
+
+    const pool = new CardefPool();
+
     deckList.contents.forEach((cardId) => {
-        const cardef = lookupCardef(cardId);
+        const fullId = `${deckList.setId}-${cardId}`;
+        const cardef = pool.lookup(fullId);
         if (cardef) {
             console.log(`  ${cardef.name}`);
         } else {

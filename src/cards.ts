@@ -1,100 +1,111 @@
-import { OMEGA_CODEX } from './constants';
-import { CardId, CardType } from './types';
+import { CardId, CardType, SetId } from './types';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 
 export interface Cardef {
+    setId: SetId;
     id: CardId;
     type: CardType;
     name: string;
-    power?: number;
-    vp?: number;
+    power: number | undefined;
+    vp: number;
     // skills
     // bonus
 }
 
-function omegaId(index: string) {
-    return `${OMEGA_CODEX}-${index}`;
-}
-
-function omegaCreature(
-    index: string,
-    name: string,
-    power: number,
-    vp: number
+function createCardef(
+    setId?: SetId,
+    id?: CardId,
+    name?: string,
+    type?: CardType,
+    power?: number,
+    vp?: number
 ): Cardef {
+    if (!setId || !id || !name || !type) {
+        throw new Error('Illegal cardef');
+    }
+
+    const validVp: number = vp ?? 0;
+
     return {
-        id: omegaId(index),
-        type: CardType.CREATURE,
+        setId,
+        id,
         name,
+        type,
         power,
-        vp,
+        vp: validVp,
     };
 }
 
-function omegaRelic(index: string, name: string, vp: number): Cardef {
-    return {
-        id: omegaId(index),
-        type: CardType.RELIC,
-        name,
-        vp,
-    };
-}
+export class CardefPool {
+    private pool: Map<CardId, Cardef>;
 
-function omegaAction(index: string, name: string, vp: number): Cardef {
-    return {
-        id: omegaId(index),
-        type: CardType.ACTION,
-        name,
-        vp,
-    };
-}
+    public constructor() {
+        this.pool = new Map<CardId, Cardef>();
+        const path = resolve(__dirname, '../resources/cardpool.tsv');
+        this.loadFromFile(path);
+        if (this.pool.size !== 100) {
+            throw new Error(`Pool not 100 cards! (${this.pool.size})`);
+        }
+    }
 
-// Creatures
-export const vix = omegaCreature('001', 'Vix', 1, 1);
-export const jater = omegaCreature('002', 'Jater', 1, 1);
-export const payday = omegaCreature('026', 'Payday', 6, 1);
-export const pinwheel = omegaCreature('029', 'Pinwheel', 6, 2);
-export const bamphf = omegaCreature('030', 'Bamphf', 6, 1);
-export const vanx = omegaCreature('038', 'Vanx', 7, 2);
-export const renegade = omegaCreature('041', 'Renegade', 8, 2);
-export const ratSmasher = omegaCreature('042', 'Rat Smasher', 8, 2);
-export const saboteur = omegaCreature('048', 'Saboteur', 9, 1);
+    public loadFromTsvString(tsvString: string): void {
+        const rows = tsvString.split('\n');
+        rows.shift();
+        const validRows = rows.filter((row) => {
+            return row.length > 0;
+        });
+        const cardefs = validRows.map((row) => {
+            const columns = row.split('\t');
+            const setId = this.forceToString(columns.shift());
+            const id = columns.shift();
+            const type = columns.shift();
+            const name = columns.shift();
+            const power = parseInt(columns.shift() ?? '');
+            const vp = parseInt(columns.shift() ?? '999');
 
-// Relics
-export const hypervator = omegaRelic('058', 'Hypervator', 1);
+            try {
+                return createCardef(
+                    setId,
+                    id,
+                    name,
+                    type as CardType,
+                    power,
+                    vp
+                );
+            } catch (e: unknown) {
+                console.log(e);
+                console.log(row);
+                throw e;
+            }
+        });
 
-// Actions
-export const recall = omegaAction('071', 'Recall', 1);
-export const startOver = omegaAction('076', 'Start Over', 2);
-export const corrodeOrShine = omegaAction('077', 'Corrode or Shine', 2);
-export const rollTheDice = omegaAction('082', 'Roll the Dice', 1);
-export const aLittleOffTheTop = omegaAction('088', 'A Little Off the Top', 1);
-export const cheapShot = omegaAction('089', 'Cheap Shot', 1);
-export const duck = omegaAction('099', 'Duck!', 0);
+        this.pool.clear();
+        cardefs.forEach((cardef) => {
+            const fullId = `${cardef.setId}-${cardef.id}`;
+            this.pool.set(fullId, cardef);
+        });
+    }
 
-const cardPool = new Map<CardId, Cardef>();
+    public size(): number {
+        return this.pool.size;
+    }
 
-function addCardefToPool(cardTemplate: Cardef): void {
-    cardPool.set(cardTemplate.id, cardTemplate);
-}
+    public lookup(cardId: CardId): Cardef | undefined {
+        return this.pool.get(cardId);
+    }
 
-addCardefToPool(vix);
-addCardefToPool(jater);
-addCardefToPool(payday);
-addCardefToPool(pinwheel);
-addCardefToPool(bamphf);
-addCardefToPool(vanx);
-addCardefToPool(renegade);
-addCardefToPool(ratSmasher);
-addCardefToPool(saboteur);
-addCardefToPool(hypervator);
-addCardefToPool(recall);
-addCardefToPool(startOver);
-addCardefToPool(corrodeOrShine);
-addCardefToPool(rollTheDice);
-addCardefToPool(aLittleOffTheTop);
-addCardefToPool(cheapShot);
-addCardefToPool(duck);
+    private loadFromFile(path: string): void {
+        try {
+            const tsvContents = readFileSync(path);
+            this.loadFromTsvString(tsvContents.toString('utf-8'));
+        } catch (e: unknown) {
+            console.log(e);
+            throw e;
+        }
+    }
 
-export function lookupCardef(cardId: CardId): Cardef | undefined {
-    return cardPool.get(cardId);
+    private forceToString(s: string | undefined): string {
+        return s ?? '';
+    }
 }

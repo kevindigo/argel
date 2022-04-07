@@ -1,4 +1,4 @@
-import { lookupCardef } from './cards';
+import { CardefPool } from './cards';
 import { createDeck, lookupDeckList } from './decks';
 import { CardWithState, Player, Side } from './models';
 import { CardState, CardType } from './types';
@@ -63,15 +63,17 @@ export function initializeSide(player: Player): SideManager {
     };
 
     const manager = new SideManager(side);
+    const pool = new CardefPool();
 
     // TODO: Shuffle (which will break my tests)
 
     while (manager.line.length < 2) {
         const card = manager.drawDeck.pop();
         if (!card) {
-            throw new Error('Sample deck not found!?');
+            throw new Error('Drawdeck empty!?');
         }
-        const cardef = lookupCardef(card.id);
+        const fullId = `${deckList.setId}-${card.id}`;
+        const cardef = pool.lookup(fullId);
         if (cardef?.type === CardType.CREATURE) {
             const readyCard: CardWithState = {
                 card,
