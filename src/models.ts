@@ -38,9 +38,9 @@ export interface Side {
 
 export interface TurnState {
     activePlayerIndex: number;
-    handIndexBeingPlayed: HandIndex;
-    queuedAdditionalPlay: TopOrBottom;
-    queuedAttackLineIndex: LineIndex;
+    handIndexBeingPlayed?: HandIndex;
+    queuedAdditionalPlay?: TopOrBottom;
+    queuedAttackLineIndex?: LineIndex;
     flags: Map<FlagKey, boolean>;
 }
 
