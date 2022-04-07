@@ -17,14 +17,8 @@ import {
     vanx,
 } from './cards';
 import { OMEGA_CODEX } from './constants';
-import { CardId, DeckId, SetId } from './types';
-
-interface DeckList {
-    id: DeckId;
-    set: SetId;
-    name: string;
-    contents: CardId[]; // 17 cards
-}
+import { Card, DeckList } from './models';
+import { DeckId } from './types';
 
 const sampleDeck1: DeckList = {
     id: '679a6701-d7c3-494e-becb-04e9178aca30',
@@ -57,4 +51,15 @@ export function lookupDeckList(deckId: DeckId): DeckList | undefined {
     }
 
     return undefined;
+}
+
+export function createDeck(deckList: DeckList): Card[] {
+    const deck: Card[] = deckList.contents.map((cardId) => {
+        return {
+            deckId: deckList.id,
+            id: cardId,
+        };
+    });
+
+    return deck;
 }
