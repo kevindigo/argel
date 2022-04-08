@@ -1,6 +1,6 @@
 import { CardefPool } from '../src/cards';
 import { initializeSide } from '../src/side';
-import { CardState, CardType } from '../src/types';
+import { CardState, CardType, SideFlagKey } from '../src/types';
 
 describe('Sides', () => {
     const pool = new CardefPool();
@@ -19,5 +19,8 @@ describe('Sides', () => {
             const cardef = pool.lookup(cardWithState.card.cardId);
             expect(cardef?.type).toEqual(CardType.CREATURE);
         });
+        expect(sideManager.getFlag(SideFlagKey.CAN_ATTACK)).toBeTruthy();
+        expect(sideManager.getFlag(SideFlagKey.CAN_PLAY_ACTIONS)).toBeTruthy();
+        expect(sideManager.getFlag(SideFlagKey.NEXT_CARD_ACTIVE)).toBeFalsy();
     });
 });

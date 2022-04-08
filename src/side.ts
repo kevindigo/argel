@@ -1,7 +1,7 @@
 import { CardefPool } from './cards';
 import { createDeck, lookupDeckList } from './decks';
 import { CardWithState, Player, Side } from './models';
-import { CardState, CardType } from './types';
+import { CardState, CardType, SideFlagKey } from './types';
 
 export class SideManager {
     private _side: Side;
@@ -47,6 +47,10 @@ export class SideManager {
     public get line() {
         return this.side.line;
     }
+
+    public getFlag(flagKey: SideFlagKey): boolean {
+        return this._side.flags.get(flagKey) ?? false;
+    }
 }
 
 export function initializeSide(player: Player): SideManager {
@@ -64,6 +68,7 @@ export function initializeSide(player: Player): SideManager {
         discards: [],
         line: [],
         relics: [],
+        flags: new Map<SideFlagKey, boolean>(),
     };
 
     const manager = new SideManager(side);
@@ -89,6 +94,10 @@ export function initializeSide(player: Player): SideManager {
     }
 
     manager.draw(3);
+
+    // Should be at the start of each turn
+    side.flags.set(SideFlagKey.CAN_ATTACK, true);
+    side.flags.set(SideFlagKey.CAN_PLAY_ACTIONS, true);
 
     return manager;
 }

@@ -3,12 +3,13 @@ import {
     CardId,
     CardState,
     DeckId,
-    FlagKey,
     HandIndex,
     LineGap,
     LineIndex,
     RelicsIndex,
+    SideFlagKey,
     TopOrBottom,
+    TurnFlagKey,
 } from './types';
 
 export interface Player {
@@ -34,6 +35,7 @@ export interface Side {
     scored: Card[];
     line: CardWithState[];
     relics: CardWithState[];
+    flags: Map<SideFlagKey, boolean>;
 }
 
 export interface TurnState {
@@ -41,7 +43,7 @@ export interface TurnState {
     handIndexBeingPlayed?: HandIndex;
     queuedAdditionalPlay?: TopOrBottom;
     queuedAttackLineIndex?: LineIndex;
-    flags: Map<FlagKey, boolean>;
+    flags: Map<TurnFlagKey, boolean>;
 }
 
 export interface GameState {

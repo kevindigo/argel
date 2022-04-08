@@ -21,11 +21,16 @@ export enum ActionType {
     HARVEST = 'Harvest',
 }
 
-export enum FlagKey {
+export enum SideFlagKey {
+    CAN_PLAY_ACTIONS = 'CanPlayActions',
+    CAN_ATTACK = 'CanAttack',
     // NOTE: Even playing an Action sets NEXT_CARD_ACTIVE back to false
     // NOTE: NEXT_CARD_ACTIVE (from Jump Start) persists across turn boundaries
     NEXT_CARD_ACTIVE = 'NextCardActive',
-    HAS_PLAYED_CARD = 'HasPlayedCard',
+}
+
+export enum TurnFlagKey {
+    CAN_DISCARD = 'CanDiscard',
 }
 
 export type HandIndex = number;
