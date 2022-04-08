@@ -22,6 +22,8 @@ export enum ActionType {
 }
 
 export enum FlagKey {
+    // NOTE: Even playing an Action sets NEXT_CARD_ACTIVE back to false
+    // NOTE: NEXT_CARD_ACTIVE (from Jump Start) persists across turn boundaries
     NEXT_CARD_ACTIVE = 'NextCardActive',
     HAS_PLAYED_CARD = 'HasPlayedCard',
 }
