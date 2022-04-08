@@ -1,5 +1,6 @@
 import { CardefPool } from './cards';
 import { lookupDeckList } from './decks';
+import { Game } from './game';
 import { DeckId } from './types';
 
 export function showDeck(deckId: DeckId): void {
@@ -21,4 +22,23 @@ export function showDeck(deckId: DeckId): void {
             console.log(`  --Card ${cardId} not found`);
         }
     });
+}
+
+export function showGameState(game: Game): void {
+    const sideManagers = game.sideManagers;
+    sideManagers.forEach((sm) => {
+        const deckId = sm.side.player.deckId;
+        console.log(`${sm.playerName()}: ${lookupDeckList(deckId)?.name}`);
+        const cardNames = sm.line.map((cardWithState) => {
+            const cardef = game.pool.lookup(cardWithState.card.cardId);
+            return `${cardef?.name} (${cardef?.power})`;
+        });
+        console.log(cardNames.join(', '));
+        console.log();
+    });
+    const activePlayerIndex = game.state.turnState.activePlayerIndex;
+    console.log(
+        `Active player: ${sideManagers[activePlayerIndex]?.playerName()}`
+    );
+    console.log();
 }
