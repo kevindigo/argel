@@ -81,6 +81,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Rotate` (@) = Change the orientation/state of an in-play Card
     * `Shuffle` = Shuffle a DrawPile
 * Other
+    * `All` (*) = Every Card at a location
     * `CardState` = State of an in-play Creature or Relic
         * `Active` = Ready or Mature (can fight or Harvest)
         * `Dormant` (@D) = An in-play card is turned left (can't Attack or Harvest)
@@ -93,6 +94,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Owner` = The Player using the DeckId that matches the Card being owned
         * Note: this prevents mirror matches where both players use the same deck!
     * `Power` (P) = The effective power of an in-play Card
+    * `Random` (?) = Selected at random from the location
     * `VictoryPoints` (V) = The VP of a Cardef
 
 When identifying the "from", most locations must be prefixed with `M` or `O` to indicate the Side. 
