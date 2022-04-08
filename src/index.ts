@@ -14,8 +14,3 @@ const player2: Player = {
 };
 const game = new Game(player1, player2);
 showGameState(game);
-
-// create 2 players
-// create 2 sides
-// create game state
-// display game state
