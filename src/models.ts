@@ -8,7 +8,6 @@ import {
     LineGap,
     LineIndex,
     RelicsIndex,
-    SetId,
     TopOrBottom,
 } from './types';
 
@@ -19,7 +18,7 @@ export interface Player {
 
 export interface Card {
     deckId: DeckId;
-    id: CardId;
+    cardId: CardId;
 }
 
 export interface CardWithState {
@@ -29,7 +28,7 @@ export interface CardWithState {
 
 export interface Side {
     player: Player;
-    drawDeck: Card[];
+    drawPile: Card[];
     discards: Card[];
     hand: Card[];
     scored: Card[];
@@ -39,9 +38,9 @@ export interface Side {
 
 export interface TurnState {
     activePlayerIndex: number;
-    handIndexBeingPlayed: HandIndex;
-    queuedAdditionalPlay: TopOrBottom;
-    queuedAttackLineIndex: LineIndex;
+    handIndexBeingPlayed?: HandIndex;
+    queuedAdditionalPlay?: TopOrBottom;
+    queuedAttackLineIndex?: LineIndex;
     flags: Map<FlagKey, boolean>;
 }
 
@@ -58,11 +57,4 @@ export interface Action {
     lineIndex?: LineIndex;
     attackers?: LineIndex[];
     defenders?: LineIndex[];
-}
-
-export interface DeckList {
-    id: DeckId;
-    set: SetId;
-    name: string;
-    contents: CardId[]; // 17 cards
 }

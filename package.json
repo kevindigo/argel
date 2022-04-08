@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc --build",
+    "build": "tsc --build; cp -r resources/ dist/resources",
     "start": "node dist/src/index.js",
     "clean": "tsc --build --clean",
     "lint": "eslint src"

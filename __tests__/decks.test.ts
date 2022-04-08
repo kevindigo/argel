@@ -6,7 +6,7 @@ describe('The deck pool', () => {
     it('Can lookup a known decklist', () => {
         const deckList = lookupDeckList(SAMPLE_DECK_ID);
         expect(deckList).toBeDefined();
-        expect(deckList?.contents.length).toEqual(17);
+        expect(deckList?.cardIds.length).toEqual(17);
     });
 
     it('Cannot lookup a decklist for an unknown id', () => {
