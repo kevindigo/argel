@@ -40,7 +40,61 @@ Docs for the specific calls aren't available yet. Stay tuned.
 `npm run build` will build the library
 `npm start` will run whatever demo code is there
 
-## Creature play effects
+## Design notes
+
+### Terminology
+* Items
+    * `Card` = An instance of a card (based on a cardef)
+    * `Cardef` = The definition of a card (SetId, CardNumber)
+    * `CardId` = The set and number of a card
+    * `CardNumber` = 3-digit identifier within a set
+    * `CardWithState` = An in-play Creature or Relic
+    * `DeckId` = UID of a deck
+    * `DeckList` = A SetId, DeckId, and list of CardNumbers
+    * `Game` = A session in progress; Consists of 2 Sides and a TurnState
+    * `Player` = Identified by their name and DeckId
+    * `SetId` = Name of a set (e.g. "Omega Codex")
+    * `Side` = A player, and their DrawPile, Discards, Hand, Scored, Line, and Relics
+    * `TurnState` = Who is the Active Player, and TurnFlags
+        * `QueuedAdditionalPlay` = After this Action, Active Player can Play another Card
+        * `QueuedAttackLineIndex` = After this Action, Active Player can Attack with this Creature
+        * `TurnFlags`
+            * `NEXT_CARD_READY` = The next played card will be Ready instead of Dormant
+            * `HAS_PLAYED_CARD` = The Active Player is allowed to Discard
+* Locations
+    * `Discards` (D) = A face-up discard pile
+    * `DrawPile` = Face-down cards available to draw
+        * `Bottom` (B) = Bottom card in a DrawPile
+        * `Top` (T) = Top card in a DrawPile
+    * `Hand`(H)
+    * `Line` (L) = A player's in-play Creatures
+    * `Relics` (R) = A player's in-play Relics
+    * `Scored` (S) = A players's score pile
+* Actions
+    * `Attack` = Initiate a fight
+    * `Discard` = Move a Card from Hand to Discards
+    * `Harvest` = Move a Mature card to Discards
+    * `Play` = Move a Card from Hand to Line
+    * `Shuffle` = Shuffle a DrawPile
+* Other
+    * `CardState` = State of an in-play Creature or Relic
+        * `Active` = Ready or Mature (can fight or Harvest)
+        * `Dormant` = An in-play card is turned left (can't Attack or Harvest)
+        * `Mature` = An in-play card is turned right (can Harvest)
+        * `Ready` = An in-play card is upright (can Attack)
+    * `Fight` = The result of an Attack, where 2 opposing Creatures fight
+    * `My` (M) = Belonging to the active player
+    * `Opponent`/`Opp` (O) = The non-active player
+    * `Owner` = The Player using the DeckId that matches the Card being owned
+        * Note: this prevents mirror matches where both players use the same deck!
+
+When identifying the "from", locations must be prefixed with `M` or `O` to indicate the Side. 
+
+When identifying the "to", a Side does not have to be specified for DrawPile or Discards, 
+because Cards will always go to their Owner's respective location. 
+
+
+### Creature play effects
     * Automatic
         * draw
         * queue a play (bottom)
@@ -60,7 +114,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
         * draw 2; choose 1 from hand; move it to discards
         * reveal opponent hand; choose from opp hand (lowest power creature); move it to opp scored
 
-## Action play effects
+### Action play effects
     * Automatic
         * (no effect)
         * draw 2
@@ -116,7 +170,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
         * choose from your line; choose destination in your opponent's line; move it
         * choose 2 from each scored; choose 2 of those; move them to opp scored; move others to your scored
 
-## Creature bonus effects
+### Creature bonus effects
     * Automatic
         * harvest: queue a play (top)
         * draw 1
@@ -142,7 +196,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * Special
         * reveal your hand; choose from hand (lowest power); move to your scored
 
-## Relic bonus effects
+### Relic bonus effects
     * Automatic
         * draw 3
         * during opponent's next turn, they cannot play cards
@@ -155,7 +209,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * Special
         * discard 2 from hand; if you do, move this to your scored; otherwise move to opponent's scored
 
-## Ongoing effects
+### Ongoing effects
     * Global
         * first creature played each turn enters play active
         * your hand size +1
@@ -172,7 +226,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
         * if this loses a fight, opponent discards their hand
         * when this leaves play, draw a card
 
-## Skills
+### Skills
     * Sneak X
     * BearHug
     * Teamup
