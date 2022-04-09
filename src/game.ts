@@ -1,5 +1,12 @@
 import { CardefPool } from './cards';
-import { CardWithState, GameState, Player, Side, TurnState } from './models';
+import {
+    Card,
+    CardWithState,
+    GameState,
+    Player,
+    Side,
+    TurnState,
+} from './models';
 import { createInitialSide, SideManager } from './side';
 import { CardState, CardType } from './types';
 
@@ -56,7 +63,7 @@ export class Game {
     private startGameForSide(manager: SideManager): void {
         const pool = new CardefPool();
 
-        // this.shuffleInPlace(manager.drawPile);
+        this.shuffleInPlace(manager.drawPile);
 
         while (manager.line.length < 2) {
             const card = manager.drawPile.pop();
@@ -84,12 +91,12 @@ export class Game {
     }
 
     // This implements a "Durstenfeld shuffle"
-    // private shuffleInPlace(pile: Card[]): void {
-    //     for (let i = pile.length - 1; i > 0; i--) {
-    //         const j = Math.floor(Math.random() * (i + 1));
-    //         const temp = pile[i] as Card;
-    //         pile[i] = pile[j] as Card;
-    //         pile[j] = temp;
-    //     }
-    // }
+    private shuffleInPlace(pile: Card[]): void {
+        for (let i = pile.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = pile[i] as Card;
+            pile[i] = pile[j] as Card;
+            pile[j] = temp;
+        }
+    }
 }
