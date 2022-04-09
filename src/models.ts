@@ -25,7 +25,7 @@ export interface CardWithState {
 }
 
 export interface SideFlags {
-    canAttack: boolean;
+    canFight: boolean;
     canPlayActions: boolean;
     isNextCardActive: boolean;
 }
@@ -49,7 +49,7 @@ export interface TurnState {
     myIndex: number;
     handIndexBeingPlayed?: HandIndex;
     queuedAdditionalPlay?: TopOrBottom;
-    queuedAttackLineIndex?: LineIndex;
+    queuedFightLineIndex?: LineIndex;
     turnFlags: TurnFlags;
 }
 

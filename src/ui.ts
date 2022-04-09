@@ -17,7 +17,7 @@ function getActionString(action: Action): string {
         parts.push(`MR${action.relicsIndex}`);
     }
     if (action.attackers) {
-        parts.push(`A${action.attackers}`);
+        parts.push(`F${action.attackers}`);
     }
     if (action.defenders) {
         parts.push(`D${action.defenders}`);

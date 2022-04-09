@@ -68,7 +68,7 @@ describe('getAvailableActions', () => {
         expect(actions.length).toEqual(2);
     });
 
-    it('offers 2 ways to attack with 1 creature against a line of 2', () => {
+    it('offers 2 ways to fight with 1 creature against a line of 2', () => {
         const vix: Card = {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',

@@ -67,7 +67,7 @@ export function createInitialSide(player: Player): Side {
         line: [],
         relics: [],
         flags: {
-            canAttack: false,
+            canFight: false,
             canPlayActions: false,
             isNextCardActive: false,
         },
@@ -85,7 +85,7 @@ export function createEmptySide(): Side {
         discards: [],
         drawPile: [],
         flags: {
-            canAttack: true,
+            canFight: true,
             canPlayActions: true,
             isNextCardActive: false,
         },

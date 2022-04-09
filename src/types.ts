@@ -17,14 +17,14 @@ export enum TopOrBottom {
 
 export enum ActionType {
     PLAY = 'Play',
-    ATTACK = 'Attack',
+    FIGHT = 'Fight',
     HARVEST = 'Harvest',
     DISCARD = 'Discard',
 }
 
 export enum SideFlagKey {
     CAN_PLAY_ACTIONS = 'CanPlayActions',
-    CAN_ATTACK = 'CanAttack',
+    CAN_FIGHT = 'CanFight',
     // NOTE: Even playing an Action sets NEXT_CARD_ACTIVE back to false
     // NOTE: NEXT_CARD_ACTIVE (from Jump Start) persists across turn boundaries
     NEXT_CARD_ACTIVE = 'NextCardActive',

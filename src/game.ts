@@ -97,7 +97,7 @@ export class Game {
         manager.draw(3);
 
         // Should be at the start of each turn
-        manager.side.flags.canAttack = true;
+        manager.side.flags.canFight = true;
         manager.side.flags.canPlayActions = true;
         manager.side.flags.isNextCardActive = false;
     }

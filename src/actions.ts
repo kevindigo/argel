@@ -66,7 +66,7 @@ function getAvailablePlayActions(gameState: GameState): Set<Action> {
     return available;
 }
 
-function getAvailableAttackActions(gameState: GameState): Set<Action> {
+function getAvailableFightActions(gameState: GameState): Set<Action> {
     const available = new Set<Action>();
 
     const game = new Game(gameState);
@@ -89,7 +89,7 @@ function getAvailableAttackActions(gameState: GameState): Set<Action> {
             ++targetIndex
         ) {
             available.add({
-                type: ActionType.ATTACK,
+                type: ActionType.FIGHT,
                 handIndex: null,
                 lineIndex: null,
                 relicsIndex: null,
@@ -174,8 +174,8 @@ export function getAvailableActions(gameState: GameState): Set<Action> {
         available.add(action);
     });
 
-    const attackActions = getAvailableAttackActions(gameState);
-    attackActions.forEach((action) => {
+    const FightActions = getAvailableFightActions(gameState);
+    FightActions.forEach((action) => {
         available.add(action);
     });
 

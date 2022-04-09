@@ -57,10 +57,10 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Side` = A player, and their DrawPile, Discards, Hand, Scored, Line, Relics, and Flags
         * Flag: `isNextCardActive` = The next played card will be Active instead of Dormant
         * Flag: `canPlayActions` = Can play Actions this turn
-        * Flag: `canAttack`= Can Attack this turn
+        * Flag: `canFight`= Can Fight this turn
     * `TurnState` = Who is the Active Player, and TurnFlags
         * `QueuedAdditionalPlay` = After this Action, Active Player can Play another Card
-        * `QueuedAttackLineIndex` = After this Action, Active Player can Attack with this Creature
+        * `QueuedFightLineIndex` = After this Action, Active Player can Fight with this Creature
         * `TurnFlags`
             * `canDiscard` = The Active Player either has played a card this turn, 
                 or cannot play and has revealed their hand, so they are allowed to Discard
@@ -74,15 +74,18 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Purgatory` (P) = A temporary holding place during an action
     * `Relics` (R) = A player's in-play Relics
     * `Scored` (S) = A players's score pile
-* Actions
-    * `Attack` = Initiate a fight
-    * `ChooseNumber` (N) = Choose a number / chosen number
+* Deeds
     * `Discard` = Move a Card from Hand to Discards
+    * `Fight` = Initiate a battle
+    * `Harvest` = Score a Mature card
+    * `Play` = Play a card from hand
+* Effects
+    * `ChooseNumber` (N) = Choose a number / chosen number
     * `Draw` = Move a Card from a DrawPile to that Side's Hand
     * `EndTurn` (END) = Immediately end turn, without drawing or rotating
     * `Harvest` = Move a Mature card to Discards
     * `Play` = Move a Card from Hand to Line (position -1 means the right end)
-    * `Queue` (Q) = Queue a Play or Attack for after this Action
+    * `Queue` (Q) = Queue a Play or Fight for after this Action
     * `Reveal` (%) = Make a current hand visible to the other Player
     * `Rotate` (@) = Change the orientation/state of an in-play Card
 * Qualifiers
@@ -106,9 +109,8 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * (=) = The card that is triggering the action
     * `CardState` = State of an in-play Creature or Relic
         * `Dormant` (@D) = An in-play card is turned left (can't be used)
-        * `Active` (@A) = An in-play card is upright (can Attack)
-        * `Mature` (@M) = An in-play card is turned right (can Attack or Harvest)
-    * `Fight` = The result of an Attack, where 2 opposing Creatures fight
+        * `Active` (@A) = An in-play card is upright (can Fight)
+        * `Mature` (@M) = An in-play card is turned right (can Fight or Harvest)
     * `If/Else` (if ? :) = if(cond) ? <doiftrue> : <dootherwise>
     * `Random` = If the hand is not revealed, random is automatic
     * `Repeat` (x) = "5x(MT > H)" would mean draw from top to hand 5 times
