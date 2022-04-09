@@ -77,10 +77,6 @@ function getAvailableAttackActions(game: Game): Set<Action> {
         ++attackerIndex
     ) {
         const cardWithState = manager.line[attackerIndex] as CardWithState;
-        const cardef = getCardef(game.pool, cardWithState.card.cardId);
-        if (cardef.type !== CardType.CREATURE) {
-            continue;
-        }
         if (cardWithState.state === CardState.DORMANT) {
             continue;
         }
@@ -109,6 +105,45 @@ function getAvailableAttackActions(game: Game): Set<Action> {
     return available;
 }
 
+function getAvailableHarvestActions(game: Game): Set<Action> {
+    const available = new Set<Action>();
+
+    const manager = getActiveSideManager(game);
+    for (let lineIndex = 0; lineIndex < manager.line.length; ++lineIndex) {
+        const cardWithState = manager.line[lineIndex] as CardWithState;
+        if (cardWithState.state !== CardState.MATURE) {
+            continue;
+        }
+
+        available.add({
+            type: ActionType.HARVEST,
+            handIndex: null,
+            lineIndex,
+            relicsIndex: null,
+        });
+    }
+
+    for (
+        let relicsIndex = 0;
+        relicsIndex < manager.relics.length;
+        ++relicsIndex
+    ) {
+        const cardWithState = manager.relics[relicsIndex] as CardWithState;
+        if (cardWithState.state !== CardState.MATURE) {
+            continue;
+        }
+
+        available.add({
+            type: ActionType.HARVEST,
+            handIndex: null,
+            lineIndex: null,
+            relicsIndex,
+        });
+    }
+
+    return available;
+}
+
 export function getAvailableActions(game: Game): Set<Action> {
     const available = new Set<Action>();
 
@@ -122,7 +157,11 @@ export function getAvailableActions(game: Game): Set<Action> {
         available.add(action);
     });
 
-    // for each mature card in line, it can harvest
+    const harvestActions = getAvailableHarvestActions(game);
+    harvestActions.forEach((action) => {
+        available.add(action);
+    });
+
     // if can discard, each card in hand can be discarded
 
     return available;

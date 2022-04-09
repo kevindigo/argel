@@ -45,6 +45,10 @@ export class SideManager {
     public get line() {
         return this.side.line;
     }
+
+    public get relics() {
+        return this.side.relics;
+    }
 }
 
 export function createInitialSide(player: Player): Side {

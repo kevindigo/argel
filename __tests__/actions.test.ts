@@ -115,4 +115,34 @@ describe('getAvailableActions', () => {
         expect(actions.length).toEqual(2);
         expect(actions[0]?.relicsIndex).toEqual(-1);
     });
+
+    it('offers to harvest a mature Creature', () => {
+        const vix: Card = {
+            cardId: 'OmegaCodex-001',
+            deckId: 'bogus',
+        };
+        const mySide = state.sides[activePlayerIndex] as Side;
+        const matureVix: CardWithState = {
+            card: vix,
+            state: CardState.MATURE,
+        };
+        mySide.line.push(matureVix);
+        const actions = Array.from(getAvailableActions(game));
+        expect(actions.length).toEqual(1);
+    });
+
+    it('offers to harvest a mature Relic', () => {
+        const hypervator: Card = {
+            cardId: 'OmegaCodex-058',
+            deckId: 'bogus',
+        };
+        const mySide = state.sides[activePlayerIndex] as Side;
+        const matureHypervator: CardWithState = {
+            card: hypervator,
+            state: CardState.MATURE,
+        };
+        mySide.relics.push(matureHypervator);
+        const actions = Array.from(getAvailableActions(game));
+        expect(actions.length).toEqual(1);
+    });
 });
