@@ -56,6 +56,18 @@ describe('getAvailableActions', () => {
         expect(actions.size).toEqual(2);
     });
 
+    it('offers to play 2 Creatures in hand to an empty line', () => {
+        const vix: Card = {
+            cardId: 'OmegaCodex-001',
+            deckId: 'bogus',
+        };
+        const mySide = state.sides[activePlayerIndex] as Side;
+        mySide.hand.push(vix);
+        mySide.hand.push(vix);
+        const actions = getAvailableActions(game);
+        expect(actions.size).toEqual(2);
+    });
+
     it('offers 2 ways to attack with 1 creature against a line of 2', () => {
         const vix: Card = {
             cardId: 'OmegaCodex-001',
