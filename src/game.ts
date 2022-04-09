@@ -68,7 +68,7 @@ export class Game {
         return this._state.turnState.activePlayerIndex;
     }
 
-    public getOppPlayerIndex(): number {
+    public getEnemyIndex(): number {
         return 1 - this.getActivePlayerIndex();
     }
 
