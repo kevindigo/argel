@@ -1,4 +1,3 @@
-import { getAvailableActions } from './actions';
 import { CardefPool } from './cards';
 import { lookupDeckList } from './decks';
 import { Game } from './game';
@@ -68,7 +67,7 @@ export function showGameState(game: Game): void {
     console.log(
         `Active player: ${sideManagers[activePlayerIndex]?.playerName()}`
     );
-    const availableActions = getAvailableActions(game);
+    const availableActions = game.getCopyOfStateWithOptions().options || [];
     availableActions.forEach((action) => {
         console.log(getActionString(action));
     });

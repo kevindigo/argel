@@ -1,3 +1,4 @@
+import { getAvailableActions } from './actions';
 import { CardefPool } from './cards';
 import {
     Card,
@@ -52,7 +53,9 @@ export class Game {
     }
 
     public getCopyOfStateWithOptions(): GameState {
-        return JSON.parse(JSON.stringify(this._state));
+        const copy: GameState = JSON.parse(JSON.stringify(this._state));
+        copy.options = Array.from(getAvailableActions(copy));
+        return copy;
     }
 
     public startGame(): void {

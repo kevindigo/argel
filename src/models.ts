@@ -53,11 +53,6 @@ export interface TurnState {
     turnFlags: TurnFlags;
 }
 
-export interface GameState {
-    sides: Side[];
-    turnState: TurnState;
-}
-
 export interface Action {
     type: ActionType;
     handIndex: HandIndex | null;
@@ -65,4 +60,10 @@ export interface Action {
     lineIndex: LineIndex | null;
     attackers?: LineIndex[];
     defenders?: LineIndex[];
+}
+
+export interface GameState {
+    sides: Side[];
+    turnState: TurnState;
+    options?: Action[];
 }
