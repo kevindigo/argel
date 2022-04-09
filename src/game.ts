@@ -1,3 +1,4 @@
+import { getAvailableActions } from './actions';
 import { CardefPool } from './cards';
 import {
     Card,
@@ -20,7 +21,7 @@ export function createInitialGameState(
     ];
 
     const turnState: TurnState = {
-        activePlayerIndex: 0,
+        myIndex: 0,
         turnFlags: {
             canDiscard: false,
         },
@@ -51,16 +52,24 @@ export class Game {
         this.pool = new CardefPool();
     }
 
-    public get state(): GameState {
-        return JSON.parse(JSON.stringify(this._state));
+    public getCopyOfStateWithOptions(): GameState {
+        const copy: GameState = JSON.parse(JSON.stringify(this._state));
+        copy.options = Array.from(getAvailableActions(copy));
+        return copy;
     }
 
-    public startGame(): GameState {
+    public startGame(): void {
         this.sideManagers.forEach((manager) => {
             this.startGameForSide(manager);
         });
+    }
 
-        return this.state;
+    public getMyIndex(): number {
+        return this._state.turnState.myIndex;
+    }
+
+    public getEnemyIndex(): number {
+        return 1 - this.getMyIndex();
     }
 
     private startGameForSide(manager: SideManager): void {

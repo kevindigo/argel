@@ -1,14 +1,12 @@
 import { Cardef, CardefPool } from './cards';
 import { Game } from './game';
-import { Action, Card, CardWithState } from './models';
+import { Action, Card, CardWithState, GameState } from './models';
 import { SideManager } from './side';
 import { ActionType, CardId, CardState, CardType } from './types';
 
 function getActiveSideManager(game: Game): SideManager {
-    const activePlayerIndex = game.state.turnState.activePlayerIndex;
-    const activeSideManager = game.sideManagers[
-        activePlayerIndex
-    ] as SideManager;
+    const myIndex = game.getMyIndex();
+    const activeSideManager = game.sideManagers[myIndex] as SideManager;
 
     return activeSideManager;
 }
@@ -18,9 +16,10 @@ function getCardef(pool: CardefPool, cardId: CardId): Cardef {
     return cardef;
 }
 
-function getAvailablePlayActions(game: Game): Set<Action> {
+function getAvailablePlayActions(gameState: GameState): Set<Action> {
     const available = new Set<Action>();
 
+    const game = new Game(gameState);
     const manager = getActiveSideManager(game);
     for (let i = 0; i < manager.hand.length; ++i) {
         const card = manager.hand[i] as Card;
@@ -67,9 +66,10 @@ function getAvailablePlayActions(game: Game): Set<Action> {
     return available;
 }
 
-function getAvailableAttackActions(game: Game): Set<Action> {
+function getAvailableAttackActions(gameState: GameState): Set<Action> {
     const available = new Set<Action>();
 
+    const game = new Game(gameState);
     const manager = getActiveSideManager(game);
     for (
         let attackerIndex = 0;
@@ -81,11 +81,11 @@ function getAvailableAttackActions(game: Game): Set<Action> {
             continue;
         }
 
-        const oppSideIndex = 1 - game.state.turnState.activePlayerIndex;
-        const oppManager = game.sideManagers[oppSideIndex] as SideManager;
+        const enemyIndex = game.getEnemyIndex();
+        const enemyManager = game.sideManagers[enemyIndex] as SideManager;
         for (
             let targetIndex = 0;
-            targetIndex < oppManager.line.length;
+            targetIndex < enemyManager.line.length;
             ++targetIndex
         ) {
             available.add({
@@ -105,9 +105,10 @@ function getAvailableAttackActions(game: Game): Set<Action> {
     return available;
 }
 
-function getAvailableHarvestActions(game: Game): Set<Action> {
+function getAvailableHarvestActions(gameState: GameState): Set<Action> {
     const available = new Set<Action>();
 
+    const game = new Game(gameState);
     const manager = getActiveSideManager(game);
     for (let lineIndex = 0; lineIndex < manager.line.length; ++lineIndex) {
         const cardWithState = manager.line[lineIndex] as CardWithState;
@@ -144,11 +145,12 @@ function getAvailableHarvestActions(game: Game): Set<Action> {
     return available;
 }
 
-function getAvailableDiscardActions(game: Game): Set<Action> {
+function getAvailableDiscardActions(gameState: GameState): Set<Action> {
     const available = new Set<Action>();
 
+    const game = new Game(gameState);
     const manager = getActiveSideManager(game);
-    if (!game.state.turnState.turnFlags.canDiscard) {
+    if (!gameState.turnState.turnFlags.canDiscard) {
         return available;
     }
 
@@ -164,25 +166,25 @@ function getAvailableDiscardActions(game: Game): Set<Action> {
     return available;
 }
 
-export function getAvailableActions(game: Game): Set<Action> {
+export function getAvailableActions(gameState: GameState): Set<Action> {
     const available = new Set<Action>();
 
-    const playActions = getAvailablePlayActions(game);
+    const playActions = getAvailablePlayActions(gameState);
     playActions.forEach((action) => {
         available.add(action);
     });
 
-    const attackActions = getAvailableAttackActions(game);
+    const attackActions = getAvailableAttackActions(gameState);
     attackActions.forEach((action) => {
         available.add(action);
     });
 
-    const harvestActions = getAvailableHarvestActions(game);
+    const harvestActions = getAvailableHarvestActions(gameState);
     harvestActions.forEach((action) => {
         available.add(action);
     });
 
-    const discardActions = getAvailableDiscardActions(game);
+    const discardActions = getAvailableDiscardActions(gameState);
     discardActions.forEach((action) => {
         available.add(action);
     });

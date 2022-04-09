@@ -1,4 +1,3 @@
-import { getAvailableActions } from './actions';
 import { CardefPool } from './cards';
 import { lookupDeckList } from './decks';
 import { Game } from './game';
@@ -64,11 +63,9 @@ export function showGameState(game: Game): void {
         console.log(`Hand: ${handCardNames.join(', ')}`);
         console.log();
     });
-    const activePlayerIndex = game.state.turnState.activePlayerIndex;
-    console.log(
-        `Active player: ${sideManagers[activePlayerIndex]?.playerName()}`
-    );
-    const availableActions = getAvailableActions(game);
+    const myIndex = game.getMyIndex();
+    console.log(`Active player: ${sideManagers[myIndex]?.playerName()}`);
+    const availableActions = game.getCopyOfStateWithOptions().options || [];
     availableActions.forEach((action) => {
         console.log(getActionString(action));
     });

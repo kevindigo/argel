@@ -1,32 +1,29 @@
 import { getAvailableActions } from '../src/actions';
-import { Game } from '../src/game';
 import { Card, CardWithState, GameState, Side } from '../src/models';
 import { createEmptySide } from '../src/side';
 import { ActionType, CardState } from '../src/types';
 
 describe('getAvailableActions', () => {
     let state: GameState;
-    let game: Game;
-    let activePlayerIndex: number;
-    let oppPlayerIndex: number;
+    let myIndex: number;
+    let enemyIndex: number;
 
     beforeEach(() => {
         state = {
             sides: [createEmptySide(), createEmptySide()],
             turnState: {
-                activePlayerIndex: 0,
+                myIndex: 0,
                 turnFlags: {
                     canDiscard: false,
                 },
             },
         };
-        game = new Game(state);
-        activePlayerIndex = state.turnState.activePlayerIndex;
-        oppPlayerIndex = 1 - activePlayerIndex;
+        myIndex = state.turnState.myIndex;
+        enemyIndex = 1 - myIndex;
     });
 
     it('offers no actions if hand and line are empty', () => {
-        const actions = getAvailableActions(game);
+        const actions = getAvailableActions(state);
         expect(actions.size).toEqual(0);
     });
 
@@ -35,8 +32,8 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
         };
-        state.sides[activePlayerIndex]?.hand.push(vix);
-        const actions = Array.from(getAvailableActions(game));
+        state.sides[myIndex]?.hand.push(vix);
+        const actions = Array.from(getAvailableActions(state));
         expect(actions.length).toEqual(1);
         expect(actions[0]?.type).toEqual(ActionType.PLAY);
         expect(actions[0]?.handIndex).toEqual(0);
@@ -48,14 +45,14 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         const dormantVix: CardWithState = {
             card: vix,
             state: CardState.DORMANT,
         };
         mySide.line.push(dormantVix);
         mySide.hand.push(vix);
-        const actions = Array.from(getAvailableActions(game));
+        const actions = Array.from(getAvailableActions(state));
         expect(actions.length).toEqual(2);
     });
 
@@ -64,10 +61,10 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         mySide.hand.push(vix);
         mySide.hand.push(vix);
-        const actions = Array.from(getAvailableActions(game));
+        const actions = Array.from(getAvailableActions(state));
         expect(actions.length).toEqual(2);
     });
 
@@ -76,16 +73,16 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         const readyVix: CardWithState = {
             card: vix,
             state: CardState.READY,
         };
         mySide.line.push(readyVix);
-        const oppSide = state.sides[oppPlayerIndex] as Side;
-        oppSide.line.push(readyVix);
-        oppSide.line.push(readyVix);
-        const actions = Array.from(getAvailableActions(game));
+        const enemySide = state.sides[enemyIndex] as Side;
+        enemySide.line.push(readyVix);
+        enemySide.line.push(readyVix);
+        const actions = Array.from(getAvailableActions(state));
         expect(actions.length).toEqual(2);
     });
 
@@ -94,10 +91,10 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-099',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         mySide.hand.push(duck);
         mySide.hand.push(duck);
-        const actions = Array.from(getAvailableActions(game));
+        const actions = Array.from(getAvailableActions(state));
         expect(actions.length).toEqual(2);
     });
 
@@ -106,7 +103,7 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-058',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         const dormantHypervator: CardWithState = {
             card: hypervator,
             state: CardState.DORMANT,
@@ -114,7 +111,7 @@ describe('getAvailableActions', () => {
         mySide.relics.push(dormantHypervator);
         mySide.hand.push(hypervator);
         mySide.hand.push(hypervator);
-        const actions = Array.from(getAvailableActions(game));
+        const actions = Array.from(getAvailableActions(state));
         expect(actions.length).toEqual(2);
         expect(actions[0]?.relicsIndex).toEqual(-1);
     });
@@ -124,13 +121,13 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         const matureVix: CardWithState = {
             card: vix,
             state: CardState.MATURE,
         };
         mySide.line.push(matureVix);
-        const actions = Array.from(getAvailableActions(game));
+        const actions = Array.from(getAvailableActions(state));
         expect(actions.length).toEqual(1);
     });
 
@@ -139,13 +136,13 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-058',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         const matureHypervator: CardWithState = {
             card: hypervator,
             state: CardState.MATURE,
         };
         mySide.relics.push(matureHypervator);
-        const actions = Array.from(getAvailableActions(game));
+        const actions = Array.from(getAvailableActions(state));
         expect(actions.length).toEqual(1);
     });
 
@@ -154,13 +151,13 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-058',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         mySide.hand.push(hypervator);
-        const beforePlaying = Array.from(getAvailableActions(game));
+        const beforePlaying = Array.from(getAvailableActions(state));
         expect(beforePlaying.length).toEqual(1);
 
         state.turnState.turnFlags.canDiscard = true;
-        const afterPlaying = Array.from(getAvailableActions(game));
+        const afterPlaying = Array.from(getAvailableActions(state));
         expect(afterPlaying.length).toEqual(2);
     });
 });
