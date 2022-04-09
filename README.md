@@ -81,7 +81,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Draw` = Move a Card from a DrawPile to that Side's Hand
     * `EndTurn` (.) = Immediately end turn, without drawing or rotating
     * `Harvest` = Move a Mature card to Discards
-    * `Play` = Move a Card from Hand to Line
+    * `Play` = Move a Card from Hand to Line (position -1 means the right end)
     * `Queue` (Q) = Queue a Play or Attack for after this Action
     * `Reveal` (%) = Make a current hand visible to the other Player
     * `Rotate` (@) = Change the orientation/state of an in-play Card

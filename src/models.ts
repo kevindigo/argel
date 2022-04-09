@@ -4,7 +4,6 @@ import {
     CardState,
     DeckId,
     HandIndex,
-    LineGap,
     LineIndex,
     RelicsIndex,
     TopOrBottom,
@@ -57,10 +56,9 @@ export interface GameState {
 
 export interface Action {
     type: ActionType;
-    handIndex?: HandIndex;
-    relicsIndex?: RelicsIndex;
-    lineGap?: LineGap;
-    lineIndex?: LineIndex;
+    handIndex: HandIndex | null;
+    relicsIndex: RelicsIndex | null;
+    lineIndex: LineIndex | null;
     attackers?: LineIndex[];
     defenders?: LineIndex[];
 }

@@ -13,4 +13,5 @@ const player2: Player = {
     deckId: '59bd26ac-7450-4f60-a0b0-44628a5b28d4',
 };
 const game = new Game(player1, player2);
+game.startGame();
 showGameState(game);

@@ -17,7 +17,7 @@ export enum TopOrBottom {
 
 export enum ActionType {
     PLAY = 'Play',
-    FIGHT = 'Fight',
+    ATTACK = 'Attack',
     HARVEST = 'Harvest',
 }
 
@@ -35,7 +35,6 @@ export enum TurnFlagKey {
 
 export type HandIndex = number;
 export type LineIndex = number;
-export type LineGap = number;
 export type RelicsIndex = number;
 export type ScoredIndex = number;
 export type DeckId = string;
