@@ -99,7 +99,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `InPlay` = In a Line or Relics row
     * `Lowest` (v) = Of the candidates, the ones with the lowest Power (vP) or VP (vV)
     * `My` (M) = Belonging to the active player
-    * `Opponent`/`Opp` (O) = The non-active player
+    * `Enemy` (E) = The non-active player
     * `Optional` (O:) = Optional action
     * `Or` (|) = Can choose one of multiple options
     * `Owner` = The Player using the DeckId that matches the Card being owned

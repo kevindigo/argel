@@ -5,8 +5,8 @@ import { ActionType, CardState } from '../src/types';
 
 describe('getAvailableActions', () => {
     let state: GameState;
-    let activePlayerIndex: number;
-    let oppPlayerIndex: number;
+    let myIndex: number;
+    let enemyIndex: number;
 
     beforeEach(() => {
         state = {
@@ -18,8 +18,8 @@ describe('getAvailableActions', () => {
                 },
             },
         };
-        activePlayerIndex = state.turnState.activePlayerIndex;
-        oppPlayerIndex = 1 - activePlayerIndex;
+        myIndex = state.turnState.activePlayerIndex;
+        enemyIndex = 1 - myIndex;
     });
 
     it('offers no actions if hand and line are empty', () => {
@@ -32,7 +32,7 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
         };
-        state.sides[activePlayerIndex]?.hand.push(vix);
+        state.sides[myIndex]?.hand.push(vix);
         const actions = Array.from(getAvailableActions(state));
         expect(actions.length).toEqual(1);
         expect(actions[0]?.type).toEqual(ActionType.PLAY);
@@ -45,7 +45,7 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         const dormantVix: CardWithState = {
             card: vix,
             state: CardState.DORMANT,
@@ -61,7 +61,7 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         mySide.hand.push(vix);
         mySide.hand.push(vix);
         const actions = Array.from(getAvailableActions(state));
@@ -73,15 +73,15 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         const readyVix: CardWithState = {
             card: vix,
             state: CardState.READY,
         };
         mySide.line.push(readyVix);
-        const oppSide = state.sides[oppPlayerIndex] as Side;
-        oppSide.line.push(readyVix);
-        oppSide.line.push(readyVix);
+        const enemySide = state.sides[enemyIndex] as Side;
+        enemySide.line.push(readyVix);
+        enemySide.line.push(readyVix);
         const actions = Array.from(getAvailableActions(state));
         expect(actions.length).toEqual(2);
     });
@@ -91,7 +91,7 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-099',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         mySide.hand.push(duck);
         mySide.hand.push(duck);
         const actions = Array.from(getAvailableActions(state));
@@ -103,7 +103,7 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-058',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         const dormantHypervator: CardWithState = {
             card: hypervator,
             state: CardState.DORMANT,
@@ -121,7 +121,7 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         const matureVix: CardWithState = {
             card: vix,
             state: CardState.MATURE,
@@ -136,7 +136,7 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-058',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         const matureHypervator: CardWithState = {
             card: hypervator,
             state: CardState.MATURE,
@@ -151,7 +151,7 @@ describe('getAvailableActions', () => {
             cardId: 'OmegaCodex-058',
             deckId: 'bogus',
         };
-        const mySide = state.sides[activePlayerIndex] as Side;
+        const mySide = state.sides[myIndex] as Side;
         mySide.hand.push(hypervator);
         const beforePlaying = Array.from(getAvailableActions(state));
         expect(beforePlaying.length).toEqual(1);

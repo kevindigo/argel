@@ -83,11 +83,11 @@ function getAvailableAttackActions(gameState: GameState): Set<Action> {
             continue;
         }
 
-        const oppSideIndex = game.getOppPlayerIndex();
-        const oppManager = game.sideManagers[oppSideIndex] as SideManager;
+        const enemyIndex = game.getEnemyIndex();
+        const enemyManager = game.sideManagers[enemyIndex] as SideManager;
         for (
             let targetIndex = 0;
-            targetIndex < oppManager.line.length;
+            targetIndex < enemyManager.line.length;
             ++targetIndex
         ) {
             available.add({
