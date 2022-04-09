@@ -7,9 +7,7 @@ import {
     LineGap,
     LineIndex,
     RelicsIndex,
-    SideFlagKey,
     TopOrBottom,
-    TurnFlagKey,
 } from './types';
 
 export interface Player {
@@ -27,6 +25,12 @@ export interface CardWithState {
     state: CardState;
 }
 
+export interface SideFlags {
+    canAttack: boolean;
+    canPlayActions: boolean;
+    isNextCardActive: boolean;
+}
+
 export interface Side {
     player: Player;
     drawPile: Card[];
@@ -35,7 +39,7 @@ export interface Side {
     scored: Card[];
     line: CardWithState[];
     relics: CardWithState[];
-    flags: Map<SideFlagKey, boolean>;
+    flags: SideFlags;
 }
 
 export interface TurnState {
@@ -43,7 +47,7 @@ export interface TurnState {
     handIndexBeingPlayed?: HandIndex;
     queuedAdditionalPlay?: TopOrBottom;
     queuedAttackLineIndex?: LineIndex;
-    flags: Map<TurnFlagKey, boolean>;
+    // ToDo: Add turn flags
 }
 
 export interface GameState {

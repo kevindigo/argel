@@ -55,9 +55,9 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Player` = Identified by their name and DeckId
     * `SetId` = Name of a set (e.g. "Omega Codex")
     * `Side` = A player, and their DrawPile, Discards, Hand, Scored, Line, Relics, and Flags
-        * Flag: `NEXT_CARD_ACTIVE` = The next played card will be Active instead of Dormant
-        * Flag: `CANNOT_PLAY_ACTIONS` = Cannot play Actions this turn
-        * Flag: `CANNOT_ATTACK`= Cannot Attack this turn
+        * Flag: `isNextCardActive` = The next played card will be Active instead of Dormant
+        * Flag: `canPlayActions` = Can play Actions this turn
+        * Flag: `canAttack`= Can Attack this turn
     * `TurnState` = Who is the Active Player, and TurnFlags
         * `QueuedAdditionalPlay` = After this Action, Active Player can Play another Card
         * `QueuedAttackLineIndex` = After this Action, Active Player can Attack with this Creature

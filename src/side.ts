@@ -1,7 +1,5 @@
-import { CardefPool } from './cards';
 import { createDeck, lookupDeckList } from './decks';
-import { CardWithState, Player, Side } from './models';
-import { CardState, CardType, SideFlagKey } from './types';
+import { Player, Side } from './models';
 
 export class SideManager {
     private _side: Side;
@@ -47,10 +45,6 @@ export class SideManager {
     public get line() {
         return this.side.line;
     }
-
-    public getFlag(flagKey: SideFlagKey): boolean {
-        return this._side.flags.get(flagKey) ?? false;
-    }
 }
 
 export function initializeSide(player: Player): SideManager {
@@ -68,36 +62,13 @@ export function initializeSide(player: Player): SideManager {
         discards: [],
         line: [],
         relics: [],
-        flags: new Map<SideFlagKey, boolean>(),
+        flags: {
+            canAttack: false,
+            canPlayActions: false,
+            isNextCardActive: false,
+        },
     };
 
     const manager = new SideManager(side);
-    const pool = new CardefPool();
-
-    // TODO: Shuffle (which will break my tests)
-
-    while (manager.line.length < 2) {
-        const card = manager.drawPile.pop();
-        if (!card) {
-            throw new Error('Drawdeck empty!?');
-        }
-        const cardef = pool.lookup(card.cardId);
-        if (cardef?.type === CardType.CREATURE) {
-            const readyCard: CardWithState = {
-                card,
-                state: CardState.READY,
-            };
-            manager.line.push(readyCard);
-        } else {
-            manager.discards.push(card);
-        }
-    }
-
-    manager.draw(3);
-
-    // Should be at the start of each turn
-    side.flags.set(SideFlagKey.CAN_ATTACK, true);
-    side.flags.set(SideFlagKey.CAN_PLAY_ACTIONS, true);
-
     return manager;
 }
