@@ -1,22 +1,76 @@
 import { getAvailableActions } from '../src/actions';
-import { createInitialGameState, Game } from '../src/game';
-import { Player } from '../src/models';
-
-const sig: Player = {
-    name: 'Sig',
-    deckId: '59bd26ac-7450-4f60-a0b0-44628a5b28d4',
-};
-const marla: Player = {
-    name: 'Marla',
-    deckId: '679a6701-d7c3-494e-becb-04e9178aca30',
-};
+import { Game } from '../src/game';
+import { Card, CardWithState, GameState, Side } from '../src/models';
+import { createEmptySide } from '../src/side';
+import { ActionType, CardState } from '../src/types';
 
 describe('getAvailableActions', () => {
-    it('knows the 10 actions available on the first turn of a normal game', () => {
-        const state = createInitialGameState(sig, marla);
-        const game = new Game(state);
-        game.startGame();
+    let state: GameState;
+    let game: Game;
+    let activePlayerIndex: number;
+    let oppPlayerIndex: number;
+
+    beforeEach(() => {
+        state = {
+            sides: [createEmptySide(), createEmptySide()],
+            turnState: {
+                activePlayerIndex: 0,
+            },
+        };
+        game = new Game(state);
+        activePlayerIndex = state.turnState.activePlayerIndex;
+        oppPlayerIndex = 1 - activePlayerIndex;
+    });
+
+    it('offers no actions if hand and line are empty', () => {
         const actions = getAvailableActions(game);
-        expect(actions.size).toEqual(10);
+        expect(actions.size).toEqual(0);
+    });
+
+    it('offers to play 1 Creature in hand to an empty line', () => {
+        const vix: Card = {
+            cardId: 'OmegaCodex-001',
+            deckId: 'bogus',
+        };
+        state.sides[activePlayerIndex]?.hand.push(vix);
+        const actions = Array.from(getAvailableActions(game));
+        expect(actions.length).toEqual(1);
+        expect(actions[0]?.type).toEqual(ActionType.PLAY);
+        expect(actions[0]?.handIndex).toEqual(0);
+        expect(actions[0]?.lineIndex).toEqual(0);
+    });
+
+    it('offers 2 ways to play 1 Creature in hand to a non-empty line', () => {
+        const vix: Card = {
+            cardId: 'OmegaCodex-001',
+            deckId: 'bogus',
+        };
+        const mySide = state.sides[activePlayerIndex] as Side;
+        const dormantVix: CardWithState = {
+            card: vix,
+            state: CardState.DORMANT,
+        };
+        mySide.line.push(dormantVix);
+        mySide.hand.push(vix);
+        const actions = getAvailableActions(game);
+        expect(actions.size).toEqual(2);
+    });
+
+    it('offers 2 ways to attack with 1 creature against a line of 2', () => {
+        const vix: Card = {
+            cardId: 'OmegaCodex-001',
+            deckId: 'bogus',
+        };
+        const mySide = state.sides[activePlayerIndex] as Side;
+        const readyVix: CardWithState = {
+            card: vix,
+            state: CardState.READY,
+        };
+        mySide.line.push(readyVix);
+        const oppSide = state.sides[oppPlayerIndex] as Side;
+        oppSide.line.push(readyVix);
+        oppSide.line.push(readyVix);
+        const actions = getAvailableActions(game);
+        expect(actions.size).toEqual(2);
     });
 });

@@ -71,3 +71,23 @@ export function createInitialSide(player: Player): Side {
 
     return side;
 }
+
+export function createEmptySide(): Side {
+    return {
+        player: {
+            name: 'n/a',
+            deckId: 'bogus',
+        },
+        discards: [],
+        drawPile: [],
+        flags: {
+            canAttack: true,
+            canPlayActions: true,
+            isNextCardActive: false,
+        },
+        hand: [],
+        line: [],
+        relics: [],
+        scored: [],
+    };
+}

@@ -47,12 +47,14 @@ function getAvailablePlayActions(game: Game): Set<Action> {
                     lineIndex: 0,
                     relicsIndex: null,
                 });
-                available.add({
-                    type: ActionType.PLAY,
-                    handIndex: i,
-                    lineIndex: -1,
-                    relicsIndex: null,
-                });
+                if (manager.line.length > 0) {
+                    available.add({
+                        type: ActionType.PLAY,
+                        handIndex: i,
+                        lineIndex: -1,
+                        relicsIndex: null,
+                    });
+                }
                 break;
             }
             // case CardType.RELIC: {
