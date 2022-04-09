@@ -14,8 +14,8 @@ OmegaCodex	012	Creature	Proud Mama	3	1	Common	B		EL		1		X @M	Bonus: Rotate an en
 OmegaCodex	013	Creature	Taco	3	1	Rare	H		MS		1	H		Bonus: If this card is Harvested, move a card from your score pile to the top of its owner's deck. 
 OmegaCodex	014	Creature	Yearn	4	1	Variant								Skill: Team-Up
 OmegaCodex	015	Creature	Pokets	4	1	Common								Skill: Sneak 9
-OmegaCodex	016	Creature	Sticky Gemma	4	1	Rare	P		EL	V min	1	MS		Play: Move the least valuable enemy Creature to your score pile.
-OmegaCodex	017	Creature	Tiny the Tosser	4	2	Common	B		MS	V max	1	ES		Bonus: Move the most valuable card in your score pile to your opponent's score pile.
+OmegaCodex	016	Creature	Sticky Gemma	4	1	Rare	P		EL	vV	1	MS		Play: Move the least valuable enemy Creature to your score pile.
+OmegaCodex	017	Creature	Tiny the Tosser	4	2	Common	B		MS	^V	1	ES		Bonus: Move the most valuable card in your score pile to your opponent's score pile.
 OmegaCodex	018	Creature	Deep Carl	4	1	Common	P	QP B						Play: Play the bottom card of your deck.
 OmegaCodex	019	Creature	Vile Chap	4	1	Rare	B		AR			D		Bonus: Move all Relics to their owner's discard pile.
 OmegaCodex	020	Creature	Anox	5	1	Variant								Skill: Team-Up
@@ -32,7 +32,7 @@ OmegaCodex	030	Creature	Bamphf	6	1	Common	H	QP						Bonus: If this card is Harve
 OmegaCodex	031	Creature	Vile Bear	6	-2	Rare								Skill: Bear Hug
 OmegaCodex	032	Creature	Bigfoot Carl	6	2	Rare	B		AL	P < 4		D		Bonus: Move Creatures with Power 3 or less to their owner's discard piles.
 OmegaCodex	033	Creature	Turp	7	1	Rare	P	2x(MT > H)	MH		1	D		Play: Draw 2 cards. Discard a card.
-OmegaCodex	034	Creature	The Auditor	7	1	Common	P	R OH	EH	P min	1	ES		Play: Your opponent reveals their hand. Move the least powerful Creature revealed this way to their score pile.
+OmegaCodex	034	Creature	The Auditor	7	1	Common	P	R OH	EH	vP	1	ES		Play: Your opponent reveals their hand. Move the least powerful Creature revealed this way to their score pile.
 OmegaCodex	035	Creature	Yewcha	7	1	Rare								Skill: Bear Hug
 OmegaCodex	036	Creature	Tede Scrapper	7	1	Common	B		ES		1	D		Bonus: Move a card from your opponent's score pile to its owner's discard pile.
 OmegaCodex	037	Creature	Trophy Master	7	2	Common	B	MAY	MS		1	H		Bonus: You may move a card from your score pile to its owner's hand. 
@@ -40,7 +40,7 @@ OmegaCodex	038	Creature	Vanx	7	2	Common	B		MD		1	H		Bonus: Move a card from your
 OmegaCodex	039	Creature	Tujok	7	3	Rare	P	MAY	ES		1	H		Play: You may move a card from your opponent's score pile to its owner's hand. 
 OmegaCodex	040	Creature	Kazoo	8	1	Common	B		ML		1		X @A	Bonus: Rotate a friendly card to Active.
 OmegaCodex	041	Creature	Renegade	8	2	Common								Skill: Bear Hug
-OmegaCodex	042	Creature	Droven Jeb	8	2	Common	B	R MH	MH	P min	1	MS		Bonus: Reveal your hand. Move the least powerful Creature revealed this way to your score pile. 
+OmegaCodex	042	Creature	Droven Jeb	8	2	Common	B	R MH	MH	vP	1	MS		Bonus: Reveal your hand. Move the least powerful Creature revealed this way to your score pile. 
 OmegaCodex	043	Creature	Silent Master	8	3	Rare								Your opponent cannot play Actions.
 OmegaCodex	044	Creature	Rat Smasher	8	2	Common	P		AL	V < 2			CS	Play: Move all Creatures worth 1 VP or less to their controller's score pile. 
 OmegaCodex	045	Creature	Bash	8	1	Common								If this card loses a fight, your opponent discards their hand.
@@ -66,7 +66,7 @@ OmegaCodex	064	Action	Book of the Line		1	Linked	P		AL		1	B		Play: Move a Creatu
 OmegaCodex	065	Action	Vault Tunnel		1	Common	P		EL		1	MS		Play: Move an enemy Relic to your score pile.
 OmegaCodex	066	Action	Dead Drop		1	Common	P		MH		1	ES		Play: Move a card from your hand to your opponent's score pile.
 OmegaCodex	067	Action	Yoink		1	Common	P		ES		1	MS		Play: Move a card from your opponent's score pile to your score pile. 
-OmegaCodex	068	Action	Gentle Nudge		1	Rare	P	MD > T						Play: Shuffle your discard pile and place it on top of your deck. 
+OmegaCodex	068	Action	Gentle Nudge		1	Rare	P	&MD					MD > T	Play: Shuffle your discard pile and place it on top of your deck. 
 OmegaCodex	069	Action	Not Yet		1	Rare	P		ES		1	H		Play: Move a card from your opponent's score pile to its owner's hand. 
 OmegaCodex	070	Action	Two Birds		1	Common	P		ML / EL		1 / 1	OS		Play: Move an enemy card to its owner's score pile. Move a friendly card to its owner's score pile.
 OmegaCodex	071	Action	Recall		1	Common	P		EL		1	H		Play: Move an enemy Creature to its owner's hand.
@@ -86,14 +86,14 @@ OmegaCodex	084	Action	Roll the Dice		1	Common	P		AL	V < 2		CS		Play: Move all Cr
 OmegaCodex	085	Action	What's This?		1	Common	P	OT > X					VX < 0 ? X > ES	Play: Move the top card of your opponent's deck to their discard pile. If it is worth less than 0 VP, move it to your opponent's score pile.
 OmegaCodex	086	Action	Overcharge		1	Common	P	2x(MT > H)						Play: Draw 2 cards. 
 OmegaCodex	087	Action	I Don't Like These		1	Rare	P		MH		2		#X > 1 ? 5x(MT > H)	Play: Discard two cards. If you do, draw 5 cards.
-OmegaCodex	088	Action	A Little Off the Top		1	Common	P		MS (ES)	V max		D		Play: Move the most valuable card from each score pile to its owner's discard pile.
+OmegaCodex	088	Action	A Little Off the Top		1	Common	P		MS (ES)	^V		D		Play: Move the most valuable card from each score pile to its owner's discard pile.
 OmegaCodex	089	Action	Cheap Shot		1	Common	P		EH		1	D		Play: Your opponent discards a random card from their hand.
 OmegaCodex	090	Action	Jump Start		0	Common	P	SET NCA						Play: The next card you play enters play Active.
 OmegaCodex	091	Action	Lullaby		-1	Rare	P	SET CNF						Play: Until the start of your next turn, enemy Creatures cannot be used to fight.
 OmegaCodex	092	Action	Adult Swim		1	Common	P		EL&ER	V=1	1	MS		Play: If your opponent controls a card worth 1 VP, move it to your score pile. 
 OmegaCodex	093	Action	Reforge		1	Rare	P		MD		1	H		Play: Move a Creature from your discard pile to its owner's hand.
 OmegaCodex	094	Action	War Siren		1	Common	P		ML	@D	1		X @A, Q FX	Play: Rotate a Dormant friendly Creature to Active and use the Creature to fight.
-OmegaCodex	095	Action	Redistributed Wealth		0	Rare	P, OV > MV		ES	V > 0, V min	1	MS		Play: If your opponent has more points in their score pile, move the card with the lowest positive VP Value from their score pile to your score pile.
+OmegaCodex	095	Action	Redistributed Wealth		0	Rare	P, OV > MV		ES	V > 0, vV	1	MS		Play: If your opponent has more points in their score pile, move the card with the lowest positive VP Value from their score pile to your score pile.
 OmegaCodex	096	Action	Calm Down		1	Rare	P	SET CPA						Play: During your opponent's next turn, they cannot play Actions.
 OmegaCodex	097	Action	Pinpoint		1	Common	P	NUM, R EH	EH	V = NUM		D		Play: Choose a number. Your opponent reveals their hand and moves any cards revealed this way with a VP Value equal to that number to their discard pile.
 OmegaCodex	098	Action	Triple Shot		1	Rare	P	MAY:	AL		3	H		Play: Move up to three Creatures to their owner's hands.
