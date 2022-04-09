@@ -19,6 +19,7 @@ export enum ActionType {
     PLAY = 'Play',
     ATTACK = 'Attack',
     HARVEST = 'Harvest',
+    DISCARD = 'Discard',
 }
 
 export enum SideFlagKey {

@@ -21,6 +21,9 @@ export function createInitialGameState(
 
     const turnState: TurnState = {
         activePlayerIndex: 0,
+        turnFlags: {
+            canDiscard: false,
+        },
     };
 
     const state: GameState = {

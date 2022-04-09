@@ -144,6 +144,26 @@ function getAvailableHarvestActions(game: Game): Set<Action> {
     return available;
 }
 
+function getAvailableDiscardActions(game: Game): Set<Action> {
+    const available = new Set<Action>();
+
+    const manager = getActiveSideManager(game);
+    if (!game.state.turnState.turnFlags.canDiscard) {
+        return available;
+    }
+
+    for (let i = 0; i < manager.hand.length; ++i) {
+        available.add({
+            type: ActionType.DISCARD,
+            handIndex: i,
+            lineIndex: null,
+            relicsIndex: null,
+        });
+    }
+
+    return available;
+}
+
 export function getAvailableActions(game: Game): Set<Action> {
     const available = new Set<Action>();
 
@@ -162,7 +182,10 @@ export function getAvailableActions(game: Game): Set<Action> {
         available.add(action);
     });
 
-    // if can discard, each card in hand can be discarded
+    const discardActions = getAvailableDiscardActions(game);
+    discardActions.forEach((action) => {
+        available.add(action);
+    });
 
     return available;
 }

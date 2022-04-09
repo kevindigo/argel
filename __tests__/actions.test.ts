@@ -15,6 +15,9 @@ describe('getAvailableActions', () => {
             sides: [createEmptySide(), createEmptySide()],
             turnState: {
                 activePlayerIndex: 0,
+                turnFlags: {
+                    canDiscard: false,
+                },
             },
         };
         game = new Game(state);
@@ -144,5 +147,20 @@ describe('getAvailableActions', () => {
         mySide.relics.push(matureHypervator);
         const actions = Array.from(getAvailableActions(game));
         expect(actions.length).toEqual(1);
+    });
+
+    it('offers discard if a card has been played', () => {
+        const hypervator: Card = {
+            cardId: 'OmegaCodex-058',
+            deckId: 'bogus',
+        };
+        const mySide = state.sides[activePlayerIndex] as Side;
+        mySide.hand.push(hypervator);
+        const beforePlaying = Array.from(getAvailableActions(game));
+        expect(beforePlaying.length).toEqual(1);
+
+        state.turnState.turnFlags.canDiscard = true;
+        const afterPlaying = Array.from(getAvailableActions(game));
+        expect(afterPlaying.length).toEqual(2);
     });
 });

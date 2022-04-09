@@ -41,12 +41,16 @@ export interface Side {
     flags: SideFlags;
 }
 
+export interface TurnFlags {
+    canDiscard: boolean;
+}
+
 export interface TurnState {
     activePlayerIndex: number;
     handIndexBeingPlayed?: HandIndex;
     queuedAdditionalPlay?: TopOrBottom;
     queuedAttackLineIndex?: LineIndex;
-    // ToDo: Add turn flags
+    turnFlags: TurnFlags;
 }
 
 export interface GameState {
