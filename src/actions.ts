@@ -4,11 +4,11 @@ import { Action, Card, CardWithState, GameState } from './models';
 import { SideManager } from './side';
 import { ActionType, CardId, CardState, CardType } from './types';
 
-function getActiveSideManager(game: Game): SideManager {
+function getMySideManager(game: Game): SideManager {
     const myIndex = game.getMyIndex();
-    const activeSideManager = game.sideManagers[myIndex] as SideManager;
+    const mySideManager = game.sideManagers[myIndex] as SideManager;
 
-    return activeSideManager;
+    return mySideManager;
 }
 
 function getCardef(pool: CardefPool, cardId: CardId): Cardef {
@@ -20,7 +20,7 @@ function getAvailablePlayActions(gameState: GameState): Set<Action> {
     const available = new Set<Action>();
 
     const game = new Game(gameState);
-    const manager = getActiveSideManager(game);
+    const manager = getMySideManager(game);
     for (let i = 0; i < manager.hand.length; ++i) {
         const card = manager.hand[i] as Card;
         const cardef = getCardef(game.pool, card.cardId);
@@ -70,7 +70,7 @@ function getAvailableAttackActions(gameState: GameState): Set<Action> {
     const available = new Set<Action>();
 
     const game = new Game(gameState);
-    const manager = getActiveSideManager(game);
+    const manager = getMySideManager(game);
     for (
         let attackerIndex = 0;
         attackerIndex < manager.line.length;
@@ -109,7 +109,7 @@ function getAvailableHarvestActions(gameState: GameState): Set<Action> {
     const available = new Set<Action>();
 
     const game = new Game(gameState);
-    const manager = getActiveSideManager(game);
+    const manager = getMySideManager(game);
     for (let lineIndex = 0; lineIndex < manager.line.length; ++lineIndex) {
         const cardWithState = manager.line[lineIndex] as CardWithState;
         if (cardWithState.state !== CardState.MATURE) {
@@ -149,7 +149,7 @@ function getAvailableDiscardActions(gameState: GameState): Set<Action> {
     const available = new Set<Action>();
 
     const game = new Game(gameState);
-    const manager = getActiveSideManager(game);
+    const manager = getMySideManager(game);
     if (!gameState.turnState.turnFlags.canDiscard) {
         return available;
     }
