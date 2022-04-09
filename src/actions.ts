@@ -1,24 +1,20 @@
 import { Cardef, CardefPool } from './cards';
 import { Game } from './game';
-import { Action } from './models';
+import { Action, Card, CardWithState } from './models';
 import { SideManager } from './side';
 import { ActionType, CardId, CardState, CardType } from './types';
 
 function getActiveSideManager(game: Game): SideManager {
     const activePlayerIndex = game.state.turnState.activePlayerIndex;
-    const activeSideManager = game.sideManagers[activePlayerIndex];
-    if (!activeSideManager) {
-        throw new Error('No active player???');
-    }
+    const activeSideManager = game.sideManagers[
+        activePlayerIndex
+    ] as SideManager;
 
     return activeSideManager;
 }
 
 function getCardef(pool: CardefPool, cardId: CardId): Cardef {
-    const cardef = pool.lookup(cardId);
-    if (!cardef) {
-        throw new Error(`Card not in pool: ${cardId}`);
-    }
+    const cardef = pool.lookup(cardId) as Cardef;
     return cardef;
 }
 
@@ -27,10 +23,7 @@ function getAvailablePlayActions(game: Game): Set<Action> {
 
     const manager = getActiveSideManager(game);
     for (let i = 0; i < manager.hand.length; ++i) {
-        const card = manager.hand[i];
-        if (!card) {
-            throw new Error(`Couldn't find card index ${i} in hand`);
-        }
+        const card = manager.hand[i] as Card;
         const cardef = getCardef(game.pool, card.cardId);
         switch (cardef.type) {
             // case CardType.ACTION: {
@@ -79,12 +72,7 @@ function getAvailableAttackActions(game: Game): Set<Action> {
         attackerIndex < manager.line.length;
         ++attackerIndex
     ) {
-        const cardWithState = manager.line[attackerIndex];
-        if (!cardWithState) {
-            throw new Error(
-                `Couldn't find card index ${attackerIndex} in my line`
-            );
-        }
+        const cardWithState = manager.line[attackerIndex] as CardWithState;
         const cardef = getCardef(game.pool, cardWithState.card.cardId);
         if (cardef.type !== CardType.CREATURE) {
             continue;
@@ -94,10 +82,7 @@ function getAvailableAttackActions(game: Game): Set<Action> {
         }
 
         const oppSideIndex = 1 - game.state.turnState.activePlayerIndex;
-        const oppManager = game.sideManagers[oppSideIndex];
-        if (!oppManager) {
-            throw new Error(`Couldn't find side manager[${oppSideIndex}]`);
-        }
+        const oppManager = game.sideManagers[oppSideIndex] as SideManager;
         for (
             let targetIndex = 0;
             targetIndex < oppManager.line.length;
