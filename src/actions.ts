@@ -26,13 +26,15 @@ function getAvailablePlayActions(game: Game): Set<Action> {
         const card = manager.hand[i] as Card;
         const cardef = getCardef(game.pool, card.cardId);
         switch (cardef.type) {
-            // case CardType.ACTION: {
-            //     available.add({
-            //         type: ActionType.PLAY,
-            //         handIndex: i,
-            //     });
-            //     break;
-            // }
+            case CardType.ACTION: {
+                available.add({
+                    type: ActionType.PLAY,
+                    handIndex: i,
+                    lineIndex: null,
+                    relicsIndex: null,
+                });
+                break;
+            }
             case CardType.CREATURE: {
                 available.add({
                     type: ActionType.PLAY,

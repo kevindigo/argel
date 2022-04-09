@@ -85,4 +85,16 @@ describe('getAvailableActions', () => {
         const actions = getAvailableActions(game);
         expect(actions.size).toEqual(2);
     });
+
+    it('offers to play 2 Actions in hand', () => {
+        const duck: Card = {
+            cardId: 'OmegaCodex-099',
+            deckId: 'bogus',
+        };
+        const mySide = state.sides[activePlayerIndex] as Side;
+        mySide.hand.push(duck);
+        mySide.hand.push(duck);
+        const actions = getAvailableActions(game);
+        expect(actions.size).toEqual(2);
+    });
 });
