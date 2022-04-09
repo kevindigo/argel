@@ -37,7 +37,7 @@ describe('getAvailableActions', () => {
         expect(actions.length).toEqual(1);
         expect(actions[0]?.type).toEqual(ActionType.PLAY);
         expect(actions[0]?.handIndex).toEqual(0);
-        expect(actions[0]?.lineIndex).toEqual(0);
+        expect(actions[0]?.lineIndex).toEqual(-1);
     });
 
     it('offers 2 ways to play 1 Creature in hand to a non-empty line', () => {
@@ -52,8 +52,8 @@ describe('getAvailableActions', () => {
         };
         mySide.line.push(dormantVix);
         mySide.hand.push(vix);
-        const actions = getAvailableActions(game);
-        expect(actions.size).toEqual(2);
+        const actions = Array.from(getAvailableActions(game));
+        expect(actions.length).toEqual(2);
     });
 
     it('offers to play 2 Creatures in hand to an empty line', () => {
@@ -64,8 +64,8 @@ describe('getAvailableActions', () => {
         const mySide = state.sides[activePlayerIndex] as Side;
         mySide.hand.push(vix);
         mySide.hand.push(vix);
-        const actions = getAvailableActions(game);
-        expect(actions.size).toEqual(2);
+        const actions = Array.from(getAvailableActions(game));
+        expect(actions.length).toEqual(2);
     });
 
     it('offers 2 ways to attack with 1 creature against a line of 2', () => {
@@ -82,8 +82,8 @@ describe('getAvailableActions', () => {
         const oppSide = state.sides[oppPlayerIndex] as Side;
         oppSide.line.push(readyVix);
         oppSide.line.push(readyVix);
-        const actions = getAvailableActions(game);
-        expect(actions.size).toEqual(2);
+        const actions = Array.from(getAvailableActions(game));
+        expect(actions.length).toEqual(2);
     });
 
     it('offers to play 2 Actions in hand', () => {
@@ -94,7 +94,25 @@ describe('getAvailableActions', () => {
         const mySide = state.sides[activePlayerIndex] as Side;
         mySide.hand.push(duck);
         mySide.hand.push(duck);
-        const actions = getAvailableActions(game);
-        expect(actions.size).toEqual(2);
+        const actions = Array.from(getAvailableActions(game));
+        expect(actions.length).toEqual(2);
+    });
+
+    it('offers to play 2 Relics in hand to a non-empty Relics', () => {
+        const hypervator: Card = {
+            cardId: 'OmegaCodex-058',
+            deckId: 'bogus',
+        };
+        const mySide = state.sides[activePlayerIndex] as Side;
+        const dormantHypervator: CardWithState = {
+            card: hypervator,
+            state: CardState.DORMANT,
+        };
+        mySide.relics.push(dormantHypervator);
+        mySide.hand.push(hypervator);
+        mySide.hand.push(hypervator);
+        const actions = Array.from(getAvailableActions(game));
+        expect(actions.length).toEqual(2);
+        expect(actions[0]?.relicsIndex).toEqual(-1);
     });
 });

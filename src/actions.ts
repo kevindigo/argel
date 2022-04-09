@@ -39,26 +39,28 @@ function getAvailablePlayActions(game: Game): Set<Action> {
                 available.add({
                     type: ActionType.PLAY,
                     handIndex: i,
-                    lineIndex: 0,
+                    lineIndex: -1,
                     relicsIndex: null,
                 });
                 if (manager.line.length > 0) {
                     available.add({
                         type: ActionType.PLAY,
                         handIndex: i,
-                        lineIndex: -1,
+                        lineIndex: 0,
                         relicsIndex: null,
                     });
                 }
                 break;
             }
-            // case CardType.RELIC: {
-            //     available.add({
-            //         type: ActionType.PLAY,
-            //         handIndex: i,
-            //     });
-            //     break;
-            // }
+            case CardType.RELIC: {
+                available.add({
+                    type: ActionType.PLAY,
+                    handIndex: i,
+                    lineIndex: null,
+                    relicsIndex: -1,
+                });
+                break;
+            }
         }
     }
 
