@@ -46,7 +46,7 @@ export interface TurnFlags {
 }
 
 export interface TurnState {
-    activePlayerIndex: number;
+    myIndex: number;
     handIndexBeingPlayed?: HandIndex;
     queuedAdditionalPlay?: TopOrBottom;
     queuedAttackLineIndex?: LineIndex;

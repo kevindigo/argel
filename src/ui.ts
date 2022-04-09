@@ -63,10 +63,8 @@ export function showGameState(game: Game): void {
         console.log(`Hand: ${handCardNames.join(', ')}`);
         console.log();
     });
-    const activePlayerIndex = game.getActivePlayerIndex();
-    console.log(
-        `Active player: ${sideManagers[activePlayerIndex]?.playerName()}`
-    );
+    const myIndex = game.getMyIndex();
+    console.log(`Active player: ${sideManagers[myIndex]?.playerName()}`);
     const availableActions = game.getCopyOfStateWithOptions().options || [];
     availableActions.forEach((action) => {
         console.log(getActionString(action));

@@ -5,10 +5,8 @@ import { SideManager } from './side';
 import { ActionType, CardId, CardState, CardType } from './types';
 
 function getActiveSideManager(game: Game): SideManager {
-    const activePlayerIndex = game.getActivePlayerIndex();
-    const activeSideManager = game.sideManagers[
-        activePlayerIndex
-    ] as SideManager;
+    const myIndex = game.getMyIndex();
+    const activeSideManager = game.sideManagers[myIndex] as SideManager;
 
     return activeSideManager;
 }

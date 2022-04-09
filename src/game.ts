@@ -21,7 +21,7 @@ export function createInitialGameState(
     ];
 
     const turnState: TurnState = {
-        activePlayerIndex: 0,
+        myIndex: 0,
         turnFlags: {
             canDiscard: false,
         },
@@ -64,12 +64,12 @@ export class Game {
         });
     }
 
-    public getActivePlayerIndex(): number {
-        return this._state.turnState.activePlayerIndex;
+    public getMyIndex(): number {
+        return this._state.turnState.myIndex;
     }
 
     public getEnemyIndex(): number {
-        return 1 - this.getActivePlayerIndex();
+        return 1 - this.getMyIndex();
     }
 
     private startGameForSide(manager: SideManager): void {

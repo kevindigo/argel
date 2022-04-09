@@ -12,13 +12,13 @@ describe('getAvailableActions', () => {
         state = {
             sides: [createEmptySide(), createEmptySide()],
             turnState: {
-                activePlayerIndex: 0,
+                myIndex: 0,
                 turnFlags: {
                     canDiscard: false,
                 },
             },
         };
-        myIndex = state.turnState.activePlayerIndex;
+        myIndex = state.turnState.myIndex;
         enemyIndex = 1 - myIndex;
     });
 
