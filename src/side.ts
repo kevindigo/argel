@@ -47,7 +47,7 @@ export class SideManager {
     }
 }
 
-export function initializeSide(player: Player): SideManager {
+export function createInitialSide(player: Player): Side {
     const deckList = lookupDeckList(player.deckId);
     if (!deckList) {
         throw new Error('Sample deck not found!?');
@@ -69,6 +69,5 @@ export function initializeSide(player: Player): SideManager {
         },
     };
 
-    const manager = new SideManager(side);
-    return manager;
+    return side;
 }

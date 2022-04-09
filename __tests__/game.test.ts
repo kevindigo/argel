@@ -1,4 +1,4 @@
-import { Game } from '../src/game';
+import { createInitialGameState, Game } from '../src/game';
 import { Player } from '../src/models';
 
 const sig: Player = {
@@ -10,21 +10,21 @@ const marla: Player = {
     deckId: '679a6701-d7c3-494e-becb-04e9178aca30',
 };
 
-describe('A Game', () => {
-    it('can be constructed', () => {
-        const players = [sig, marla];
-        const game = new Game(sig, marla);
-        const state = game.state;
-        expect(state.turnState.activePlayerIndex).toEqual(0);
+describe('createInitialGameState', () => {
+    it('works', () => {
+        const state = createInitialGameState(sig, marla);
         const statePlayers = state.sides.map((side) => {
             return side.player;
         });
-        expect(statePlayers).toEqual(players);
+        expect(statePlayers).toEqual([sig, marla]);
     });
+});
 
+describe('A Game', () => {
     it('can be started', () => {
-        const game = new Game(sig, marla);
-        const state = game.startGame();
+        const state = createInitialGameState(sig, marla);
+        const game = new Game(state);
+        game.startGame();
         state.sides.forEach((side) => {
             expect(side.line.length).toEqual(2);
             expect(side.hand.length).toEqual(3);

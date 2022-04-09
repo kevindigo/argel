@@ -1,5 +1,5 @@
 import { getAvailableActions } from '../src/actions';
-import { Game } from '../src/game';
+import { createInitialGameState, Game } from '../src/game';
 import { Player } from '../src/models';
 
 const sig: Player = {
@@ -13,7 +13,8 @@ const marla: Player = {
 
 describe('getAvailableActions', () => {
     it('knows the 10 actions available on the first turn of a normal game', () => {
-        const game = new Game(sig, marla);
+        const state = createInitialGameState(sig, marla);
+        const game = new Game(state);
         game.startGame();
         const actions = getAvailableActions(game);
         expect(actions.size).toEqual(10);
