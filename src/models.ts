@@ -3,9 +3,7 @@ import {
     CardId,
     CardState,
     DeckId,
-    FlagKey,
     HandIndex,
-    LineGap,
     LineIndex,
     RelicsIndex,
     TopOrBottom,
@@ -26,6 +24,12 @@ export interface CardWithState {
     state: CardState;
 }
 
+export interface SideFlags {
+    canAttack: boolean;
+    canPlayActions: boolean;
+    isNextCardActive: boolean;
+}
+
 export interface Side {
     player: Player;
     drawPile: Card[];
@@ -34,6 +38,11 @@ export interface Side {
     scored: Card[];
     line: CardWithState[];
     relics: CardWithState[];
+    flags: SideFlags;
+}
+
+export interface TurnFlags {
+    canDiscard: boolean;
 }
 
 export interface TurnState {
@@ -41,7 +50,7 @@ export interface TurnState {
     handIndexBeingPlayed?: HandIndex;
     queuedAdditionalPlay?: TopOrBottom;
     queuedAttackLineIndex?: LineIndex;
-    flags: Map<FlagKey, boolean>;
+    turnFlags: TurnFlags;
 }
 
 export interface GameState {
@@ -51,10 +60,9 @@ export interface GameState {
 
 export interface Action {
     type: ActionType;
-    handIndex?: HandIndex;
-    relicsIndex?: RelicsIndex;
-    lineGap?: LineGap;
-    lineIndex?: LineIndex;
+    handIndex: HandIndex | null;
+    relicsIndex: RelicsIndex | null;
+    lineIndex: LineIndex | null;
     attackers?: LineIndex[];
     defenders?: LineIndex[];
 }

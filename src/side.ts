@@ -1,7 +1,5 @@
-import { CardefPool } from './cards';
 import { createDeck, lookupDeckList } from './decks';
-import { CardWithState, Player, Side } from './models';
-import { CardState, CardType } from './types';
+import { Player, Side } from './models';
 
 export class SideManager {
     private _side: Side;
@@ -47,9 +45,13 @@ export class SideManager {
     public get line() {
         return this.side.line;
     }
+
+    public get relics() {
+        return this.side.relics;
+    }
 }
 
-export function initializeSide(player: Player): SideManager {
+export function createInitialSide(player: Player): Side {
     const deckList = lookupDeckList(player.deckId);
     if (!deckList) {
         throw new Error('Sample deck not found!?');
@@ -64,31 +66,32 @@ export function initializeSide(player: Player): SideManager {
         discards: [],
         line: [],
         relics: [],
+        flags: {
+            canAttack: false,
+            canPlayActions: false,
+            isNextCardActive: false,
+        },
     };
 
-    const manager = new SideManager(side);
-    const pool = new CardefPool();
+    return side;
+}
 
-    // TODO: Shuffle (which will break my tests)
-
-    while (manager.line.length < 2) {
-        const card = manager.drawPile.pop();
-        if (!card) {
-            throw new Error('Drawdeck empty!?');
-        }
-        const cardef = pool.lookup(card.cardId);
-        if (cardef?.type === CardType.CREATURE) {
-            const readyCard: CardWithState = {
-                card,
-                state: CardState.READY,
-            };
-            manager.line.push(readyCard);
-        } else {
-            manager.discards.push(card);
-        }
-    }
-
-    manager.draw(3);
-
-    return manager;
+export function createEmptySide(): Side {
+    return {
+        player: {
+            name: 'n/a',
+            deckId: 'bogus',
+        },
+        discards: [],
+        drawPile: [],
+        flags: {
+            canAttack: true,
+            canPlayActions: true,
+            isNextCardActive: false,
+        },
+        hand: [],
+        line: [],
+        relics: [],
+        scored: [],
+    };
 }

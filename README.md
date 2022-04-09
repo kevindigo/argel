@@ -55,9 +55,9 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Player` = Identified by their name and DeckId
     * `SetId` = Name of a set (e.g. "Omega Codex")
     * `Side` = A player, and their DrawPile, Discards, Hand, Scored, Line, Relics, and Flags
-        * Flag: `NEXT_CARD_ACTIVE` = The next played card will be Active instead of Dormant
-        * Flag: `CANNOT_PLAY_ACTIONS` = Cannot play Actions this turn
-        * Flag: `CANNOT_ATTACK`= Cannot Attack this turn
+        * Flag: `isNextCardActive` = The next played card will be Active instead of Dormant
+        * Flag: `canPlayActions` = Can play Actions this turn
+        * Flag: `canAttack`= Can Attack this turn
     * `TurnState` = Who is the Active Player, and TurnFlags
         * `QueuedAdditionalPlay` = After this Action, Active Player can Play another Card
         * `QueuedAttackLineIndex` = After this Action, Active Player can Attack with this Creature
@@ -81,7 +81,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Draw` = Move a Card from a DrawPile to that Side's Hand
     * `EndTurn` (.) = Immediately end turn, without drawing or rotating
     * `Harvest` = Move a Mature card to Discards
-    * `Play` = Move a Card from Hand to Line
+    * `Play` = Move a Card from Hand to Line (position -1 means the right end)
     * `Queue` (Q) = Queue a Play or Attack for after this Action
     * `Reveal` (%) = Make a current hand visible to the other Player
     * `Rotate` (@) = Change the orientation/state of an in-play Card
