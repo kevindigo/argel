@@ -64,7 +64,7 @@ export function showGameState(game: Game): void {
         console.log(`Hand: ${handCardNames.join(', ')}`);
         console.log();
     });
-    const activePlayerIndex = game.state.turnState.activePlayerIndex;
+    const activePlayerIndex = game.getActivePlayerIndex();
     console.log(
         `Active player: ${sideManagers[activePlayerIndex]?.playerName()}`
     );

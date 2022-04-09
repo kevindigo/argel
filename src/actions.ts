@@ -5,7 +5,7 @@ import { SideManager } from './side';
 import { ActionType, CardId, CardState, CardType } from './types';
 
 function getActiveSideManager(game: Game): SideManager {
-    const activePlayerIndex = game.state.turnState.activePlayerIndex;
+    const activePlayerIndex = game.getActivePlayerIndex();
     const activeSideManager = game.sideManagers[
         activePlayerIndex
     ] as SideManager;
@@ -81,7 +81,7 @@ function getAvailableAttackActions(game: Game): Set<Action> {
             continue;
         }
 
-        const oppSideIndex = 1 - game.state.turnState.activePlayerIndex;
+        const oppSideIndex = game.getOppPlayerIndex();
         const oppManager = game.sideManagers[oppSideIndex] as SideManager;
         for (
             let targetIndex = 0;
@@ -148,7 +148,7 @@ function getAvailableDiscardActions(game: Game): Set<Action> {
     const available = new Set<Action>();
 
     const manager = getActiveSideManager(game);
-    if (!game.state.turnState.turnFlags.canDiscard) {
+    if (!game.getCopyOfStateWithOptions().turnState.turnFlags.canDiscard) {
         return available;
     }
 

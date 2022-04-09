@@ -51,16 +51,22 @@ export class Game {
         this.pool = new CardefPool();
     }
 
-    public get state(): GameState {
+    public getCopyOfStateWithOptions(): GameState {
         return JSON.parse(JSON.stringify(this._state));
     }
 
-    public startGame(): GameState {
+    public startGame(): void {
         this.sideManagers.forEach((manager) => {
             this.startGameForSide(manager);
         });
+    }
 
-        return this.state;
+    public getActivePlayerIndex(): number {
+        return this._state.turnState.activePlayerIndex;
+    }
+
+    public getOppPlayerIndex(): number {
+        return 1 - this.getActivePlayerIndex();
     }
 
     private startGameForSide(manager: SideManager): void {
