@@ -1,6 +1,6 @@
-import { CardefPool } from '../src/cards';
 import { AvailableDeedsGenerator } from '../src/deeds';
 import { Card, CardWithState, GameState, Side } from '../src/models';
+import { CardefPool } from '../src/pool';
 import { createEmptySide } from '../src/side';
 import { StateManager } from '../src/state';
 import { DeedType, CardState } from '../src/types';

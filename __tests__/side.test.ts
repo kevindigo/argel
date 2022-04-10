@@ -1,4 +1,4 @@
-import { CardefPool } from '../src/cards';
+import { CardefPool } from '../src/pool';
 import { createInitialSide, SideManager } from '../src/side';
 import { CardState, CardType } from '../src/types';
 

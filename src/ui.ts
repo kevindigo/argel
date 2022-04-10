@@ -1,4 +1,4 @@
-import { CardefPool } from './cards';
+import { CardefPool } from '../src/pool';
 import { lookupDeckList } from './decks';
 import { Game } from './game';
 import { Deed } from './models';

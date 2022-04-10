@@ -1,4 +1,4 @@
-import { CardefPool } from './cards';
+import { CardefPool } from './pool';
 import { AvailableDeedsGenerator } from './deeds';
 import {
     Card,

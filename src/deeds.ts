@@ -1,5 +1,6 @@
-import { Cardef, CardefPool } from './cards';
+import { Cardef } from './cards';
 import { Deed, Card, CardWithState } from './models';
+import { CardefPool } from './pool';
 import { SideManager } from './side';
 import { StateManager } from './state';
 import { DeedType, CardId, CardState, CardType } from './types';

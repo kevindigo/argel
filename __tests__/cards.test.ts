@@ -1,4 +1,4 @@
-import { CardefPool } from '../src/cards';
+import { CardefPool } from '../src/pool';
 
 describe('The cardef pool', () => {
     it('Can be loaded', () => {
