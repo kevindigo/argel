@@ -13,7 +13,6 @@ const marla: Player = {
 describe('A Game', () => {
     it('can be started', () => {
         const game = new Game(sig, marla);
-        game.startGame();
         game.getCopyOfStateWithOptions().sides.forEach((side) => {
             expect(side.line.length).toEqual(2);
             expect(side.hand.length).toEqual(3);

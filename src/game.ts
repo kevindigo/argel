@@ -24,6 +24,7 @@ export class Game {
             stateManager,
             this.pool
         );
+        this.startGame();
     }
 
     public getRawState(): State {
@@ -38,7 +39,7 @@ export class Game {
         return copy;
     }
 
-    public startGame(): void {
+    private startGame(): void {
         this.sideManagers.forEach((manager) => {
             this.startGameForSide(manager);
         });

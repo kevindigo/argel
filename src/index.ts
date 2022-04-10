@@ -14,5 +14,4 @@ const player2: Player = {
 };
 
 const game = new Game(player1, player2);
-game.startGame();
 showState(game.getCopyOfStateWithOptions());
