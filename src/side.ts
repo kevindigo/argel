@@ -49,6 +49,10 @@ export class SideManager {
     public get arsenal() {
         return this.side.arsenal;
     }
+
+    public get scored() {
+        return this.side.scored;
+    }
 }
 
 export function createInitialSide(player: Player): Side {
