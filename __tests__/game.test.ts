@@ -1,4 +1,4 @@
-import { createInitialGameState, Game } from '../src/game';
+import { createInitialState, Game } from '../src/game';
 import { Player } from '../src/models';
 
 const sig: Player = {
@@ -10,9 +10,9 @@ const marla: Player = {
     deckId: '679a6701-d7c3-494e-becb-04e9178aca30',
 };
 
-describe('createInitialGameState', () => {
+describe('createInitialState', () => {
     it('works', () => {
-        const state = createInitialGameState(sig, marla);
+        const state = createInitialState(sig, marla);
         const statePlayers = state.sides.map((side) => {
             return side.player;
         });
@@ -22,7 +22,7 @@ describe('createInitialGameState', () => {
 
 describe('A Game', () => {
     it('can be started', () => {
-        const state = createInitialGameState(sig, marla);
+        const state = createInitialState(sig, marla);
         const game = new Game(state);
         game.startGame();
         state.sides.forEach((side) => {

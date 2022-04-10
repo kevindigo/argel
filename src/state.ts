@@ -1,10 +1,10 @@
-import { GameState, Side } from './models';
+import { State, Side } from './models';
 import { SideManager } from './side';
 
 export class StateManager {
-    private state: GameState;
+    private state: State;
 
-    public constructor(state: GameState) {
+    public constructor(state: State) {
         this.state = state;
     }
 

@@ -46,7 +46,7 @@ export function showDeck(deckId: DeckId): void {
     });
 }
 
-export function showGameState(game: Game): void {
+export function showState(game: Game): void {
     const sideManagers = game.sideManagers;
     sideManagers.forEach((sm) => {
         const deckId = sm.side.player.deckId;

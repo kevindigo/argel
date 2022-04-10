@@ -62,7 +62,7 @@ export interface Deed {
     defenders?: LineIndex[];
 }
 
-export interface GameState {
+export interface State {
     sides: Side[];
     turnState: TurnState;
     options?: Deed[];

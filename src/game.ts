@@ -1,21 +1,11 @@
 import { CardefPool } from './pool';
 import { AvailableDeedsGenerator } from './deeds';
-import {
-    Card,
-    CardWithState,
-    GameState,
-    Player,
-    Side,
-    TurnState,
-} from './models';
+import { Card, CardWithState, State, Player, Side, TurnState } from './models';
 import { createInitialSide, SideManager } from './side';
 import { StateManager } from './state';
 import { CardState, CardType } from './types';
 
-export function createInitialGameState(
-    player1: Player,
-    player2: Player
-): GameState {
+export function createInitialState(player1: Player, player2: Player): State {
     const sides: Side[] = [
         createInitialSide(player1),
         createInitialSide(player2),
@@ -28,7 +18,7 @@ export function createInitialGameState(
         },
     };
 
-    const state: GameState = {
+    const state: State = {
         sides,
         turnState,
     };
@@ -40,10 +30,10 @@ export class Game {
     public readonly players: Player[];
     public readonly sideManagers: SideManager[];
     public readonly pool: CardefPool;
-    private _state: GameState;
+    private _state: State;
     private availableDeedsGetter: AvailableDeedsGenerator;
 
-    public constructor(state: GameState) {
+    public constructor(state: State) {
         this._state = state;
         this.players = state.sides.map((side) => {
             return side.player;
@@ -59,12 +49,12 @@ export class Game {
         );
     }
 
-    public getRawState(): GameState {
+    public getRawState(): State {
         return this._state;
     }
 
-    public getCopyOfStateWithOptions(): GameState {
-        const copy: GameState = JSON.parse(JSON.stringify(this._state));
+    public getCopyOfStateWithOptions(): State {
+        const copy: State = JSON.parse(JSON.stringify(this._state));
         copy.options = Array.from(
             this.availableDeedsGetter.getAvailableDeeds()
         );

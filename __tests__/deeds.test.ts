@@ -1,12 +1,12 @@
 import { AvailableDeedsGenerator } from '../src/deeds';
-import { Card, CardWithState, GameState, Side } from '../src/models';
+import { Card, CardWithState, State, Side } from '../src/models';
 import { CardefPool } from '../src/pool';
 import { createEmptySide } from '../src/side';
 import { StateManager } from '../src/state';
 import { DeedType, CardState } from '../src/types';
 
 describe('getAvailableDeeds', () => {
-    let state: GameState;
+    let state: State;
     let myIndex: number;
     let enemyIndex: number;
     let availableDeedsGetter: AvailableDeedsGenerator;
