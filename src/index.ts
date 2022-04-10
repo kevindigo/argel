@@ -1,6 +1,5 @@
 import { Game } from './game';
 import { Player } from './models';
-import { createInitialState } from './state';
 import { showState } from './ui';
 
 console.log('Argel');
@@ -13,7 +12,7 @@ const player2: Player = {
     name: 'Mel',
     deckId: '59bd26ac-7450-4f60-a0b0-44628a5b28d4',
 };
-const state = createInitialState(player1, player2);
-const game = new Game(state);
+
+const game = new Game(player1, player2);
 game.startGame();
-showState(state);
+showState(game.getCopyOfStateWithOptions());

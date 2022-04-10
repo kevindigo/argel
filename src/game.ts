@@ -2,7 +2,7 @@ import { CardefPool } from './pool';
 import { AvailableDeedsGenerator } from './deeds';
 import { Card, CardWithState, State, Player } from './models';
 import { SideManager } from './side';
-import { StateManager } from './state';
+import { createInitialState, StateManager } from './state';
 import { CardState, CardType } from './types';
 
 export class Game {
@@ -12,12 +12,10 @@ export class Game {
     private _state: State;
     private availableDeedsGetter: AvailableDeedsGenerator;
 
-    public constructor(state: State) {
-        this._state = state;
-        this.players = state.sides.map((side) => {
-            return side.player;
-        });
-        this.sideManagers = state.sides.map((side) => {
+    public constructor(player1: Player, player2: Player) {
+        this._state = createInitialState(player1, player2);
+        this.players = [player1, player2];
+        this.sideManagers = this._state.sides.map((side) => {
             return new SideManager(side);
         });
         const stateManager = new StateManager(this._state);

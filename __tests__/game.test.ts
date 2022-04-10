@@ -1,6 +1,5 @@
 import { Game } from '../src/game';
 import { Player } from '../src/models';
-import { createInitialState } from '../src/state';
 
 const sig: Player = {
     name: 'Sig',
@@ -13,10 +12,9 @@ const marla: Player = {
 
 describe('A Game', () => {
     it('can be started', () => {
-        const state = createInitialState(sig, marla);
-        const game = new Game(state);
+        const game = new Game(sig, marla);
         game.startGame();
-        state.sides.forEach((side) => {
+        game.getCopyOfStateWithOptions().sides.forEach((side) => {
             expect(side.line.length).toEqual(2);
             expect(side.hand.length).toEqual(3);
             expect(side.discards.length + side.drawPile.length).toEqual(12);
