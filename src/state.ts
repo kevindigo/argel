@@ -23,10 +23,14 @@ export function createInitialState(player1: Player, player2: Player): State {
 }
 
 export class StateManager {
-    private state: State;
+    private _state: State;
 
     public constructor(state: State) {
-        this.state = state;
+        this._state = state;
+    }
+
+    public get state(): State {
+        return this._state;
     }
 
     public getMySideManager(): SideManager {

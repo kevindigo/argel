@@ -9,33 +9,30 @@ export class Game {
     public readonly players: Player[];
     public readonly sideManagers: SideManager[];
     public readonly pool: CardefPool;
-    private _state: State;
-    private availableDeedsGetter: AvailableDeedsGenerator;
+    private stateManager: StateManager;
 
     public constructor(player1: Player, player2: Player) {
-        this._state = createInitialState(player1, player2);
+        const state = createInitialState(player1, player2);
         this.players = [player1, player2];
-        this.sideManagers = this._state.sides.map((side) => {
+        this.sideManagers = state.sides.map((side) => {
             return new SideManager(side);
         });
-        const stateManager = new StateManager(this._state);
+        this.stateManager = new StateManager(state);
         this.pool = CardefPool.getPool();
-        this.availableDeedsGetter = new AvailableDeedsGenerator(
-            stateManager,
-            this.pool
-        );
         this.startGame();
     }
 
     public getRawState(): State {
-        return this._state;
+        return this.stateManager.state;
     }
 
     public getCopyOfStateWithOptions(): State {
-        const copy: State = JSON.parse(JSON.stringify(this._state));
-        copy.options = Array.from(
-            this.availableDeedsGetter.getAvailableDeeds()
+        const copy: State = JSON.parse(JSON.stringify(this.stateManager.state));
+        const availableDeedsGetter = new AvailableDeedsGenerator(
+            new StateManager(copy),
+            this.pool
         );
+        copy.options = Array.from(availableDeedsGetter.getAvailableDeeds());
         return copy;
     }
 
