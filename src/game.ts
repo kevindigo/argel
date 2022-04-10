@@ -46,14 +46,6 @@ export class Game {
         });
     }
 
-    public getMyIndex(): number {
-        return this._state.turnState.myIndex;
-    }
-
-    public getEnemyIndex(): number {
-        return 1 - this.getMyIndex();
-    }
-
     private startGameForSide(manager: SideManager): void {
         const pool = CardefPool.getPool();
 
