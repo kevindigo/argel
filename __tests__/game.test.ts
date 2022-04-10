@@ -30,7 +30,7 @@ describe('A Game', () => {
             expect(side.hand.length).toEqual(3);
             expect(side.discards.length + side.drawPile.length).toEqual(12);
             expect(side.scored.length).toEqual(0);
-            expect(side.relics.length).toEqual(0);
+            expect(side.arsenal.length).toEqual(0);
             expect(side.flags.canFight).toBeTruthy();
             expect(side.flags.canPlayActions).toBeTruthy();
             expect(side.flags.isNextCardActive).toBeFalsy();

@@ -36,7 +36,7 @@ export enum TurnFlagKey {
 
 export type HandIndex = number;
 export type LineIndex = number;
-export type RelicsIndex = number;
+export type ArsenalIndex = number;
 export type ScoredIndex = number;
 export type DeckId = string;
 export type CardId = string;

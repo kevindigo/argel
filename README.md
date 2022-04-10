@@ -54,7 +54,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Game` = A session in progress; Consists of 2 Sides and a TurnState
     * `Player` = Identified by their name and DeckId
     * `SetId` = Name of a set (e.g. "Omega Codex")
-    * `Side` = A player, and their DrawPile, Discards, Hand, Scored, Line, Relics, and Flags
+    * `Side` = A player, and their DrawPile, Discards, Hand, Scored, Line, Arsenal, and Flags
         * Flag: `isNextCardActive` = The next played card will be Active instead of Dormant
         * Flag: `canPlayActions` = Can play Actions this turn
         * Flag: `canFight`= Can Fight this turn
@@ -72,7 +72,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Hand`(H)
     * `Line` (L) = A player's in-play Creatures
     * `Purgatory` (P) = A temporary holding place during a Deed
-    * `Relics` (R) = A player's in-play Relics
+    * `Arsenal` (A) = A player's in-play Relics
     * `Scored` (S) = A players's score pile
 * Deeds
     * `Discard` = Move a Card from Hand to Discards
@@ -90,7 +90,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Rotate` (@) = Change the orientation/state of an in-play Card
 * Qualifiers
     * `Any` (A) = Any (location), used to mean either of My (M) and Opp (O)
-    * `Controller` (C) = Whose line or relics the card is in
+    * `Controller` (C) = Whose line or arsenal the card is in
     * `Highest` (^) = Of the candidates, the ones with the highest Power (^P) or VP (^V)
     * `Lowest` (v) = Of the candidates, the ones with the lowest Power (vP) or VP (vV)
     * `My` (M) = Belonging to the active player

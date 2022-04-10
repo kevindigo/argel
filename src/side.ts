@@ -46,8 +46,8 @@ export class SideManager {
         return this.side.line;
     }
 
-    public get relics() {
-        return this.side.relics;
+    public get arsenal() {
+        return this.side.arsenal;
     }
 }
 
@@ -65,7 +65,7 @@ export function createInitialSide(player: Player): Side {
         scored: [],
         discards: [],
         line: [],
-        relics: [],
+        arsenal: [],
         flags: {
             canFight: false,
             canPlayActions: false,
@@ -91,7 +91,7 @@ export function createEmptySide(): Side {
         },
         hand: [],
         line: [],
-        relics: [],
+        arsenal: [],
         scored: [],
     };
 }

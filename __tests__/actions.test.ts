@@ -98,7 +98,7 @@ describe('getAvailableDeeds', () => {
         expect(deeds.length).toEqual(2);
     });
 
-    it('offers to play 2 Relics in hand to a non-empty Relics', () => {
+    it('offers to play 2 Relics in hand to a non-empty Arsenal', () => {
         const hypervator: Card = {
             cardId: 'OmegaCodex-058',
             deckId: 'bogus',
@@ -108,12 +108,12 @@ describe('getAvailableDeeds', () => {
             card: hypervator,
             state: CardState.DORMANT,
         };
-        mySide.relics.push(dormantHypervator);
+        mySide.arsenal.push(dormantHypervator);
         mySide.hand.push(hypervator);
         mySide.hand.push(hypervator);
         const deeds = Array.from(getAvailableDeeds(state));
         expect(deeds.length).toEqual(2);
-        expect(deeds[0]?.relicsIndex).toEqual(-1);
+        expect(deeds[0]?.arsenalIndex).toEqual(-1);
     });
 
     it('offers to harvest a mature Creature', () => {
@@ -141,7 +141,7 @@ describe('getAvailableDeeds', () => {
             card: hypervator,
             state: CardState.MATURE,
         };
-        mySide.relics.push(matureHypervator);
+        mySide.arsenal.push(matureHypervator);
         const deeds = Array.from(getAvailableDeeds(state));
         expect(deeds.length).toEqual(1);
     });

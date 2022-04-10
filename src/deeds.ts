@@ -30,7 +30,7 @@ function getAvailablePlayDeeds(gameState: GameState): Set<Deed> {
                     type: DeedType.PLAY,
                     handIndex: i,
                     lineIndex: null,
-                    relicsIndex: null,
+                    arsenalIndex: null,
                 });
                 break;
             }
@@ -39,14 +39,14 @@ function getAvailablePlayDeeds(gameState: GameState): Set<Deed> {
                     type: DeedType.PLAY,
                     handIndex: i,
                     lineIndex: -1,
-                    relicsIndex: null,
+                    arsenalIndex: null,
                 });
                 if (manager.line.length > 0) {
                     available.add({
                         type: DeedType.PLAY,
                         handIndex: i,
                         lineIndex: 0,
-                        relicsIndex: null,
+                        arsenalIndex: null,
                     });
                 }
                 break;
@@ -56,7 +56,7 @@ function getAvailablePlayDeeds(gameState: GameState): Set<Deed> {
                     type: DeedType.PLAY,
                     handIndex: i,
                     lineIndex: null,
-                    relicsIndex: -1,
+                    arsenalIndex: -1,
                 });
                 break;
             }
@@ -92,7 +92,7 @@ function getAvailableFightDeeds(gameState: GameState): Set<Deed> {
                 type: DeedType.FIGHT,
                 handIndex: null,
                 lineIndex: null,
-                relicsIndex: null,
+                arsenalIndex: null,
                 attackers: [attackerIndex],
                 defenders: [targetIndex],
             });
@@ -120,16 +120,16 @@ function getAvailableHarvestDeeds(gameState: GameState): Set<Deed> {
             type: DeedType.HARVEST,
             handIndex: null,
             lineIndex,
-            relicsIndex: null,
+            arsenalIndex: null,
         });
     }
 
     for (
-        let relicsIndex = 0;
-        relicsIndex < manager.relics.length;
-        ++relicsIndex
+        let arsenalIndex = 0;
+        arsenalIndex < manager.arsenal.length;
+        ++arsenalIndex
     ) {
-        const cardWithState = manager.relics[relicsIndex] as CardWithState;
+        const cardWithState = manager.arsenal[arsenalIndex] as CardWithState;
         if (cardWithState.state !== CardState.MATURE) {
             continue;
         }
@@ -138,7 +138,7 @@ function getAvailableHarvestDeeds(gameState: GameState): Set<Deed> {
             type: DeedType.HARVEST,
             handIndex: null,
             lineIndex: null,
-            relicsIndex,
+            arsenalIndex: arsenalIndex,
         });
     }
 
@@ -159,7 +159,7 @@ function getAvailableDiscardDeeds(gameState: GameState): Set<Deed> {
             type: DeedType.DISCARD,
             handIndex: i,
             lineIndex: null,
-            relicsIndex: null,
+            arsenalIndex: null,
         });
     }
 

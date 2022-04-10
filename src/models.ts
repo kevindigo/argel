@@ -5,7 +5,7 @@ import {
     DeckId,
     HandIndex,
     LineIndex,
-    RelicsIndex,
+    ArsenalIndex,
     TopOrBottom,
 } from './types';
 
@@ -37,7 +37,7 @@ export interface Side {
     hand: Card[];
     scored: Card[];
     line: CardWithState[];
-    relics: CardWithState[];
+    arsenal: CardWithState[];
     flags: SideFlags;
 }
 
@@ -56,7 +56,7 @@ export interface TurnState {
 export interface Deed {
     type: DeedType;
     handIndex: HandIndex | null;
-    relicsIndex: RelicsIndex | null;
+    arsenalIndex: ArsenalIndex | null;
     lineIndex: LineIndex | null;
     attackers?: LineIndex[];
     defenders?: LineIndex[];
