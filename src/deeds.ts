@@ -1,19 +1,20 @@
 import { Cardef, CardefPool } from './cards';
-import { Game } from './game';
 import { Deed, Card, CardWithState } from './models';
 import { SideManager } from './side';
+import { StateManager } from './state';
 import { DeedType, CardId, CardState, CardType } from './types';
 
 export class AvailableDeedsGenerator {
-    private _game: Game;
+    private stateManager: StateManager;
+    private pool: CardefPool;
 
-    public constructor(game: Game) {
-        this._game = game;
+    public constructor(stateManager: StateManager, pool: CardefPool) {
+        this.stateManager = stateManager;
+        this.pool = pool;
     }
 
     private getMySideManager(): SideManager {
-        const myIndex = this._game.getMyIndex();
-        const mySideManager = this._game.sideManagers[myIndex] as SideManager;
+        const mySideManager = this.stateManager.getMySideManager();
 
         return mySideManager;
     }
@@ -29,7 +30,7 @@ export class AvailableDeedsGenerator {
         const manager = this.getMySideManager();
         for (let i = 0; i < manager.hand.length; ++i) {
             const card = manager.hand[i] as Card;
-            const cardef = this.getCardef(this._game.pool, card.cardId);
+            const cardef = this.getCardef(this.pool, card.cardId);
             switch (cardef.type) {
                 case CardType.ACTION: {
                     available.add({
@@ -86,10 +87,7 @@ export class AvailableDeedsGenerator {
                 continue;
             }
 
-            const enemyIndex = this._game.getEnemyIndex();
-            const enemyManager = this._game.sideManagers[
-                enemyIndex
-            ] as SideManager;
+            const enemyManager = this.stateManager.getEnemySideManager();
             for (
                 let targetIndex = 0;
                 targetIndex < enemyManager.line.length;
@@ -157,7 +155,7 @@ export class AvailableDeedsGenerator {
         const available = new Set<Deed>();
 
         const manager = this.getMySideManager();
-        if (!this._game.getRawState().turnState.turnFlags.canDiscard) {
+        if (!this.stateManager.canDiscard()) {
             return available;
         }
 

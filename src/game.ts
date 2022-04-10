@@ -9,6 +9,7 @@ import {
     TurnState,
 } from './models';
 import { createInitialSide, SideManager } from './side';
+import { StateManager } from './state';
 import { CardState, CardType } from './types';
 
 export function createInitialGameState(
@@ -50,8 +51,12 @@ export class Game {
         this.sideManagers = state.sides.map((side) => {
             return new SideManager(side);
         });
+        const stateManager = new StateManager(this._state);
         this.pool = new CardefPool();
-        this.availableDeedsGetter = new AvailableDeedsGenerator(this);
+        this.availableDeedsGetter = new AvailableDeedsGenerator(
+            stateManager,
+            this.pool
+        );
     }
 
     public getRawState(): GameState {

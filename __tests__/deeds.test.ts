@@ -1,7 +1,8 @@
+import { CardefPool } from '../src/cards';
 import { AvailableDeedsGenerator } from '../src/deeds';
-import { Game } from '../src/game';
 import { Card, CardWithState, GameState, Side } from '../src/models';
 import { createEmptySide } from '../src/side';
+import { StateManager } from '../src/state';
 import { DeedType, CardState } from '../src/types';
 
 describe('getAvailableDeeds', () => {
@@ -20,8 +21,9 @@ describe('getAvailableDeeds', () => {
                 },
             },
         };
-        const game = new Game(state);
-        availableDeedsGetter = new AvailableDeedsGenerator(game);
+        const stateManager = new StateManager(state);
+        const pool = new CardefPool();
+        availableDeedsGetter = new AvailableDeedsGenerator(stateManager, pool);
         myIndex = state.turnState.myIndex;
         enemyIndex = 1 - myIndex;
     });
