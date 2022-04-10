@@ -1,5 +1,6 @@
+import { doDeed } from './doer';
 import { Game } from './game';
-import { Player } from './models';
+import { Deed, Player } from './models';
 import { showState } from './ui';
 
 console.log('Argel');
@@ -14,4 +15,12 @@ const player2: Player = {
 };
 
 const game = new Game(player1, player2);
-showState(game.getCopyOfStateWithOptions());
+const state = game.getCopyOfStateWithOptions();
+showState(state);
+const options = state.options as Deed[];
+const deed = options[0] as Deed;
+console.log(`Doing ${JSON.stringify(deed)}`);
+console.log();
+
+doDeed(state, deed);
+showState(state);
