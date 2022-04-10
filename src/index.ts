@@ -15,4 +15,4 @@ const player2: Player = {
 const state = createInitialState(player1, player2);
 const game = new Game(state);
 game.startGame();
-showState(game);
+showState(state);
