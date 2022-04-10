@@ -14,9 +14,6 @@ function getDeedString(deed: Deed): string {
     if (deed.lineIndex !== null) {
         parts.push(`ML${deed.lineIndex}`);
     }
-    if (deed.arsenalIndex !== null) {
-        parts.push(`MR${deed.arsenalIndex}`);
-    }
     if (deed.attackers) {
         parts.push(`F${deed.attackers}`);
     }

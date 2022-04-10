@@ -119,7 +119,6 @@ describe('getAvailableDeeds', () => {
         mySide.hand.push(hypervator);
         const deeds = Array.from(availableDeedsGetter.getAvailableDeeds());
         expect(deeds.length).toEqual(2);
-        expect(deeds[0]?.arsenalIndex).toEqual(-1);
     });
 
     it('offers to harvest a mature Creature', () => {

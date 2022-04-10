@@ -34,9 +34,13 @@ export enum TurnFlagKey {
     CAN_DISCARD = 'CanDiscard',
 }
 
+export enum LineEnd {
+    LEFT = 0,
+    RIGHT = -1,
+}
+
 export type HandIndex = number;
-export type LineIndex = number;
-export type ArsenalIndex = number;
+export type LineIndex = LineEnd;
 export type ScoredIndex = number;
 export type DeckId = string;
 export type CardId = string;

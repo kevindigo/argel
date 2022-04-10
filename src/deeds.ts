@@ -38,7 +38,6 @@ export class AvailableDeedsGenerator {
                         type: DeedType.PLAY,
                         handIndex: i,
                         lineIndex: null,
-                        arsenalIndex: null,
                     });
                     break;
                 }
@@ -47,14 +46,12 @@ export class AvailableDeedsGenerator {
                         type: DeedType.PLAY,
                         handIndex: i,
                         lineIndex: -1,
-                        arsenalIndex: null,
                     });
                     if (manager.line.length > 0) {
                         available.add({
                             type: DeedType.PLAY,
                             handIndex: i,
                             lineIndex: 0,
-                            arsenalIndex: null,
                         });
                     }
                     break;
@@ -64,7 +61,6 @@ export class AvailableDeedsGenerator {
                         type: DeedType.PLAY,
                         handIndex: i,
                         lineIndex: null,
-                        arsenalIndex: -1,
                     });
                     break;
                 }
@@ -98,7 +94,6 @@ export class AvailableDeedsGenerator {
                     type: DeedType.FIGHT,
                     handIndex: null,
                     lineIndex: null,
-                    arsenalIndex: null,
                     attackers: [attackerIndex],
                     defenders: [targetIndex],
                 });
@@ -125,7 +120,6 @@ export class AvailableDeedsGenerator {
                 type: DeedType.HARVEST,
                 handIndex: null,
                 lineIndex,
-                arsenalIndex: null,
             });
         }
 
@@ -145,7 +139,6 @@ export class AvailableDeedsGenerator {
                 type: DeedType.HARVEST,
                 handIndex: null,
                 lineIndex: null,
-                arsenalIndex: arsenalIndex,
             });
         }
 
@@ -165,7 +158,6 @@ export class AvailableDeedsGenerator {
                 type: DeedType.DISCARD,
                 handIndex: i,
                 lineIndex: null,
-                arsenalIndex: null,
             });
         }
 

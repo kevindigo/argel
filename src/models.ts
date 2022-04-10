@@ -5,7 +5,6 @@ import {
     DeckId,
     HandIndex,
     LineIndex,
-    ArsenalIndex,
     TopOrBottom,
 } from './types';
 
@@ -56,7 +55,6 @@ export interface TurnState {
 export interface Deed {
     type: DeedType;
     handIndex: HandIndex | null;
-    arsenalIndex: ArsenalIndex | null;
     lineIndex: LineIndex | null;
     attackers?: LineIndex[];
     defenders?: LineIndex[];

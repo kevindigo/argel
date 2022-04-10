@@ -40,7 +40,6 @@ describe('The deed doer', () => {
             type: DeedType.PLAY,
             handIndex: 0,
             lineIndex: null,
-            arsenalIndex: null,
         };
         doDeed(state, deed);
 
@@ -57,6 +56,32 @@ describe('The deed doer', () => {
         expect(state.turnState.turnFlags.canDiscard).toBeTruthy();
     });
 
+    it('Can play a Relic with no Play effects to an empty arsenal', () => {
+        const hypervator = createCard('058');
+        const hand = mySideManager.hand;
+        hand.push(hypervator);
+
+        const deed: Deed = {
+            type: DeedType.PLAY,
+            handIndex: 0,
+            lineIndex: null,
+        };
+        doDeed(state, deed);
+        expect(hand.length).toEqual(0);
+        expect(mySideManager.line.length).toEqual(0);
+        expect(mySideManager.arsenal.length).toEqual(1);
+        expect(mySideManager.discards.length).toEqual(0);
+        expect(mySideManager.scored.length).toEqual(0);
+        expect(mySideManager.drawPile.length).toEqual(17);
+
+        const arsenal = mySideManager.arsenal;
+        const cardWithState = arsenal[0];
+        expect(cardWithState?.card).toEqual(hypervator);
+        expect(cardWithState?.state).toEqual(CardState.DORMANT);
+
+        expect(state.turnState.turnFlags.canDiscard).toBeTruthy();
+    });
+
     it('Can play a Creature with no Play effects to an empty line', () => {
         const vix = createCard('001');
         const hand = mySideManager.hand;
@@ -66,7 +91,6 @@ describe('The deed doer', () => {
             type: DeedType.PLAY,
             handIndex: 0,
             lineIndex: 0,
-            arsenalIndex: null,
         };
         doDeed(state, deed);
         expect(hand.length).toEqual(0);

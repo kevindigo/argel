@@ -34,6 +34,15 @@ function doDeedPlay(state: State, deed: Deed): void {
             mySideManager.line.splice(lineIndex, 0, cardWithState);
             break;
         }
+        case CardType.RELIC: {
+            const cardWithState: CardWithState = {
+                card,
+                state: CardState.DORMANT,
+            };
+            mySideManager.hand.splice(handIndex, 1);
+            mySideManager.arsenal.push(cardWithState);
+            break;
+        }
         default:
             throw new Error(
                 `Attempted to play card ${card.cardId} of unknown type ${cardef?.type}`
