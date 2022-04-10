@@ -1,26 +1,24 @@
-import { CardefPool } from './cards';
+import { CardefPool } from '../src/pool';
 import { lookupDeckList } from './decks';
-import { Game } from './game';
-import { Action } from './models';
+import { AvailableDeedsGenerator } from './deeds';
+import { Deed, State } from './models';
+import { StateManager } from './state';
 import { DeckId } from './types';
 
-function getActionString(action: Action): string {
+function getDeedString(deed: Deed): string {
     const parts: string[] = [];
-    parts.push(action.type);
-    if (action.handIndex != null) {
-        parts.push(`MH${action.handIndex}`);
+    parts.push(deed.type);
+    if (deed.handIndex != null) {
+        parts.push(`MH${deed.handIndex}`);
     }
-    if (action.lineIndex !== null) {
-        parts.push(`ML${action.lineIndex}`);
+    if (deed.lineIndex !== null) {
+        parts.push(`ML${deed.lineIndex}`);
     }
-    if (action.relicsIndex !== null) {
-        parts.push(`MR${action.relicsIndex}`);
+    if (deed.attackers) {
+        parts.push(`F${deed.attackers}`);
     }
-    if (action.attackers) {
-        parts.push(`A${action.attackers}`);
-    }
-    if (action.defenders) {
-        parts.push(`D${action.defenders}`);
+    if (deed.defenders) {
+        parts.push(`D${deed.defenders}`);
     }
     return parts.join(' ');
 }
@@ -34,7 +32,7 @@ export function showDeck(deckId: DeckId): void {
     console.log(deckList.name);
     console.log(`${deckList.setId}: ${deckList.id}`);
 
-    const pool = new CardefPool();
+    const pool = CardefPool.getPool();
 
     deckList.cardIds.forEach((cardId) => {
         const cardef = pool.lookup(cardId);
@@ -46,28 +44,35 @@ export function showDeck(deckId: DeckId): void {
     });
 }
 
-export function showGameState(game: Game): void {
-    const sideManagers = game.sideManagers;
+export function showState(state: State): void {
+    const stateManager = new StateManager(state);
+    const sideManagers = [
+        stateManager.getMySideManager(),
+        stateManager.getEnemySideManager(),
+    ];
+    const pool = CardefPool.getPool();
+
     sideManagers.forEach((sm) => {
         const deckId = sm.side.player.deckId;
         console.log(`${sm.playerName()}: ${lookupDeckList(deckId)?.name}`);
         const lineCardNames = sm.line.map((cardWithState) => {
-            const cardef = game.pool.lookup(cardWithState.card.cardId);
+            const cardef = pool.lookup(cardWithState.card.cardId);
             return `${cardef?.name} (${cardef?.power})`;
         });
         console.log(`Line: ${lineCardNames.join(', ')}`);
         const handCardNames = sm.hand.map((cardWithState) => {
-            const cardef = game.pool.lookup(cardWithState.cardId);
+            const cardef = pool.lookup(cardWithState.cardId);
             return cardef?.name;
         });
         console.log(`Hand: ${handCardNames.join(', ')}`);
         console.log();
     });
-    const myIndex = game.getMyIndex();
-    console.log(`Active player: ${sideManagers[myIndex]?.playerName()}`);
-    const availableActions = game.getCopyOfStateWithOptions().options || [];
-    availableActions.forEach((action) => {
-        console.log(getActionString(action));
+    const mySideManager = stateManager.getMySideManager();
+    console.log(`Active player: ${mySideManager.playerName()}`);
+    const generator = new AvailableDeedsGenerator(stateManager, pool);
+    const availableDeeds = generator.getAvailableDeeds();
+    availableDeeds.forEach((deed) => {
+        console.log(getDeedString(deed));
     });
     console.log();
 }

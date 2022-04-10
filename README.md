@@ -42,6 +42,15 @@ Docs for the specific calls aren't available yet. Stay tuned.
 
 ## Design notes
 
+### General design
+
+`Game` only runs on the server. Each client can use the model objects and their helpers. 
+Only `Game` can update the official game `State`. 
+
+The `State` object that the client receives will always have a list of legal `Deed`s, 
+or other choices that need to be made as a result of effects. The client will let the 
+server know which `Deed` or other option should be executed. 
+
 ### Terminology
 * Items
     * `Card` = An instance of a card (based on a cardef)
@@ -54,13 +63,14 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `Game` = A session in progress; Consists of 2 Sides and a TurnState
     * `Player` = Identified by their name and DeckId
     * `SetId` = Name of a set (e.g. "Omega Codex")
-    * `Side` = A player, and their DrawPile, Discards, Hand, Scored, Line, Relics, and Flags
+    * `Side` = A player, and their DrawPile, Discards, Hand, Scored, Line, Arsenal, and Flags
         * Flag: `isNextCardActive` = The next played card will be Active instead of Dormant
         * Flag: `canPlayActions` = Can play Actions this turn
-        * Flag: `canAttack`= Can Attack this turn
+        * Flag: `canFight`= Can Fight this turn
+    * `State` = A data object containing the complete game state
     * `TurnState` = Who is the Active Player, and TurnFlags
-        * `QueuedAdditionalPlay` = After this Action, Active Player can Play another Card
-        * `QueuedAttackLineIndex` = After this Action, Active Player can Attack with this Creature
+        * `QueuedAdditionalPlay` = After this Deed, Active Player can Play another Card
+        * `QueuedFightLineIndex` = After this Deed, Active Player can Fight with this Creature
         * `TurnFlags`
             * `canDiscard` = The Active Player either has played a card this turn, 
                 or cannot play and has revealed their hand, so they are allowed to Discard
@@ -71,23 +81,26 @@ Docs for the specific calls aren't available yet. Stay tuned.
         * `Top` (T) = Top card in a DrawPile
     * `Hand`(H)
     * `Line` (L) = A player's in-play Creatures
-    * `Purgatory` (P) = A temporary holding place during an action
-    * `Relics` (R) = A player's in-play Relics
+    * `Purgatory` (P) = A temporary holding place during a Deed
+    * `Arsenal` (A) = A player's in-play Relics
     * `Scored` (S) = A players's score pile
-* Actions
-    * `Attack` = Initiate a fight
-    * `ChooseNumber` (N) = Choose a number / chosen number
+* Deeds
     * `Discard` = Move a Card from Hand to Discards
+    * `Fight` = Initiate a battle
+    * `Harvest` = Score a Mature card
+    * `Play` = Play a card from hand
+* Effects
+    * `ChooseNumber` (N) = Choose a number / chosen number
     * `Draw` = Move a Card from a DrawPile to that Side's Hand
     * `EndTurn` (END) = Immediately end turn, without drawing or rotating
     * `Harvest` = Move a Mature card to Discards
     * `Play` = Move a Card from Hand to Line (position -1 means the right end)
-    * `Queue` (Q) = Queue a Play or Attack for after this Action
+    * `Queue` (Q) = Queue a Play or Fight for after this Deed
     * `Reveal` (%) = Make a current hand visible to the other Player
     * `Rotate` (@) = Change the orientation/state of an in-play Card
 * Qualifiers
     * `Any` (A) = Any (location), used to mean either of My (M) and Opp (O)
-    * `Controller` (C) = Whose line or relics the card is in
+    * `Controller` (C) = Whose line or arsenal the card is in
     * `Highest` (^) = Of the candidates, the ones with the highest Power (^P) or VP (^V)
     * `Lowest` (v) = Of the candidates, the ones with the lowest Power (vP) or VP (vV)
     * `My` (M) = Belonging to the active player
@@ -100,15 +113,14 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `VictoryPoints` (V) = The VP of a Cardef or sum of a Scored
 * Triggers
     * `Harvest` (H:) = Bonus that triggers on a Harvest
-    * `Optional` (MAY:) = Optional action
+    * `Optional` (MAY:) = Optional Effect
     * `WinFight` (WF:) = Bonus that triggers when the Creature wins a fight
 * Other
-    * (=) = The card that is triggering the action
+    * (=) = The card that is triggering the Effect
     * `CardState` = State of an in-play Creature or Relic
         * `Dormant` (@D) = An in-play card is turned left (can't be used)
-        * `Active` (@A) = An in-play card is upright (can Attack)
-        * `Mature` (@M) = An in-play card is turned right (can Attack or Harvest)
-    * `Fight` = The result of an Attack, where 2 opposing Creatures fight
+        * `Active` (@A) = An in-play card is upright (can Fight)
+        * `Mature` (@M) = An in-play card is turned right (can Fight or Harvest)
     * `If/Else` (if ? :) = if(cond) ? <doiftrue> : <dootherwise>
     * `Random` = If the hand is not revealed, random is automatic
     * `Repeat` (x) = "5x(MT > H)" would mean draw from top to hand 5 times

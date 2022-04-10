@@ -1,11 +1,10 @@
 import {
-    ActionType,
+    DeedType,
     CardId,
     CardState,
     DeckId,
     HandIndex,
     LineIndex,
-    RelicsIndex,
     TopOrBottom,
 } from './types';
 
@@ -25,7 +24,7 @@ export interface CardWithState {
 }
 
 export interface SideFlags {
-    canAttack: boolean;
+    canFight: boolean;
     canPlayActions: boolean;
     isNextCardActive: boolean;
 }
@@ -37,7 +36,7 @@ export interface Side {
     hand: Card[];
     scored: Card[];
     line: CardWithState[];
-    relics: CardWithState[];
+    arsenal: CardWithState[];
     flags: SideFlags;
 }
 
@@ -49,21 +48,20 @@ export interface TurnState {
     myIndex: number;
     handIndexBeingPlayed?: HandIndex;
     queuedAdditionalPlay?: TopOrBottom;
-    queuedAttackLineIndex?: LineIndex;
+    queuedFightLineIndex?: LineIndex;
     turnFlags: TurnFlags;
 }
 
-export interface Action {
-    type: ActionType;
+export interface Deed {
+    type: DeedType;
     handIndex: HandIndex | null;
-    relicsIndex: RelicsIndex | null;
     lineIndex: LineIndex | null;
     attackers?: LineIndex[];
     defenders?: LineIndex[];
 }
 
-export interface GameState {
+export interface State {
     sides: Side[];
     turnState: TurnState;
-    options?: Action[];
+    options?: Deed[];
 }

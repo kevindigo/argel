@@ -1,79 +1,45 @@
-import { getAvailableActions } from './actions';
-import { CardefPool } from './cards';
-import {
-    Card,
-    CardWithState,
-    GameState,
-    Player,
-    Side,
-    TurnState,
-} from './models';
-import { createInitialSide, SideManager } from './side';
+import { CardefPool } from './pool';
+import { AvailableDeedsGenerator } from './deeds';
+import { Card, CardWithState, State, Player } from './models';
+import { SideManager } from './side';
+import { createInitialState, StateManager } from './state';
 import { CardState, CardType } from './types';
-
-export function createInitialGameState(
-    player1: Player,
-    player2: Player
-): GameState {
-    const sides: Side[] = [
-        createInitialSide(player1),
-        createInitialSide(player2),
-    ];
-
-    const turnState: TurnState = {
-        myIndex: 0,
-        turnFlags: {
-            canDiscard: false,
-        },
-    };
-
-    const state: GameState = {
-        sides,
-        turnState,
-    };
-
-    return state;
-}
 
 export class Game {
     public readonly players: Player[];
     public readonly sideManagers: SideManager[];
     public readonly pool: CardefPool;
-    private _state: GameState;
+    private stateManager: StateManager;
 
-    public constructor(state: GameState) {
-        this._state = state;
-        this.players = state.sides.map((side) => {
-            return side.player;
-        });
+    public constructor(player1: Player, player2: Player) {
+        const state = createInitialState(player1, player2);
+        this.players = [player1, player2];
         this.sideManagers = state.sides.map((side) => {
             return new SideManager(side);
         });
-        this.pool = new CardefPool();
+        this.stateManager = new StateManager(state);
+        this.pool = CardefPool.getPool();
+        this.startGame();
     }
 
-    public getCopyOfStateWithOptions(): GameState {
-        const copy: GameState = JSON.parse(JSON.stringify(this._state));
-        copy.options = Array.from(getAvailableActions(copy));
+    public getCopyOfStateWithOptions(): State {
+        const copy: State = JSON.parse(JSON.stringify(this.stateManager.state));
+        const availableDeedsGetter = new AvailableDeedsGenerator(
+            new StateManager(copy),
+            this.pool
+        );
+        copy.options = Array.from(availableDeedsGetter.getAvailableDeeds());
         return copy;
     }
 
-    public startGame(): void {
+    private startGame(): void {
         this.sideManagers.forEach((manager) => {
             this.startGameForSide(manager);
         });
     }
 
-    public getMyIndex(): number {
-        return this._state.turnState.myIndex;
-    }
-
-    public getEnemyIndex(): number {
-        return 1 - this.getMyIndex();
-    }
-
     private startGameForSide(manager: SideManager): void {
-        const pool = new CardefPool();
+        const pool = CardefPool.getPool();
 
         this.shuffleInPlace(manager.drawPile);
 
@@ -97,7 +63,7 @@ export class Game {
         manager.draw(3);
 
         // Should be at the start of each turn
-        manager.side.flags.canAttack = true;
+        manager.side.flags.canFight = true;
         manager.side.flags.canPlayActions = true;
         manager.side.flags.isNextCardActive = false;
     }

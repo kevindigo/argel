@@ -46,8 +46,12 @@ export class SideManager {
         return this.side.line;
     }
 
-    public get relics() {
-        return this.side.relics;
+    public get arsenal() {
+        return this.side.arsenal;
+    }
+
+    public get scored() {
+        return this.side.scored;
     }
 }
 
@@ -65,9 +69,9 @@ export function createInitialSide(player: Player): Side {
         scored: [],
         discards: [],
         line: [],
-        relics: [],
+        arsenal: [],
         flags: {
-            canAttack: false,
+            canFight: false,
             canPlayActions: false,
             isNextCardActive: false,
         },
@@ -85,13 +89,13 @@ export function createEmptySide(): Side {
         discards: [],
         drawPile: [],
         flags: {
-            canAttack: true,
+            canFight: true,
             canPlayActions: true,
             isNextCardActive: false,
         },
         hand: [],
         line: [],
-        relics: [],
+        arsenal: [],
         scored: [],
     };
 }

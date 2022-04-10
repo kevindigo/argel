@@ -1,6 +1,7 @@
-import { createInitialGameState, Game } from './game';
-import { Player } from './models';
-import { showGameState } from './ui';
+import { doDeed } from './doer';
+import { Game } from './game';
+import { Deed, Player } from './models';
+import { showState } from './ui';
 
 console.log('Argel');
 
@@ -12,7 +13,14 @@ const player2: Player = {
     name: 'Mel',
     deckId: '59bd26ac-7450-4f60-a0b0-44628a5b28d4',
 };
-const state = createInitialGameState(player1, player2);
-const game = new Game(state);
-game.startGame();
-showGameState(game);
+
+const game = new Game(player1, player2);
+const state = game.getCopyOfStateWithOptions();
+showState(state);
+const options = state.options as Deed[];
+const deed = options[0] as Deed;
+console.log(`Doing ${JSON.stringify(deed)}`);
+console.log();
+
+doDeed(state, deed);
+showState(state);

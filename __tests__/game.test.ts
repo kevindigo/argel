@@ -1,4 +1,4 @@
-import { createInitialGameState, Game } from '../src/game';
+import { Game } from '../src/game';
 import { Player } from '../src/models';
 
 const sig: Player = {
@@ -10,28 +10,16 @@ const marla: Player = {
     deckId: '679a6701-d7c3-494e-becb-04e9178aca30',
 };
 
-describe('createInitialGameState', () => {
-    it('works', () => {
-        const state = createInitialGameState(sig, marla);
-        const statePlayers = state.sides.map((side) => {
-            return side.player;
-        });
-        expect(statePlayers).toEqual([sig, marla]);
-    });
-});
-
 describe('A Game', () => {
     it('can be started', () => {
-        const state = createInitialGameState(sig, marla);
-        const game = new Game(state);
-        game.startGame();
-        state.sides.forEach((side) => {
+        const game = new Game(sig, marla);
+        game.getCopyOfStateWithOptions().sides.forEach((side) => {
             expect(side.line.length).toEqual(2);
             expect(side.hand.length).toEqual(3);
             expect(side.discards.length + side.drawPile.length).toEqual(12);
             expect(side.scored.length).toEqual(0);
-            expect(side.relics.length).toEqual(0);
-            expect(side.flags.canAttack).toBeTruthy();
+            expect(side.arsenal.length).toEqual(0);
+            expect(side.flags.canFight).toBeTruthy();
             expect(side.flags.canPlayActions).toBeTruthy();
             expect(side.flags.isNextCardActive).toBeFalsy();
         });

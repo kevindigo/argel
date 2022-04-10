@@ -1,9 +1,9 @@
-import { CardefPool } from '../src/cards';
+import { CardefPool } from '../src/pool';
 import { createInitialSide, SideManager } from '../src/side';
 import { CardState, CardType } from '../src/types';
 
 describe('Sides', () => {
-    const pool = new CardefPool();
+    const pool = CardefPool.getPool();
 
     it('can be initialized', () => {
         const player = {

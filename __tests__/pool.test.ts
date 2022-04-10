@@ -1,14 +1,7 @@
-import { CardefPool } from '../src/cards';
+import { CardefPool } from '../src/pool';
 
 describe('The cardef pool', () => {
-    it('Can be loaded', () => {
-        const pool = new CardefPool();
-        expect(pool.lookup('OmegaCodex-014')).toBeDefined();
-    });
-});
-
-describe('A loaded cardef pool', () => {
-    const pool = new CardefPool();
+    const pool = CardefPool.getPool();
 
     it('Has the right number of cardefs', () => {
         expect(pool.size()).toEqual(100);
