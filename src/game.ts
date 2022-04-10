@@ -22,10 +22,6 @@ export class Game {
         this.startGame();
     }
 
-    public getRawState(): State {
-        return this.stateManager.state;
-    }
-
     public getCopyOfStateWithOptions(): State {
         const copy: State = JSON.parse(JSON.stringify(this.stateManager.state));
         const availableDeedsGetter = new AvailableDeedsGenerator(
