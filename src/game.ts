@@ -51,13 +51,17 @@ export class Game {
             return new SideManager(side);
         });
         this.pool = new CardefPool();
-        this.availableDeedsGetter = new AvailableDeedsGenerator();
+        this.availableDeedsGetter = new AvailableDeedsGenerator(this);
+    }
+
+    public getRawState(): GameState {
+        return this._state;
     }
 
     public getCopyOfStateWithOptions(): GameState {
         const copy: GameState = JSON.parse(JSON.stringify(this._state));
         copy.options = Array.from(
-            this.availableDeedsGetter.getAvailableDeeds(copy)
+            this.availableDeedsGetter.getAvailableDeeds()
         );
         return copy;
     }

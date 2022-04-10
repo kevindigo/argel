@@ -1,13 +1,19 @@
 import { Cardef, CardefPool } from './cards';
 import { Game } from './game';
-import { Deed, Card, CardWithState, GameState } from './models';
+import { Deed, Card, CardWithState } from './models';
 import { SideManager } from './side';
 import { DeedType, CardId, CardState, CardType } from './types';
 
 export class AvailableDeedsGenerator {
-    private getMySideManager(game: Game): SideManager {
-        const myIndex = game.getMyIndex();
-        const mySideManager = game.sideManagers[myIndex] as SideManager;
+    private _game: Game;
+
+    public constructor(game: Game) {
+        this._game = game;
+    }
+
+    private getMySideManager(): SideManager {
+        const myIndex = this._game.getMyIndex();
+        const mySideManager = this._game.sideManagers[myIndex] as SideManager;
 
         return mySideManager;
     }
@@ -17,14 +23,13 @@ export class AvailableDeedsGenerator {
         return cardef;
     }
 
-    private getAvailablePlayDeeds(gameState: GameState): Set<Deed> {
+    private getAvailablePlayDeeds(): Set<Deed> {
         const available = new Set<Deed>();
 
-        const game = new Game(gameState);
-        const manager = this.getMySideManager(game);
+        const manager = this.getMySideManager();
         for (let i = 0; i < manager.hand.length; ++i) {
             const card = manager.hand[i] as Card;
-            const cardef = this.getCardef(game.pool, card.cardId);
+            const cardef = this.getCardef(this._game.pool, card.cardId);
             switch (cardef.type) {
                 case CardType.ACTION: {
                     available.add({
@@ -67,11 +72,10 @@ export class AvailableDeedsGenerator {
         return available;
     }
 
-    private getAvailableFightDeeds(gameState: GameState): Set<Deed> {
+    private getAvailableFightDeeds(): Set<Deed> {
         const available = new Set<Deed>();
 
-        const game = new Game(gameState);
-        const manager = this.getMySideManager(game);
+        const manager = this.getMySideManager();
         for (
             let attackerIndex = 0;
             attackerIndex < manager.line.length;
@@ -82,8 +86,10 @@ export class AvailableDeedsGenerator {
                 continue;
             }
 
-            const enemyIndex = game.getEnemyIndex();
-            const enemyManager = game.sideManagers[enemyIndex] as SideManager;
+            const enemyIndex = this._game.getEnemyIndex();
+            const enemyManager = this._game.sideManagers[
+                enemyIndex
+            ] as SideManager;
             for (
                 let targetIndex = 0;
                 targetIndex < enemyManager.line.length;
@@ -106,11 +112,10 @@ export class AvailableDeedsGenerator {
         return available;
     }
 
-    private getAvailableHarvestDeeds(gameState: GameState): Set<Deed> {
+    private getAvailableHarvestDeeds(): Set<Deed> {
         const available = new Set<Deed>();
 
-        const game = new Game(gameState);
-        const manager = this.getMySideManager(game);
+        const manager = this.getMySideManager();
         for (let lineIndex = 0; lineIndex < manager.line.length; ++lineIndex) {
             const cardWithState = manager.line[lineIndex] as CardWithState;
             if (cardWithState.state !== CardState.MATURE) {
@@ -148,12 +153,11 @@ export class AvailableDeedsGenerator {
         return available;
     }
 
-    private getAvailableDiscardDeeds(gameState: GameState): Set<Deed> {
+    private getAvailableDiscardDeeds(): Set<Deed> {
         const available = new Set<Deed>();
 
-        const game = new Game(gameState);
-        const manager = this.getMySideManager(game);
-        if (!gameState.turnState.turnFlags.canDiscard) {
+        const manager = this.getMySideManager();
+        if (!this._game.getRawState().turnState.turnFlags.canDiscard) {
             return available;
         }
 
@@ -169,25 +173,25 @@ export class AvailableDeedsGenerator {
         return available;
     }
 
-    public getAvailableDeeds(gameState: GameState): Set<Deed> {
+    public getAvailableDeeds(): Set<Deed> {
         const available = new Set<Deed>();
 
-        const playDeeds = this.getAvailablePlayDeeds(gameState);
+        const playDeeds = this.getAvailablePlayDeeds();
         playDeeds.forEach((deed) => {
             available.add(deed);
         });
 
-        const FightDeeds = this.getAvailableFightDeeds(gameState);
+        const FightDeeds = this.getAvailableFightDeeds();
         FightDeeds.forEach((deed) => {
             available.add(deed);
         });
 
-        const harvestDeeds = this.getAvailableHarvestDeeds(gameState);
+        const harvestDeeds = this.getAvailableHarvestDeeds();
         harvestDeeds.forEach((deed) => {
             available.add(deed);
         });
 
-        const discardDeeds = this.getAvailableDiscardDeeds(gameState);
+        const discardDeeds = this.getAvailableDiscardDeeds();
         discardDeeds.forEach((deed) => {
             available.add(deed);
         });
