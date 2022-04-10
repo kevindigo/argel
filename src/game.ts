@@ -52,7 +52,7 @@ export class Game {
             return new SideManager(side);
         });
         const stateManager = new StateManager(this._state);
-        this.pool = new CardefPool();
+        this.pool = CardefPool.getPool();
         this.availableDeedsGetter = new AvailableDeedsGenerator(
             stateManager,
             this.pool
@@ -86,7 +86,7 @@ export class Game {
     }
 
     private startGameForSide(manager: SideManager): void {
-        const pool = new CardefPool();
+        const pool = CardefPool.getPool();
 
         this.shuffleInPlace(manager.drawPile);
 

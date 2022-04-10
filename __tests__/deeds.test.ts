@@ -22,7 +22,7 @@ describe('getAvailableDeeds', () => {
             },
         };
         const stateManager = new StateManager(state);
-        const pool = new CardefPool();
+        const pool = CardefPool.getPool();
         availableDeedsGetter = new AvailableDeedsGenerator(stateManager, pool);
         myIndex = state.turnState.myIndex;
         enemyIndex = 1 - myIndex;

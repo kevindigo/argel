@@ -34,7 +34,7 @@ export function showDeck(deckId: DeckId): void {
     console.log(deckList.name);
     console.log(`${deckList.setId}: ${deckList.id}`);
 
-    const pool = new CardefPool();
+    const pool = CardefPool.getPool();
 
     deckList.cardIds.forEach((cardId) => {
         const cardef = pool.lookup(cardId);

@@ -4,14 +4,22 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
 export class CardefPool {
-    private pool: Map<CardId, Cardef>;
+    private static singletonPool: CardefPool;
+    private cardefs: Map<CardId, Cardef>;
 
-    public constructor() {
-        this.pool = new Map<CardId, Cardef>();
+    public static getPool(): CardefPool {
+        if (!this.singletonPool) {
+            this.singletonPool = new CardefPool();
+        }
+        return this.singletonPool;
+    }
+
+    private constructor() {
+        this.cardefs = new Map<CardId, Cardef>();
         const path = resolve(__dirname, '../resources/cardpool.tsv');
         this.loadFromFile(path);
-        if (this.pool.size !== 100) {
-            throw new Error(`Pool not 100 cards! (${this.pool.size})`);
+        if (this.cardefs.size !== 100) {
+            throw new Error(`Pool not 100 cards! (${this.cardefs.size})`);
         }
     }
 
@@ -46,19 +54,19 @@ export class CardefPool {
             }
         });
 
-        this.pool.clear();
+        this.cardefs.clear();
         cardefs.forEach((cardef) => {
             const fullId = `${cardef.setId}-${cardef.cardNumber}`;
-            this.pool.set(fullId, cardef);
+            this.cardefs.set(fullId, cardef);
         });
     }
 
     public size(): number {
-        return this.pool.size;
+        return this.cardefs.size;
     }
 
     public lookup(cardId: CardId): Cardef | undefined {
-        return this.pool.get(cardId);
+        return this.cardefs.get(cardId);
     }
 
     private loadFromFile(path: string): void {
