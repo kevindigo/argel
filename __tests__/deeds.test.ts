@@ -7,6 +7,7 @@ import { DeedType, CardState } from '../src/types';
 
 describe('getAvailableDeeds', () => {
     let state: State;
+    let stateManager: StateManager;
     let myIndex: number;
     let enemyIndex: number;
     let availableDeedsGetter: AvailableDeedsGenerator;
@@ -21,7 +22,7 @@ describe('getAvailableDeeds', () => {
                 },
             },
         };
-        const stateManager = new StateManager(state);
+        stateManager = new StateManager(state);
         const pool = CardefPool.getPool();
         availableDeedsGetter = new AvailableDeedsGenerator(stateManager, pool);
         myIndex = state.turnState.myIndex;
@@ -72,6 +73,38 @@ describe('getAvailableDeeds', () => {
         mySide.hand.push(vix);
         const deeds = Array.from(availableDeedsGetter.getAvailableDeeds());
         expect(deeds.length).toEqual(2);
+    });
+
+    it('does not offer fight if my Creature is Dormant', () => {
+        const vix: Card = {
+            cardId: 'OmegaCodex-001',
+            deckId: 'bogus',
+        };
+        const mySide = state.sides[myIndex] as Side;
+        const readyVix: CardWithState = {
+            card: vix,
+            state: CardState.DORMANT,
+        };
+        mySide.line.push(readyVix);
+        const deeds = Array.from(availableDeedsGetter.getAvailableDeeds());
+        expect(deeds.length).toEqual(0);
+    });
+
+    it('does not offer fight if there are no targets', () => {
+        const vix: Card = {
+            cardId: 'OmegaCodex-001',
+            deckId: 'bogus',
+        };
+        const readyVix: CardWithState = {
+            card: vix,
+            state: CardState.DORMANT,
+        };
+
+        const mySideManager = stateManager.getMySideManager();
+
+        mySideManager.line.push(readyVix);
+        const deeds = Array.from(availableDeedsGetter.getAvailableDeeds());
+        expect(deeds.length).toEqual(0);
     });
 
     it('offers 2 ways to fight with 1 creature against a line of 2', () => {
