@@ -42,6 +42,15 @@ Docs for the specific calls aren't available yet. Stay tuned.
 
 ## Design notes
 
+### General design
+
+`Game` only runs on the server. Each client can use the model objects and their helpers. 
+Only `Game` can update the official game `State`. 
+
+The `State` object that the client receives will always have a list of legal `Deed`s, 
+or other choices that need to be made as a result of effects. The client will let the 
+server know which `Deed` or other option should be executed. 
+
 ### Terminology
 * Items
     * `Card` = An instance of a card (based on a cardef)
@@ -58,6 +67,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
         * Flag: `isNextCardActive` = The next played card will be Active instead of Dormant
         * Flag: `canPlayActions` = Can play Actions this turn
         * Flag: `canFight`= Can Fight this turn
+    * `State` = A data object containing the complete game state
     * `TurnState` = Who is the Active Player, and TurnFlags
         * `QueuedAdditionalPlay` = After this Deed, Active Player can Play another Card
         * `QueuedFightLineIndex` = After this Deed, Active Player can Fight with this Creature
