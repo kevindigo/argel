@@ -1,5 +1,5 @@
-import { getAvailableDeeds } from './deeds';
 import { CardefPool } from './cards';
+import { AvailableDeedsGenerator } from './deeds';
 import {
     Card,
     CardWithState,
@@ -40,6 +40,7 @@ export class Game {
     public readonly sideManagers: SideManager[];
     public readonly pool: CardefPool;
     private _state: GameState;
+    private availableDeedsGetter: AvailableDeedsGenerator;
 
     public constructor(state: GameState) {
         this._state = state;
@@ -50,11 +51,14 @@ export class Game {
             return new SideManager(side);
         });
         this.pool = new CardefPool();
+        this.availableDeedsGetter = new AvailableDeedsGenerator();
     }
 
     public getCopyOfStateWithOptions(): GameState {
         const copy: GameState = JSON.parse(JSON.stringify(this._state));
-        copy.options = Array.from(getAvailableDeeds(copy));
+        copy.options = Array.from(
+            this.availableDeedsGetter.getAvailableDeeds(copy)
+        );
         return copy;
     }
 

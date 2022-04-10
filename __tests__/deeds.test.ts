@@ -1,4 +1,4 @@
-import { getAvailableDeeds } from '../src/deeds';
+import { AvailableDeedsGenerator } from '../src/deeds';
 import { Card, CardWithState, GameState, Side } from '../src/models';
 import { createEmptySide } from '../src/side';
 import { DeedType, CardState } from '../src/types';
@@ -7,6 +7,7 @@ describe('getAvailableDeeds', () => {
     let state: GameState;
     let myIndex: number;
     let enemyIndex: number;
+    const availableDeedsGetter = new AvailableDeedsGenerator();
 
     beforeEach(() => {
         state = {
@@ -23,7 +24,7 @@ describe('getAvailableDeeds', () => {
     });
 
     it('offers no deeds if hand and line are empty', () => {
-        const deeds = getAvailableDeeds(state);
+        const deeds = availableDeedsGetter.getAvailableDeeds(state);
         expect(deeds.size).toEqual(0);
     });
 
@@ -33,7 +34,7 @@ describe('getAvailableDeeds', () => {
             deckId: 'bogus',
         };
         state.sides[myIndex]?.hand.push(vix);
-        const deeds = Array.from(getAvailableDeeds(state));
+        const deeds = Array.from(availableDeedsGetter.getAvailableDeeds(state));
         expect(deeds.length).toEqual(1);
         expect(deeds[0]?.type).toEqual(DeedType.PLAY);
         expect(deeds[0]?.handIndex).toEqual(0);
@@ -52,7 +53,7 @@ describe('getAvailableDeeds', () => {
         };
         mySide.line.push(dormantVix);
         mySide.hand.push(vix);
-        const deeds = Array.from(getAvailableDeeds(state));
+        const deeds = Array.from(availableDeedsGetter.getAvailableDeeds(state));
         expect(deeds.length).toEqual(2);
     });
 
@@ -64,7 +65,7 @@ describe('getAvailableDeeds', () => {
         const mySide = state.sides[myIndex] as Side;
         mySide.hand.push(vix);
         mySide.hand.push(vix);
-        const deeds = Array.from(getAvailableDeeds(state));
+        const deeds = Array.from(availableDeedsGetter.getAvailableDeeds(state));
         expect(deeds.length).toEqual(2);
     });
 
@@ -82,7 +83,7 @@ describe('getAvailableDeeds', () => {
         const enemySide = state.sides[enemyIndex] as Side;
         enemySide.line.push(readyVix);
         enemySide.line.push(readyVix);
-        const deeds = Array.from(getAvailableDeeds(state));
+        const deeds = Array.from(availableDeedsGetter.getAvailableDeeds(state));
         expect(deeds.length).toEqual(2);
     });
 
@@ -94,7 +95,7 @@ describe('getAvailableDeeds', () => {
         const mySide = state.sides[myIndex] as Side;
         mySide.hand.push(duck);
         mySide.hand.push(duck);
-        const deeds = Array.from(getAvailableDeeds(state));
+        const deeds = Array.from(availableDeedsGetter.getAvailableDeeds(state));
         expect(deeds.length).toEqual(2);
     });
 
@@ -111,7 +112,7 @@ describe('getAvailableDeeds', () => {
         mySide.arsenal.push(dormantHypervator);
         mySide.hand.push(hypervator);
         mySide.hand.push(hypervator);
-        const deeds = Array.from(getAvailableDeeds(state));
+        const deeds = Array.from(availableDeedsGetter.getAvailableDeeds(state));
         expect(deeds.length).toEqual(2);
         expect(deeds[0]?.arsenalIndex).toEqual(-1);
     });
@@ -127,7 +128,7 @@ describe('getAvailableDeeds', () => {
             state: CardState.MATURE,
         };
         mySide.line.push(matureVix);
-        const deeds = Array.from(getAvailableDeeds(state));
+        const deeds = Array.from(availableDeedsGetter.getAvailableDeeds(state));
         expect(deeds.length).toEqual(1);
     });
 
@@ -142,7 +143,7 @@ describe('getAvailableDeeds', () => {
             state: CardState.MATURE,
         };
         mySide.arsenal.push(matureHypervator);
-        const deeds = Array.from(getAvailableDeeds(state));
+        const deeds = Array.from(availableDeedsGetter.getAvailableDeeds(state));
         expect(deeds.length).toEqual(1);
     });
 
@@ -153,11 +154,15 @@ describe('getAvailableDeeds', () => {
         };
         const mySide = state.sides[myIndex] as Side;
         mySide.hand.push(hypervator);
-        const beforePlaying = Array.from(getAvailableDeeds(state));
+        const beforePlaying = Array.from(
+            availableDeedsGetter.getAvailableDeeds(state)
+        );
         expect(beforePlaying.length).toEqual(1);
 
         state.turnState.turnFlags.canDiscard = true;
-        const afterPlaying = Array.from(getAvailableDeeds(state));
+        const afterPlaying = Array.from(
+            availableDeedsGetter.getAvailableDeeds(state)
+        );
         expect(afterPlaying.length).toEqual(2);
     });
 });
