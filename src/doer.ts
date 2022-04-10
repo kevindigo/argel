@@ -1,7 +1,7 @@
 import { Card, CardWithState, Deed, State } from './models';
 import { CardefPool } from './pool';
 import { StateManager } from './state';
-import { CardState, CardType, DeedType } from './types';
+import { CardState, CardType, DeedType, LineEnd } from './types';
 
 function doDeedPlay(state: State, deed: Deed): void {
     const stateManager = new StateManager(state);
@@ -31,7 +31,11 @@ function doDeedPlay(state: State, deed: Deed): void {
                 state: CardState.DORMANT,
             };
             mySideManager.hand.splice(handIndex, 1);
-            mySideManager.line.splice(lineIndex, 0, cardWithState);
+            if (lineIndex === LineEnd.RIGHT) {
+                mySideManager.line.push(cardWithState);
+            } else {
+                mySideManager.line.splice(lineIndex, 0, cardWithState);
+            }
             break;
         }
         case CardType.RELIC: {

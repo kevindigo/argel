@@ -1,8 +1,8 @@
 import { doDeed } from '../src/doer';
-import { Card, Deed, Player, State } from '../src/models';
+import { Card, CardWithState, Deed, Player, State } from '../src/models';
 import { SideManager } from '../src/side';
 import { createInitialState, StateManager } from '../src/state';
-import { CardNumber, CardState, DeedType } from '../src/types';
+import { CardNumber, CardState, DeedType, LineEnd } from '../src/types';
 
 const sig: Player = {
     name: 'Sig',
@@ -104,6 +104,76 @@ describe('The deed doer', () => {
         const cardWithState = line[0];
         expect(cardWithState?.card).toEqual(vix);
         expect(cardWithState?.state).toEqual(CardState.DORMANT);
+
+        expect(state.turnState.turnFlags.canDiscard).toBeTruthy();
+    });
+
+    it('Can play a Creature with no Play effects to the left side of a line', () => {
+        const jater = createCard('002');
+        const jaterDormant: CardWithState = {
+            card: jater,
+            state: CardState.MATURE,
+        };
+        const line = mySideManager.line;
+        line.push(jaterDormant);
+
+        const vix = createCard('001');
+        const hand = mySideManager.hand;
+        hand.push(vix);
+
+        const deed: Deed = {
+            type: DeedType.PLAY,
+            handIndex: 0,
+            lineIndex: LineEnd.LEFT,
+        };
+        doDeed(state, deed);
+        expect(hand.length).toEqual(0);
+        expect(mySideManager.line.length).toEqual(2);
+        expect(mySideManager.arsenal.length).toEqual(0);
+        expect(mySideManager.discards.length).toEqual(0);
+        expect(mySideManager.scored.length).toEqual(0);
+        expect(mySideManager.drawPile.length).toEqual(17);
+
+        const vixWithState = line[0];
+        expect(vixWithState?.card).toEqual(vix);
+        expect(vixWithState?.state).toEqual(CardState.DORMANT);
+
+        expect(line[1]).toEqual(jaterDormant);
+
+        expect(state.turnState.turnFlags.canDiscard).toBeTruthy();
+    });
+
+    it('Can play a Creature with no Play effects to the right side of a line', () => {
+        const jater = createCard('002');
+        const jaterDormant: CardWithState = {
+            card: jater,
+            state: CardState.MATURE,
+        };
+        const line = mySideManager.line;
+        line.push(jaterDormant);
+
+        const vix = createCard('001');
+        const hand = mySideManager.hand;
+        hand.push(vix);
+
+        const deed: Deed = {
+            type: DeedType.PLAY,
+            handIndex: 0,
+            lineIndex: LineEnd.RIGHT,
+        };
+        doDeed(state, deed);
+        expect(hand.length).toEqual(0);
+        expect(mySideManager.line.length).toEqual(2);
+        expect(mySideManager.arsenal.length).toEqual(0);
+        expect(mySideManager.discards.length).toEqual(0);
+        expect(mySideManager.scored.length).toEqual(0);
+        expect(mySideManager.drawPile.length).toEqual(17);
+
+        const rightCard = line[1];
+        expect(rightCard?.card).toEqual(vix);
+        expect(rightCard?.state).toEqual(CardState.DORMANT);
+
+        expect(line[0]).toEqual(jaterDormant);
 
         expect(state.turnState.turnFlags.canDiscard).toBeTruthy();
     });
