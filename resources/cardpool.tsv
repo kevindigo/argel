@@ -17,13 +17,13 @@ OmegaCodex	015	Creature	Pokets	4	1	Common								Skill: Sneak 9
 OmegaCodex	016	Creature	Sticky Gemma	4	1	Rare	P		EL	vV	1	MS		Play: Move the least valuable enemy Creature to your score pile.
 OmegaCodex	017	Creature	Tiny the Tosser	4	2	Common	B		MS	^V	1	ES		Bonus: Move the most valuable card in your score pile to your opponent's score pile.
 OmegaCodex	018	Creature	Deep Carl	4	1	Common	P	QP B						Play: Play the bottom card of your deck.
-OmegaCodex	019	Creature	Vile Chap	4	1	Rare	B		AR			D		Bonus: Move all Relics to their owner's discard pile.
+OmegaCodex	019	Creature	Vile Chap	4	1	Rare	B		AA			D		Bonus: Move all Relics to their owner's discard pile.
 OmegaCodex	020	Creature	Anox	5	1	Variant								Skill: Team-Up
 OmegaCodex	021	Creature	Millipede	5	1	Common								Skill: Sneak 10
 OmegaCodex	022	Creature	Brother Bear	5	1	Common								Skill: Bear Hug
 OmegaCodex	023	Creature	Stubborn Thorn	5	2	Rare								This card cannot be Harvested.
 OmegaCodex	024	Creature	Crazy Larry	5	2	Rare	P		MT		1	ES		Play: Move the top card of your deck to your opponent's score pile.
-OmegaCodex	025	Creature	Silence Enforcer	5	2	Common								If this card is Active, your opponent can only play Creatures.
+OmegaCodex	025	Creature	Silence Enforcer	5	2	Common								If this card is Active, your opponent cannot play Actions or Relics
 OmegaCodex	026	Creature	Payday	6	1	Common	B	MT > H						Bonus: Draw a card.
 OmegaCodex	027	Creature	Bejewel	6	-1	Common								During your "Draw Cards" step, refill your hand to 1 additional card.
 OmegaCodex	028	Creature	Gregory Illinivich	6	3	Linked								Skill: Sneak 11 This card can only fight Dormant Creatures.
@@ -43,7 +43,7 @@ OmegaCodex	041	Creature	Renegade	8	2	Common								Skill: Bear Hug
 OmegaCodex	042	Creature	Droven Jeb	8	2	Common	B	R MH	MH	vP	1	MS		Bonus: Reveal your hand. Move the least powerful Creature revealed this way to your score pile. 
 OmegaCodex	043	Creature	Silent Master	8	3	Rare								Your opponent cannot play Actions.
 OmegaCodex	044	Creature	Rat Smasher	8	2	Common	P		AL	V < 2			CS	Play: Move all Creatures worth 1 VP or less to their controller's score pile. 
-OmegaCodex	045	Creature	Bash	8	1	Common								If this card loses a fight, your opponent discards their hand.
+OmegaCodex	045	Creature	Bash	8	1	Common	L							If this card loses a fight, your opponent discards their hand.
 OmegaCodex	046	Creature	Greaser	9	2	Rare								Skill: Sneak 10
 OmegaCodex	047	Creature	Roat	9	2	Rare								Skill: Bear Hug
 OmegaCodex	048	Creature	Saboteur	9	1	Common	H		MH		1	ES		Bonus: If this card is Harvested, move a card from your hand to your opponent's score pile. 
@@ -51,7 +51,7 @@ OmegaCodex	049	Creature	Eager Martyr	9	1	Common								If this card leaves play,
 OmegaCodex	050	Creature	Jer the Spike	10	-1	Rare	H		EH		2	D		Bonus: If this card is Harvested, your opponent discards 2 cards. 
 OmegaCodex	051	Creature	Gynormica	10	3	Rare	W	3x(MT > H)					END	Bonus: If this card wins a fight, draw 3 cards, then end your turn.
 OmegaCodex	052	Relic	Elixir of Speed		3	Rare	B						#X > 1 ? THIS > MS : THIS > ES	Bonus:  Discard 2 cards from your hand. If you do, move this card to your score pile. Otherwise, move this card to your opponent's score pile.
-OmegaCodex	053	Relic	Wromhole Generator		1	Rare	B		ER		1		X > MS; THIS > ES	Bonus: Move a Relic from your opponent's play area to your score pile. Move this card to your opponent's score pile.
+OmegaCodex	053	Relic	Wromhole Generator		1	Rare	B		EA		1		X > MS; THIS > ES	Bonus: Move a Relic from your opponent's play area to your score pile. Move this card to your opponent's score pile.
 OmegaCodex	054	Relic	Sigil of Power		1	Common								Friendly Creatures have +1 Power.
 OmegaCodex	055	Relic	The Buddy System		1	Common								Friendly Creatures gain Team-Up.
 OmegaCodex	056	Relic	Fog Machine		1	Rare								Friendly Creatures gain Sneak 5.
@@ -59,7 +59,7 @@ OmegaCodex	057	Relic	Cargo Pants		1	Rare								During your "draw cards" step, r
 OmegaCodex	058	Relic	Hypervator		1	Common	B	3x(MT > H)						Bonus: Draw 3 cards.
 OmegaCodex	059	Relic	Silent Room		1	Common	B	FLAG CPC						Bonus: During your opponent's next turn, they cannot play cards. 
 OmegaCodex	060	Relic	Meat Shears		1	Common	B		EL	@M	1	D		Bonus: Move a Mature enemy Creature to its owner's discard pile. 
-OmegaCodex	061	Relic	Sledgehammer		1	Common	B		ER			D		Bonus:  Move an enemy Relic to its owner's discard pile.  
+OmegaCodex	061	Relic	Sledgehammer		1	Common	B		EA			D		Bonus:  Move an enemy Relic to its owner's discard pile.  
 OmegaCodex	062	Relic	Ned's Ladder		1	Common								The first Creature each player plays each turn enters play Active.
 OmegaCodex	063	Action	Direct Deposit		-1	Rare	P		MH		1	MS		Play: Move a card from your hand to your score pile. 
 OmegaCodex	064	Action	Book of the Line		1	Linked	P		AL		1	B		Play: Move a Creature to the bottom of its owner's deck. 
@@ -70,14 +70,14 @@ OmegaCodex	068	Action	Gentle Nudge		1	Rare	P	&MD					MD > T	Play: Shuffle your d
 OmegaCodex	069	Action	Not Yet		1	Rare	P		ES		1	H		Play: Move a card from your opponent's score pile to its owner's hand. 
 OmegaCodex	070	Action	Two Birds		1	Common	P		ML / EL		1 / 1	OS		Play: Move an enemy card to its owner's score pile. Move a friendly card to its owner's score pile.
 OmegaCodex	071	Action	Recall		1	Common	P		EL		1	H		Play: Move an enemy Creature to its owner's hand.
-OmegaCodex	072	Action	Crossed Teleport		1	Common	P	?????						Play: Choose two cards from each score pile. Move two of the chosen cards to your opponent's score pile. Move the remaining cards to your score pile.
+OmegaCodex	072	Action	Crossed Teleport		1	Common	P		MS / ES		2 / 2	X	From X Choose 2 > ES, X > MS	Play: Choose two cards from each score pile. Move two of the chosen cards to your opponent's score pile. Move the remaining cards to your score pile.
 OmegaCodex	073	Action	Stink Bomb		1	Rare	P		MS		1	ES		Play: Move a card from your score pile to your opponent's score pile.
 OmegaCodex	074	Action	Fast Forward		-2	Variant	P		AL				X @M	Play: Rotate all cards to Mature. 
 OmegaCodex	075	Action	Rewind		1	Variant	P		AL				X @D	Play: Rotate all cards to Dormant. 
 OmegaCodex	076	Action	Start Over		2	Rare	P		ML				X @D	Play: Rotate all friendly cards to Dormant.
 OmegaCodex	077	Action	Corrode or Shine		2	Common	P						XC=M ? X @D : X @M	Play: Choose one:   • Rotate an enemy Creature to Mature.   • Rotate a friendly Creature to Dormant.
 OmegaCodex	078	Action	Wise or Naive		-1	Common	P						XC=M ? X @M : X @D	Play: Choose one:   • Rotate a friendly Creature to Mature.   • Rotate an enemy Creature to Dormant. 
-OmegaCodex	079	Action	Botched Construction		0	Common	P		ER		1	~		Play: Shuffle an enemy Relic into its owner's deck. 
+OmegaCodex	079	Action	Botched Construction		0	Common	P		EA		1	~		Play: Shuffle an enemy Relic into its owner's deck. 
 OmegaCodex	080	Action	Return to Sender		1	Common	P		ML / EL		2 / 2	~		Play: Shuffle two enemy Creatures into their owner's deck. Shuffle two friendly Creatures into their owner's deck.
 OmegaCodex	081	Action	This is Mine		1	Rare	P		EL		1	ML		Play: Take control of an enemy Creature.
 OmegaCodex	082	Action	This is Yours		1	Rare	P		ML		1	EL		Play: Give control of a friendly Creature to your opponent. 
@@ -90,7 +90,7 @@ OmegaCodex	088	Action	A Little Off the Top		1	Common	P		MS (ES)	^V		D		Play: Mov
 OmegaCodex	089	Action	Cheap Shot		1	Common	P		EH		1	D		Play: Your opponent discards a random card from their hand.
 OmegaCodex	090	Action	Jump Start		0	Common	P	SET NCA						Play: The next card you play enters play Active.
 OmegaCodex	091	Action	Lullaby		-1	Rare	P	SET CNF						Play: Until the start of your next turn, enemy Creatures cannot be used to fight.
-OmegaCodex	092	Action	Adult Swim		1	Common	P		EL&ER	V=1	1	MS		Play: If your opponent controls a card worth 1 VP, move it to your score pile. 
+OmegaCodex	092	Action	Adult Swim		1	Common	P		EL&EA	V=1	1	MS		Play: If your opponent controls a card worth 1 VP, move it to your score pile. 
 OmegaCodex	093	Action	Reforge		1	Rare	P		MD		1	H		Play: Move a Creature from your discard pile to its owner's hand.
 OmegaCodex	094	Action	War Siren		1	Common	P		ML	@D	1		X @A, Q FX	Play: Rotate a Dormant friendly Creature to Active and use the Creature to fight.
 OmegaCodex	095	Action	Redistributed Wealth		0	Rare	P, OV > MV		ES	V > 0, vV	1	MS		Play: If your opponent has more points in their score pile, move the card with the lowest positive VP Value from their score pile to your score pile.
