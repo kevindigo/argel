@@ -1,5 +1,6 @@
-import { createInitialState, Game } from './game';
+import { Game } from './game';
 import { Player } from './models';
+import { createInitialState } from './state';
 import { showState } from './ui';
 
 console.log('Argel');

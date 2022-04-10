@@ -1,5 +1,26 @@
-import { State, Side } from './models';
-import { SideManager } from './side';
+import { State, Side, Player, TurnState } from './models';
+import { createInitialSide, SideManager } from './side';
+
+export function createInitialState(player1: Player, player2: Player): State {
+    const sides: Side[] = [
+        createInitialSide(player1),
+        createInitialSide(player2),
+    ];
+
+    const turnState: TurnState = {
+        myIndex: 0,
+        turnFlags: {
+            canDiscard: false,
+        },
+    };
+
+    const state: State = {
+        sides,
+        turnState,
+    };
+
+    return state;
+}
 
 export class StateManager {
     private state: State;

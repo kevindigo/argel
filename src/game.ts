@@ -1,30 +1,9 @@
 import { CardefPool } from './pool';
 import { AvailableDeedsGenerator } from './deeds';
-import { Card, CardWithState, State, Player, Side, TurnState } from './models';
-import { createInitialSide, SideManager } from './side';
+import { Card, CardWithState, State, Player } from './models';
+import { SideManager } from './side';
 import { StateManager } from './state';
 import { CardState, CardType } from './types';
-
-export function createInitialState(player1: Player, player2: Player): State {
-    const sides: Side[] = [
-        createInitialSide(player1),
-        createInitialSide(player2),
-    ];
-
-    const turnState: TurnState = {
-        myIndex: 0,
-        turnFlags: {
-            canDiscard: false,
-        },
-    };
-
-    const state: State = {
-        sides,
-        turnState,
-    };
-
-    return state;
-}
 
 export class Game {
     public readonly players: Player[];

@@ -1,5 +1,6 @@
-import { createInitialState, Game } from '../src/game';
+import { Game } from '../src/game';
 import { Player } from '../src/models';
+import { createInitialState } from '../src/state';
 
 const sig: Player = {
     name: 'Sig',
