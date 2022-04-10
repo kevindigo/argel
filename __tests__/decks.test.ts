@@ -2,7 +2,7 @@ import { createDeck, lookupDeckList } from '../src/decks';
 
 const SAMPLE_DECK_ID = '679a6701-d7c3-494e-becb-04e9178aca30';
 
-describe('The deck pool', () => {
+describe('The deck server', () => {
     it('Can lookup a known decklist', () => {
         const deckList = lookupDeckList(SAMPLE_DECK_ID);
         expect(deckList).toBeDefined();

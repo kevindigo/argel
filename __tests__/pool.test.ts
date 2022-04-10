@@ -1,13 +1,6 @@
 import { CardefPool } from '../src/pool';
 
 describe('The cardef pool', () => {
-    it('Can be loaded', () => {
-        const pool = CardefPool.getPool();
-        expect(pool.lookup('OmegaCodex-014')).toBeDefined();
-    });
-});
-
-describe('A loaded cardef pool', () => {
     const pool = CardefPool.getPool();
 
     it('Has the right number of cardefs', () => {

@@ -11,16 +11,6 @@ const marla: Player = {
     deckId: '679a6701-d7c3-494e-becb-04e9178aca30',
 };
 
-describe('createInitialState', () => {
-    it('works', () => {
-        const state = createInitialState(sig, marla);
-        const statePlayers = state.sides.map((side) => {
-            return side.player;
-        });
-        expect(statePlayers).toEqual([sig, marla]);
-    });
-});
-
 describe('A Game', () => {
     it('can be started', () => {
         const state = createInitialState(sig, marla);
