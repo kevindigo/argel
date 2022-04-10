@@ -59,8 +59,8 @@ Docs for the specific calls aren't available yet. Stay tuned.
         * Flag: `canPlayActions` = Can play Actions this turn
         * Flag: `canFight`= Can Fight this turn
     * `TurnState` = Who is the Active Player, and TurnFlags
-        * `QueuedAdditionalPlay` = After this Action, Active Player can Play another Card
-        * `QueuedFightLineIndex` = After this Action, Active Player can Fight with this Creature
+        * `QueuedAdditionalPlay` = After this Deed, Active Player can Play another Card
+        * `QueuedFightLineIndex` = After this Deed, Active Player can Fight with this Creature
         * `TurnFlags`
             * `canDiscard` = The Active Player either has played a card this turn, 
                 or cannot play and has revealed their hand, so they are allowed to Discard
@@ -71,7 +71,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
         * `Top` (T) = Top card in a DrawPile
     * `Hand`(H)
     * `Line` (L) = A player's in-play Creatures
-    * `Purgatory` (P) = A temporary holding place during an action
+    * `Purgatory` (P) = A temporary holding place during a Deed
     * `Relics` (R) = A player's in-play Relics
     * `Scored` (S) = A players's score pile
 * Deeds
@@ -85,7 +85,7 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `EndTurn` (END) = Immediately end turn, without drawing or rotating
     * `Harvest` = Move a Mature card to Discards
     * `Play` = Move a Card from Hand to Line (position -1 means the right end)
-    * `Queue` (Q) = Queue a Play or Fight for after this Action
+    * `Queue` (Q) = Queue a Play or Fight for after this Deed
     * `Reveal` (%) = Make a current hand visible to the other Player
     * `Rotate` (@) = Change the orientation/state of an in-play Card
 * Qualifiers
@@ -103,10 +103,10 @@ Docs for the specific calls aren't available yet. Stay tuned.
     * `VictoryPoints` (V) = The VP of a Cardef or sum of a Scored
 * Triggers
     * `Harvest` (H:) = Bonus that triggers on a Harvest
-    * `Optional` (MAY:) = Optional action
+    * `Optional` (MAY:) = Optional Effect
     * `WinFight` (WF:) = Bonus that triggers when the Creature wins a fight
 * Other
-    * (=) = The card that is triggering the action
+    * (=) = The card that is triggering the Effect
     * `CardState` = State of an in-play Creature or Relic
         * `Dormant` (@D) = An in-play card is turned left (can't be used)
         * `Active` (@A) = An in-play card is upright (can Fight)

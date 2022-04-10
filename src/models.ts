@@ -1,5 +1,5 @@
 import {
-    ActionType,
+    DeedType,
     CardId,
     CardState,
     DeckId,
@@ -53,8 +53,8 @@ export interface TurnState {
     turnFlags: TurnFlags;
 }
 
-export interface Action {
-    type: ActionType;
+export interface Deed {
+    type: DeedType;
     handIndex: HandIndex | null;
     relicsIndex: RelicsIndex | null;
     lineIndex: LineIndex | null;
@@ -65,5 +65,5 @@ export interface Action {
 export interface GameState {
     sides: Side[];
     turnState: TurnState;
-    options?: Action[];
+    options?: Deed[];
 }

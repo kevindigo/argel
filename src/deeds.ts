@@ -1,8 +1,8 @@
 import { Cardef, CardefPool } from './cards';
 import { Game } from './game';
-import { Action, Card, CardWithState, GameState } from './models';
+import { Deed, Card, CardWithState, GameState } from './models';
 import { SideManager } from './side';
-import { ActionType, CardId, CardState, CardType } from './types';
+import { DeedType, CardId, CardState, CardType } from './types';
 
 function getMySideManager(game: Game): SideManager {
     const myIndex = game.getMyIndex();
@@ -16,8 +16,8 @@ function getCardef(pool: CardefPool, cardId: CardId): Cardef {
     return cardef;
 }
 
-function getAvailablePlayActions(gameState: GameState): Set<Action> {
-    const available = new Set<Action>();
+function getAvailablePlayDeeds(gameState: GameState): Set<Deed> {
+    const available = new Set<Deed>();
 
     const game = new Game(gameState);
     const manager = getMySideManager(game);
@@ -27,7 +27,7 @@ function getAvailablePlayActions(gameState: GameState): Set<Action> {
         switch (cardef.type) {
             case CardType.ACTION: {
                 available.add({
-                    type: ActionType.PLAY,
+                    type: DeedType.PLAY,
                     handIndex: i,
                     lineIndex: null,
                     relicsIndex: null,
@@ -36,14 +36,14 @@ function getAvailablePlayActions(gameState: GameState): Set<Action> {
             }
             case CardType.CREATURE: {
                 available.add({
-                    type: ActionType.PLAY,
+                    type: DeedType.PLAY,
                     handIndex: i,
                     lineIndex: -1,
                     relicsIndex: null,
                 });
                 if (manager.line.length > 0) {
                     available.add({
-                        type: ActionType.PLAY,
+                        type: DeedType.PLAY,
                         handIndex: i,
                         lineIndex: 0,
                         relicsIndex: null,
@@ -53,7 +53,7 @@ function getAvailablePlayActions(gameState: GameState): Set<Action> {
             }
             case CardType.RELIC: {
                 available.add({
-                    type: ActionType.PLAY,
+                    type: DeedType.PLAY,
                     handIndex: i,
                     lineIndex: null,
                     relicsIndex: -1,
@@ -66,8 +66,8 @@ function getAvailablePlayActions(gameState: GameState): Set<Action> {
     return available;
 }
 
-function getAvailableFightActions(gameState: GameState): Set<Action> {
-    const available = new Set<Action>();
+function getAvailableFightDeeds(gameState: GameState): Set<Deed> {
+    const available = new Set<Deed>();
 
     const game = new Game(gameState);
     const manager = getMySideManager(game);
@@ -89,7 +89,7 @@ function getAvailableFightActions(gameState: GameState): Set<Action> {
             ++targetIndex
         ) {
             available.add({
-                type: ActionType.FIGHT,
+                type: DeedType.FIGHT,
                 handIndex: null,
                 lineIndex: null,
                 relicsIndex: null,
@@ -105,8 +105,8 @@ function getAvailableFightActions(gameState: GameState): Set<Action> {
     return available;
 }
 
-function getAvailableHarvestActions(gameState: GameState): Set<Action> {
-    const available = new Set<Action>();
+function getAvailableHarvestDeeds(gameState: GameState): Set<Deed> {
+    const available = new Set<Deed>();
 
     const game = new Game(gameState);
     const manager = getMySideManager(game);
@@ -117,7 +117,7 @@ function getAvailableHarvestActions(gameState: GameState): Set<Action> {
         }
 
         available.add({
-            type: ActionType.HARVEST,
+            type: DeedType.HARVEST,
             handIndex: null,
             lineIndex,
             relicsIndex: null,
@@ -135,7 +135,7 @@ function getAvailableHarvestActions(gameState: GameState): Set<Action> {
         }
 
         available.add({
-            type: ActionType.HARVEST,
+            type: DeedType.HARVEST,
             handIndex: null,
             lineIndex: null,
             relicsIndex,
@@ -145,8 +145,8 @@ function getAvailableHarvestActions(gameState: GameState): Set<Action> {
     return available;
 }
 
-function getAvailableDiscardActions(gameState: GameState): Set<Action> {
-    const available = new Set<Action>();
+function getAvailableDiscardDeeds(gameState: GameState): Set<Deed> {
+    const available = new Set<Deed>();
 
     const game = new Game(gameState);
     const manager = getMySideManager(game);
@@ -156,7 +156,7 @@ function getAvailableDiscardActions(gameState: GameState): Set<Action> {
 
     for (let i = 0; i < manager.hand.length; ++i) {
         available.add({
-            type: ActionType.DISCARD,
+            type: DeedType.DISCARD,
             handIndex: i,
             lineIndex: null,
             relicsIndex: null,
@@ -166,27 +166,27 @@ function getAvailableDiscardActions(gameState: GameState): Set<Action> {
     return available;
 }
 
-export function getAvailableActions(gameState: GameState): Set<Action> {
-    const available = new Set<Action>();
+export function getAvailableDeeds(gameState: GameState): Set<Deed> {
+    const available = new Set<Deed>();
 
-    const playActions = getAvailablePlayActions(gameState);
-    playActions.forEach((action) => {
-        available.add(action);
+    const playDeeds = getAvailablePlayDeeds(gameState);
+    playDeeds.forEach((deed) => {
+        available.add(deed);
     });
 
-    const FightActions = getAvailableFightActions(gameState);
-    FightActions.forEach((action) => {
-        available.add(action);
+    const FightDeeds = getAvailableFightDeeds(gameState);
+    FightDeeds.forEach((deed) => {
+        available.add(deed);
     });
 
-    const harvestActions = getAvailableHarvestActions(gameState);
-    harvestActions.forEach((action) => {
-        available.add(action);
+    const harvestDeeds = getAvailableHarvestDeeds(gameState);
+    harvestDeeds.forEach((deed) => {
+        available.add(deed);
     });
 
-    const discardActions = getAvailableDiscardActions(gameState);
-    discardActions.forEach((action) => {
-        available.add(action);
+    const discardDeeds = getAvailableDiscardDeeds(gameState);
+    discardDeeds.forEach((deed) => {
+        available.add(deed);
     });
 
     return available;

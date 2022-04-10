@@ -1,26 +1,26 @@
 import { CardefPool } from './cards';
 import { lookupDeckList } from './decks';
 import { Game } from './game';
-import { Action } from './models';
+import { Deed } from './models';
 import { DeckId } from './types';
 
-function getActionString(action: Action): string {
+function getDeedString(deed: Deed): string {
     const parts: string[] = [];
-    parts.push(action.type);
-    if (action.handIndex != null) {
-        parts.push(`MH${action.handIndex}`);
+    parts.push(deed.type);
+    if (deed.handIndex != null) {
+        parts.push(`MH${deed.handIndex}`);
     }
-    if (action.lineIndex !== null) {
-        parts.push(`ML${action.lineIndex}`);
+    if (deed.lineIndex !== null) {
+        parts.push(`ML${deed.lineIndex}`);
     }
-    if (action.relicsIndex !== null) {
-        parts.push(`MR${action.relicsIndex}`);
+    if (deed.relicsIndex !== null) {
+        parts.push(`MR${deed.relicsIndex}`);
     }
-    if (action.attackers) {
-        parts.push(`F${action.attackers}`);
+    if (deed.attackers) {
+        parts.push(`F${deed.attackers}`);
     }
-    if (action.defenders) {
-        parts.push(`D${action.defenders}`);
+    if (deed.defenders) {
+        parts.push(`D${deed.defenders}`);
     }
     return parts.join(' ');
 }
@@ -65,9 +65,9 @@ export function showGameState(game: Game): void {
     });
     const myIndex = game.getMyIndex();
     console.log(`Active player: ${sideManagers[myIndex]?.playerName()}`);
-    const availableActions = game.getCopyOfStateWithOptions().options || [];
-    availableActions.forEach((action) => {
-        console.log(getActionString(action));
+    const availableDeeds = game.getCopyOfStateWithOptions().options || [];
+    availableDeeds.forEach((deed) => {
+        console.log(getDeedString(deed));
     });
     console.log();
 }

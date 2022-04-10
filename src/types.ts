@@ -15,7 +15,7 @@ export enum TopOrBottom {
     BOTTOM = 'Bottom',
 }
 
-export enum ActionType {
+export enum DeedType {
     PLAY = 'Play',
     FIGHT = 'Fight',
     HARVEST = 'Harvest',
