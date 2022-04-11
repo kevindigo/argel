@@ -46,7 +46,7 @@ export class Game {
         while (manager.line.length < 2) {
             const card = manager.drawPile.pop();
             if (!card) {
-                throw new Error('Drawdeck empty!?');
+                throw new Error('DrawPile empty!?');
             }
             const cardef = pool.lookup(card.cardId);
             if (cardef?.type === CardType.CREATURE) {
