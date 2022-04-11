@@ -56,10 +56,47 @@ function doDeedPlay(state: State, deed: Deed): void {
     state.turnState.turnFlags.canDiscard = true;
 }
 
+function doFightPlay(state: State, deed: Deed): void {
+    const stateManager = new StateManager(state);
+    const attackers = deed.attackers;
+    if (!attackers) {
+        throw new Error(
+            `Attempted a Fight with no attackers: ${JSON.stringify(deed)}`
+        );
+    }
+    const defenders = deed.defenders;
+    if (!defenders) {
+        throw new Error(
+            `Attempted a Fight with no defenders: ${JSON.stringify(deed)}`
+        );
+    }
+    const myIndex = stateManager.getMyIndex();
+    const attackPower = stateManager.getEffectivePower(myIndex, attackers);
+    const mySideManager = stateManager.getMySideManager();
+    const attackingCards = mySideManager.removeFromLine(attackers);
+
+    const enemyIndex = stateManager.getEnemyIndex();
+    const defensePower = stateManager.getEffectivePower(enemyIndex, defenders);
+    const enemySideManager = stateManager.getEnemySideManager();
+    const defendingCards = enemySideManager.removeFromLine(defenders);
+
+    if (attackPower >= defensePower) {
+        mySideManager.discards.push(...attackingCards);
+        mySideManager.scored.push(...defendingCards);
+    } else {
+        enemySideManager.discards.push(...defendingCards);
+        enemySideManager.scored.push(...attackingCards);
+    }
+}
+
 export function doDeed(state: State, deed: Deed): void {
     switch (deed.type) {
         case DeedType.PLAY: {
             doDeedPlay(state, deed);
+            break;
+        }
+        case DeedType.FIGHT: {
+            doFightPlay(state, deed);
             break;
         }
         default:

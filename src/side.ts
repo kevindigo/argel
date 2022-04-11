@@ -1,5 +1,6 @@
 import { createDeck, lookupDeckList } from './decks';
-import { Player, Side } from './models';
+import { Card, Player, Side } from './models';
+import { LineIndex } from './types';
 
 export class SideManager {
     private _side: Side;
@@ -52,6 +53,23 @@ export class SideManager {
 
     public get scored() {
         return this.side.scored;
+    }
+
+    public removeFromLine(lineIndexes: LineIndex[]): Card[] {
+        const copyOfIndexes = Array.from(lineIndexes);
+        copyOfIndexes.sort().reverse();
+        const cards = copyOfIndexes.map((index) => {
+            const cardWithState = this.line.splice(index, 1).pop();
+            if (!cardWithState) {
+                throw new Error(
+                    `failed to remove ${JSON.stringify(
+                        lineIndexes
+                    )} from ${JSON.stringify(this.line)}`
+                );
+            }
+            return cardWithState.card;
+        });
+        return cards;
     }
 }
 

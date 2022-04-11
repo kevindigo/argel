@@ -20,15 +20,28 @@ function createCard(cardNumber: CardNumber): Card {
     };
 }
 
+function createCardWithState(
+    cardNumber: CardNumber,
+    cardState: CardState
+): CardWithState {
+    const card = createCard(cardNumber);
+    return {
+        card,
+        state: cardState,
+    };
+}
+
 describe('The deed doer', () => {
     let state: State;
     let stateManager: StateManager;
     let mySideManager: SideManager;
+    let enemySideManager: SideManager;
 
     beforeEach(() => {
         state = createInitialState(sig, marla);
         stateManager = new StateManager(state);
         mySideManager = stateManager.getMySideManager();
+        enemySideManager = stateManager.getEnemySideManager();
     });
 
     it('Can play an action with no Play effects', () => {
@@ -176,5 +189,65 @@ describe('The deed doer', () => {
         expect(line[0]).toEqual(jaterDormant);
 
         expect(state.turnState.turnFlags.canDiscard).toBeTruthy();
+    });
+
+    it('Can fight and win', () => {
+        const jaterDormant = createCardWithState('002', CardState.DORMANT);
+        const enemyLine = enemySideManager.line;
+        enemyLine.push(jaterDormant);
+
+        const renegadeReady = createCardWithState('041', CardState.READY);
+        const myLine = mySideManager.line;
+        myLine.push(renegadeReady);
+
+        const deed: Deed = {
+            type: DeedType.FIGHT,
+            handIndex: null,
+            lineIndex: null,
+            attackers: [0],
+            defenders: [0],
+        };
+
+        doDeed(state, deed);
+        expect(mySideManager.hand.length).toEqual(0);
+        expect(mySideManager.line.length).toEqual(0);
+        expect(mySideManager.arsenal.length).toEqual(0);
+        expect(mySideManager.discards.length).toEqual(1);
+        expect(mySideManager.scored.length).toEqual(1);
+        expect(mySideManager.drawPile.length).toEqual(17);
+
+        expect(enemySideManager.line.length).toEqual(0);
+        expect(enemySideManager.discards.length).toEqual(0);
+        expect(enemySideManager.scored.length).toEqual(0);
+    });
+
+    it('Can fight and lose', () => {
+        const jaterReady = createCardWithState('002', CardState.READY);
+        const myLine = mySideManager.line;
+        myLine.push(jaterReady);
+
+        const renegadeDormant = createCardWithState('041', CardState.DORMANT);
+        const enemyLine = enemySideManager.line;
+        enemyLine.push(renegadeDormant);
+
+        const deed: Deed = {
+            type: DeedType.FIGHT,
+            handIndex: null,
+            lineIndex: null,
+            attackers: [0],
+            defenders: [0],
+        };
+
+        doDeed(state, deed);
+        expect(mySideManager.hand.length).toEqual(0);
+        expect(mySideManager.line.length).toEqual(0);
+        expect(mySideManager.arsenal.length).toEqual(0);
+        expect(mySideManager.discards.length).toEqual(0);
+        expect(mySideManager.scored.length).toEqual(0);
+        expect(mySideManager.drawPile.length).toEqual(17);
+
+        expect(enemySideManager.line.length).toEqual(0);
+        expect(enemySideManager.discards.length).toEqual(1);
+        expect(enemySideManager.scored.length).toEqual(1);
     });
 });
