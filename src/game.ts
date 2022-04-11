@@ -13,6 +13,9 @@ export class Game {
 
     public constructor(player1: Player, player2: Player) {
         const state = createInitialState(player1, player2);
+        if (player1.deckId === player2.deckId) {
+            throw new Error('Mirror matches are not allowed');
+        }
         this.players = [player1, player2];
         this.sideManagers = state.sides.map((side) => {
             return new SideManager(side);
