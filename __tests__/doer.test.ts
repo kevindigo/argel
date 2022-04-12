@@ -20,17 +20,30 @@ function createCard(cardNumber: CardNumber): Card {
     };
 }
 
+function createCardWithState(
+    cardNumber: CardNumber,
+    cardState: CardState
+): CardWithState {
+    const card = createCard(cardNumber);
+    return {
+        card,
+        state: cardState,
+    };
+}
+
+let state: State;
+let stateManager: StateManager;
+let mySideManager: SideManager;
+let enemySideManager: SideManager;
+
+beforeEach(() => {
+    state = createInitialState(sig, marla);
+    stateManager = new StateManager(state);
+    mySideManager = stateManager.getMySideManager();
+    enemySideManager = stateManager.getEnemySideManager();
+});
+
 describe('The deed doer', () => {
-    let state: State;
-    let stateManager: StateManager;
-    let mySideManager: SideManager;
-
-    beforeEach(() => {
-        state = createInitialState(sig, marla);
-        stateManager = new StateManager(state);
-        mySideManager = stateManager.getMySideManager();
-    });
-
     it('Can play an action with no Play effects', () => {
         const nothingToSee = createCard('100');
         const hand = mySideManager.hand;
@@ -176,5 +189,123 @@ describe('The deed doer', () => {
         expect(line[0]).toEqual(jaterDormant);
 
         expect(state.turnState.turnFlags.canDiscard).toBeTruthy();
+    });
+
+    it('Can fight and win', () => {
+        const jaterDormant = createCardWithState('002', CardState.DORMANT);
+        const enemyLine = enemySideManager.line;
+        enemyLine.push(jaterDormant);
+
+        const renegadeReady = createCardWithState('041', CardState.READY);
+        const myLine = mySideManager.line;
+        myLine.push(renegadeReady);
+
+        const deed: Deed = {
+            type: DeedType.FIGHT,
+            handIndex: null,
+            lineIndex: null,
+            attackers: [0],
+            defenders: [0],
+        };
+
+        doDeed(state, deed);
+        expect(mySideManager.hand.length).toEqual(0);
+        expect(mySideManager.line.length).toEqual(0);
+        expect(mySideManager.arsenal.length).toEqual(0);
+        expect(mySideManager.discards.length).toEqual(1);
+        expect(mySideManager.scored.length).toEqual(1);
+        expect(mySideManager.drawPile.length).toEqual(17);
+
+        expect(enemySideManager.line.length).toEqual(0);
+        expect(enemySideManager.discards.length).toEqual(0);
+        expect(enemySideManager.scored.length).toEqual(0);
+    });
+
+    it('Can fight and lose', () => {
+        const jaterReady = createCardWithState('002', CardState.READY);
+        const myLine = mySideManager.line;
+        myLine.push(jaterReady);
+
+        const renegadeDormant = createCardWithState('041', CardState.DORMANT);
+        const enemyLine = enemySideManager.line;
+        enemyLine.push(renegadeDormant);
+
+        const deed: Deed = {
+            type: DeedType.FIGHT,
+            handIndex: null,
+            lineIndex: null,
+            attackers: [0],
+            defenders: [0],
+        };
+
+        doDeed(state, deed);
+        expect(mySideManager.hand.length).toEqual(0);
+        expect(mySideManager.line.length).toEqual(0);
+        expect(mySideManager.arsenal.length).toEqual(0);
+        expect(mySideManager.discards.length).toEqual(0);
+        expect(mySideManager.scored.length).toEqual(0);
+        expect(mySideManager.drawPile.length).toEqual(17);
+
+        expect(enemySideManager.line.length).toEqual(0);
+        expect(enemySideManager.discards.length).toEqual(1);
+        expect(enemySideManager.scored.length).toEqual(1);
+    });
+});
+
+describe('Individual card Play effects', () => {
+    it('can play overcharge (an automatic play effect)', () => {
+        const overcharge = createCard('086');
+        const hand = mySideManager.hand;
+        hand.push(overcharge);
+
+        const deed: Deed = {
+            type: DeedType.PLAY,
+            handIndex: 0,
+            lineIndex: null,
+        };
+        doDeed(state, deed);
+
+        expect(hand.length).toEqual(2);
+        expect(mySideManager.line.length).toEqual(0);
+        expect(mySideManager.arsenal.length).toEqual(0);
+        expect(mySideManager.discards.length).toEqual(0);
+        expect(mySideManager.scored.length).toEqual(1);
+        expect(mySideManager.drawPile.length).toEqual(15);
+
+        const scored = mySideManager.scored;
+        expect(scored[0]).toEqual(overcharge);
+    });
+
+    it('can play fast forward (an automatic play effect)', () => {
+        const fastForward = createCard('074');
+        const hand = mySideManager.hand;
+        hand.push(fastForward);
+
+        const myVix = createCardWithState('001', CardState.DORMANT);
+        mySideManager.line.push(myVix);
+        const enemyJater = createCardWithState('002', CardState.READY);
+        enemySideManager.line.push(enemyJater);
+
+        const deed: Deed = {
+            type: DeedType.PLAY,
+            handIndex: 0,
+            lineIndex: null,
+        };
+        doDeed(state, deed);
+
+        expect(hand.length).toEqual(0);
+        expect(mySideManager.line.length).toEqual(1);
+        expect(mySideManager.arsenal.length).toEqual(0);
+        expect(mySideManager.discards.length).toEqual(0);
+        expect(mySideManager.scored.length).toEqual(1);
+        expect(mySideManager.drawPile.length).toEqual(17);
+
+        const scored = mySideManager.scored;
+        expect(scored[0]).toEqual(fastForward);
+
+        expect(mySideManager.line[0]?.state).toEqual(CardState.MATURE);
+
+        expect(enemySideManager.line.length).toEqual(1);
+        expect(enemySideManager.line[0]?.state).toEqual(CardState.MATURE);
     });
 });

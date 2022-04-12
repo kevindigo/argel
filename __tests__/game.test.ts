@@ -24,4 +24,14 @@ describe('A Game', () => {
             expect(side.flags.isNextCardActive).toBeFalsy();
         });
     });
+
+    it('prevents mirror matches', () => {
+        const sig2: Player = {
+            name: 'Sig2',
+            deckId: '59bd26ac-7450-4f60-a0b0-44628a5b28d4',
+        };
+        expect(() => {
+            new Game(sig, sig2);
+        }).toThrowError();
+    });
 });

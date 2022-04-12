@@ -13,6 +13,9 @@ export class Game {
 
     public constructor(player1: Player, player2: Player) {
         const state = createInitialState(player1, player2);
+        if (player1.deckId === player2.deckId) {
+            throw new Error('Mirror matches are not allowed');
+        }
         this.players = [player1, player2];
         this.sideManagers = state.sides.map((side) => {
             return new SideManager(side);
@@ -46,7 +49,7 @@ export class Game {
         while (manager.line.length < 2) {
             const card = manager.drawPile.pop();
             if (!card) {
-                throw new Error('Drawdeck empty!?');
+                throw new Error('DrawPile empty!?');
             }
             const cardef = pool.lookup(card.cardId);
             if (cardef?.type === CardType.CREATURE) {
