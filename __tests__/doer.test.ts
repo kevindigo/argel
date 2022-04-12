@@ -250,4 +250,29 @@ describe('The deed doer', () => {
         expect(enemySideManager.discards.length).toEqual(1);
         expect(enemySideManager.scored.length).toEqual(1);
     });
+
+    it('can play an Action with an automatic effect', () => {
+        const overcharge = createCard('086');
+        const hand = mySideManager.hand;
+        hand.push(overcharge);
+
+        const deed: Deed = {
+            type: DeedType.PLAY,
+            handIndex: 0,
+            lineIndex: null,
+        };
+        doDeed(state, deed);
+
+        expect(hand.length).toEqual(2);
+        expect(mySideManager.line.length).toEqual(0);
+        expect(mySideManager.arsenal.length).toEqual(0);
+        expect(mySideManager.discards.length).toEqual(0);
+        expect(mySideManager.scored.length).toEqual(1);
+        expect(mySideManager.drawPile.length).toEqual(15);
+
+        const scored = mySideManager.scored;
+        expect(scored[0]).toEqual(overcharge);
+
+        expect(state.turnState.turnFlags.canDiscard).toBeTruthy();
+    });
 });

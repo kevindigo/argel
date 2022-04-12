@@ -3,6 +3,15 @@ import { CardefPool } from './pool';
 import { StateManager } from './state';
 import { CardState, CardType, DeedType, LineEnd } from './types';
 
+function doPlayEffect(state: State, card: Card): void {
+    if (card.cardId === 'OmegaCodex-086') {
+        const stateManager = new StateManager(state);
+        const mySideManager = stateManager.getMySideManager();
+        mySideManager.draw();
+        mySideManager.draw();
+    }
+}
+
 function doDeedPlay(state: State, deed: Deed): void {
     const stateManager = new StateManager(state);
     const mySideManager = stateManager.getMySideManager();
@@ -19,6 +28,7 @@ function doDeedPlay(state: State, deed: Deed): void {
         case CardType.ACTION: {
             mySideManager.hand.splice(handIndex, 1);
             mySideManager.scored.push(card);
+            doPlayEffect(state, card);
             break;
         }
         case CardType.CREATURE: {
