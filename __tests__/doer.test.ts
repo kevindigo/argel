@@ -31,19 +31,19 @@ function createCardWithState(
     };
 }
 
+let state: State;
+let stateManager: StateManager;
+let mySideManager: SideManager;
+let enemySideManager: SideManager;
+
+beforeEach(() => {
+    state = createInitialState(sig, marla);
+    stateManager = new StateManager(state);
+    mySideManager = stateManager.getMySideManager();
+    enemySideManager = stateManager.getEnemySideManager();
+});
+
 describe('The deed doer', () => {
-    let state: State;
-    let stateManager: StateManager;
-    let mySideManager: SideManager;
-    let enemySideManager: SideManager;
-
-    beforeEach(() => {
-        state = createInitialState(sig, marla);
-        stateManager = new StateManager(state);
-        mySideManager = stateManager.getMySideManager();
-        enemySideManager = stateManager.getEnemySideManager();
-    });
-
     it('Can play an action with no Play effects', () => {
         const nothingToSee = createCard('100');
         const hand = mySideManager.hand;
@@ -250,8 +250,10 @@ describe('The deed doer', () => {
         expect(enemySideManager.discards.length).toEqual(1);
         expect(enemySideManager.scored.length).toEqual(1);
     });
+});
 
-    it('can play an Action with an automatic effect', () => {
+describe('Individual card Play effects', () => {
+    it('can play overcharge (an automatic play effect)', () => {
         const overcharge = createCard('086');
         const hand = mySideManager.hand;
         hand.push(overcharge);
@@ -272,7 +274,38 @@ describe('The deed doer', () => {
 
         const scored = mySideManager.scored;
         expect(scored[0]).toEqual(overcharge);
+    });
 
-        expect(state.turnState.turnFlags.canDiscard).toBeTruthy();
+    it('can play fast forward (an automatic play effect)', () => {
+        const fastForward = createCard('074');
+        const hand = mySideManager.hand;
+        hand.push(fastForward);
+
+        const myVix = createCardWithState('001', CardState.DORMANT);
+        mySideManager.line.push(myVix);
+        const enemyJater = createCardWithState('002', CardState.READY);
+        enemySideManager.line.push(enemyJater);
+
+        const deed: Deed = {
+            type: DeedType.PLAY,
+            handIndex: 0,
+            lineIndex: null,
+        };
+        doDeed(state, deed);
+
+        expect(hand.length).toEqual(0);
+        expect(mySideManager.line.length).toEqual(1);
+        expect(mySideManager.arsenal.length).toEqual(0);
+        expect(mySideManager.discards.length).toEqual(0);
+        expect(mySideManager.scored.length).toEqual(1);
+        expect(mySideManager.drawPile.length).toEqual(17);
+
+        const scored = mySideManager.scored;
+        expect(scored[0]).toEqual(fastForward);
+
+        expect(mySideManager.line[0]?.state).toEqual(CardState.MATURE);
+
+        expect(enemySideManager.line.length).toEqual(1);
+        expect(enemySideManager.line[0]?.state).toEqual(CardState.MATURE);
     });
 });

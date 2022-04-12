@@ -4,11 +4,29 @@ import { StateManager } from './state';
 import { CardState, CardType, DeedType, LineEnd } from './types';
 
 function doPlayEffect(state: State, card: Card): void {
-    if (card.cardId === 'OmegaCodex-086') {
-        const stateManager = new StateManager(state);
-        const mySideManager = stateManager.getMySideManager();
-        mySideManager.draw();
-        mySideManager.draw();
+    switch (card.cardId) {
+        case 'OmegaCodex-086': {
+            const stateManager = new StateManager(state);
+            const mySideManager = stateManager.getMySideManager();
+            mySideManager.draw();
+            mySideManager.draw();
+            break;
+        }
+        case 'OmegaCodex-074': {
+            const stateManager = new StateManager(state);
+            const mySideManager = stateManager.getMySideManager();
+            const enemySideManager = stateManager.getEnemySideManager();
+
+            mySideManager.line.forEach((cardWithState) => {
+                cardWithState.state = CardState.MATURE;
+            });
+
+            enemySideManager.line.forEach((cardWithState) => {
+                cardWithState.state = CardState.MATURE;
+            });
+
+            break;
+        }
     }
 }
 
