@@ -1,3 +1,4 @@
+import { CardEffects } from './effects';
 import { CardNumber, CardType, SetId } from './types';
 
 export interface Cardef {
@@ -7,6 +8,7 @@ export interface Cardef {
     name: string;
     power: number | undefined;
     vp: number;
+    cardEffects?: CardEffects;
     // skills
     // bonus
     // rarity

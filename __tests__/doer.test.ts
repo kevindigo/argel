@@ -308,4 +308,23 @@ describe('Individual card Play effects', () => {
         expect(enemySideManager.line.length).toEqual(1);
         expect(enemySideManager.line[0]?.state).toEqual(CardState.MATURE);
     });
+
+    it.skip('can play direct deposit (a play effect with a simple choice)', () => {
+        const directDeposit = createCard('063');
+        const hand = mySideManager.hand;
+        hand.push(directDeposit);
+
+        const myVix = createCard('001');
+        hand.push(myVix);
+        const myJater = createCard('002');
+        hand.push(myJater);
+
+        const deed: Deed = {
+            type: DeedType.PLAY,
+            handIndex: 0,
+            lineIndex: null,
+        };
+        doDeed(state, deed);
+        fail();
+    });
 });
