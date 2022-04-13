@@ -1,4 +1,4 @@
-import { Cardef, createCardef } from './cards';
+import { Cardef, createCardef } from './cardefs';
 import { CardId, CardType } from './types';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';

@@ -1,4 +1,4 @@
-import { Cardef } from './cards';
+import { Cardef } from './cardefs';
 import { Deed, Card, CardWithState } from './models';
 import { CardefPool } from './pool';
 import { SideManager } from './side';
