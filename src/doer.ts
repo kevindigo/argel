@@ -54,19 +54,22 @@ function doDeedPlay(state: State, deed: Deed): void {
             break;
         }
         case CardType.CREATURE: {
-            const lineIndex = deed.lineIndex;
-            if (lineIndex === null) {
-                throw new Error('Attempted to play Creature with no lineIndex');
+            const to = deed.to.shift();
+            if (!to) {
+                throw new Error('Attempted to play Creature with no to');
+            }
+            if (to.zone !== Zone.MY_LINE) {
+                throw new Error('Attempted to play Creature with no to');
             }
             const cardWithState: CardWithState = {
                 card,
                 state: CardState.DORMANT,
             };
             mySideManager.hand.splice(handIndex, 1);
-            if (lineIndex === LineEnd.RIGHT) {
+            if (to.index === LineEnd.RIGHT) {
                 mySideManager.line.push(cardWithState);
             } else {
-                mySideManager.line.splice(lineIndex, 0, cardWithState);
+                mySideManager.line.splice(to.index, 0, cardWithState);
             }
             break;
         }

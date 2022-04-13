@@ -52,7 +52,7 @@ describe('The deed doer', () => {
         const deed: Deed = {
             type: DeedType.PLAY,
             from: [{ zone: Zone.MY_HAND, index: 0 }],
-            lineIndex: null,
+            to: [],
         };
         doDeed(state, deed);
 
@@ -77,7 +77,7 @@ describe('The deed doer', () => {
         const deed: Deed = {
             type: DeedType.PLAY,
             from: [{ zone: Zone.MY_HAND, index: 0 }],
-            lineIndex: null,
+            to: [],
         };
         doDeed(state, deed);
         expect(hand.length).toEqual(0);
@@ -103,7 +103,7 @@ describe('The deed doer', () => {
         const deed: Deed = {
             type: DeedType.PLAY,
             from: [{ zone: Zone.MY_HAND, index: 0 }],
-            lineIndex: 0,
+            to: [{ zone: Zone.MY_LINE, index: LineEnd.RIGHT }],
         };
         doDeed(state, deed);
         expect(hand.length).toEqual(0);
@@ -137,7 +137,7 @@ describe('The deed doer', () => {
         const deed: Deed = {
             type: DeedType.PLAY,
             from: [{ zone: Zone.MY_HAND, index: 0 }],
-            lineIndex: LineEnd.LEFT,
+            to: [{ zone: Zone.MY_LINE, index: LineEnd.LEFT }],
         };
         doDeed(state, deed);
         expect(hand.length).toEqual(0);
@@ -172,7 +172,7 @@ describe('The deed doer', () => {
         const deed: Deed = {
             type: DeedType.PLAY,
             from: [{ zone: Zone.MY_HAND, index: 0 }],
-            lineIndex: LineEnd.RIGHT,
+            to: [{ zone: Zone.MY_LINE, index: LineEnd.RIGHT }],
         };
         doDeed(state, deed);
         expect(hand.length).toEqual(0);
@@ -203,7 +203,7 @@ describe('The deed doer', () => {
         const deed: Deed = {
             type: DeedType.FIGHT,
             from: [],
-            lineIndex: null,
+            to: [],
             attackers: [0],
             defenders: [0],
         };
@@ -233,7 +233,7 @@ describe('The deed doer', () => {
         const deed: Deed = {
             type: DeedType.FIGHT,
             from: [],
-            lineIndex: null,
+            to: [],
             attackers: [0],
             defenders: [0],
         };
@@ -261,7 +261,7 @@ describe('Individual card Play effects', () => {
         const deed: Deed = {
             type: DeedType.PLAY,
             from: [{ zone: Zone.MY_HAND, index: 0 }],
-            lineIndex: null,
+            to: [],
         };
         doDeed(state, deed);
 
@@ -289,7 +289,7 @@ describe('Individual card Play effects', () => {
         const deed: Deed = {
             type: DeedType.PLAY,
             from: [{ zone: Zone.MY_HAND, index: 0 }],
-            lineIndex: null,
+            to: [],
         };
         doDeed(state, deed);
 
@@ -322,7 +322,7 @@ describe('Individual card Play effects', () => {
         const deed: Deed = {
             type: DeedType.PLAY,
             from: [{ zone: Zone.MY_HAND, index: 0 }],
-            lineIndex: null,
+            to: [],
         };
         doDeed(state, deed);
         fail();

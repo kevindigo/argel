@@ -61,8 +61,7 @@ export interface TurnState {
 export interface Deed {
     type: DeedType;
     from: Slot[];
-    // to: Slot[] (only used for fight)
-    lineIndex: LineIndex | null;
+    to: Slot[];
     attackers?: LineIndex[];
     defenders?: LineIndex[];
     // A list of available deeds would include when/choose/from/filter
