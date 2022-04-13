@@ -39,6 +39,23 @@ export enum LineEnd {
     RIGHT = -1,
 }
 
+export enum Zone {
+    MY_TOP = 'MT',
+    MY_BOTTOM = 'MB',
+    MY_HAND = 'MH',
+    MY_DISCARDS = 'MD',
+    MY_SCORED = 'MS',
+    MY_LINE = 'ML',
+    MY_ARSENAL = 'MA',
+    ENEMY_TOP = 'ET',
+    ENEMY_BOTTOM = 'EB',
+    ENEMY_HAND = 'EH',
+    ENEMY_DISCARDS = 'ED',
+    ENEMY_SCORED = 'ES',
+    ENEMY_LINE = 'EL',
+    ENEMY_ARSENAL = 'EA',
+}
+
 export type HandIndex = number;
 export type LineIndex = LineEnd;
 export type ScoredIndex = number;

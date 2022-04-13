@@ -6,6 +6,7 @@ import {
     HandIndex,
     LineIndex,
     TopOrBottom,
+    Zone,
 } from './types';
 
 export interface Player {
@@ -27,6 +28,11 @@ export interface SideFlags {
     canFight: boolean;
     canPlayActions: boolean;
     isNextCardActive: boolean;
+}
+
+export interface Slot {
+    Pile: Zone;
+    index: number;
 }
 
 export interface Side {
@@ -54,10 +60,16 @@ export interface TurnState {
 
 export interface Deed {
     type: DeedType;
+    // Maybe simplify this to
+    // from: Slot[] (singluar for play/use/discard)
+    // to: Slot[] (only used for fight)
     handIndex: HandIndex | null;
     lineIndex: LineIndex | null;
     attackers?: LineIndex[];
     defenders?: LineIndex[];
+    // A list of available deeds would include when/choose/from/filter
+    // Selecting a deed would require you to also populate your choice
+    choice?: Slot[];
 }
 
 export interface State {

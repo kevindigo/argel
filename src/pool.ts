@@ -2,7 +2,6 @@ import { Cardef, createCardef } from './cards';
 import { CardId, CardType } from './types';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import { parseEffects } from './effects';
 
 export class CardefPool {
     private static singletonPool: CardefPool;
@@ -39,7 +38,6 @@ export class CardefPool {
             const power = parseInt(columns.shift() ?? '');
             const vp = parseInt(columns.shift() ?? '999');
             columns.shift(); // rarity
-            const effects = columns.shift();
 
             try {
                 const cardef = createCardef(
@@ -50,10 +48,6 @@ export class CardefPool {
                     power,
                     vp
                 );
-
-                if (effects) {
-                    cardef.cardEffects = parseEffects(effects);
-                }
 
                 return cardef;
             } catch (e: unknown) {
