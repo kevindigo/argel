@@ -31,7 +31,7 @@ export interface SideFlags {
 }
 
 export interface Slot {
-    Pile: Zone;
+    zone: Zone;
     index: number;
 }
 
@@ -60,10 +60,8 @@ export interface TurnState {
 
 export interface Deed {
     type: DeedType;
-    // Maybe simplify this to
-    // from: Slot[] (singluar for play/use/discard)
+    from: Slot[];
     // to: Slot[] (only used for fight)
-    handIndex: HandIndex | null;
     lineIndex: LineIndex | null;
     attackers?: LineIndex[];
     defenders?: LineIndex[];

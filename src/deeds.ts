@@ -3,7 +3,7 @@ import { Deed, Card, CardWithState } from './models';
 import { CardefPool } from './pool';
 import { SideManager } from './side';
 import { StateManager } from './state';
-import { DeedType, CardId, CardState, CardType } from './types';
+import { DeedType, CardId, CardState, CardType, Zone } from './types';
 
 export class AvailableDeedsGenerator {
     private stateManager: StateManager;
@@ -36,7 +36,7 @@ export class AvailableDeedsGenerator {
                 case CardType.ACTION: {
                     available.add({
                         type: DeedType.PLAY,
-                        handIndex: i,
+                        from: [{ zone: Zone.MY_HAND, index: i }],
                         lineIndex: null,
                     });
                     break;
@@ -44,13 +44,13 @@ export class AvailableDeedsGenerator {
                 case CardType.CREATURE: {
                     available.add({
                         type: DeedType.PLAY,
-                        handIndex: i,
+                        from: [{ zone: Zone.MY_HAND, index: i }],
                         lineIndex: -1,
                     });
                     if (manager.line.length > 0) {
                         available.add({
                             type: DeedType.PLAY,
-                            handIndex: i,
+                            from: [{ zone: Zone.MY_HAND, index: i }],
                             lineIndex: 0,
                         });
                     }
@@ -59,7 +59,7 @@ export class AvailableDeedsGenerator {
                 case CardType.RELIC: {
                     available.add({
                         type: DeedType.PLAY,
-                        handIndex: i,
+                        from: [{ zone: Zone.MY_HAND, index: i }],
                         lineIndex: null,
                     });
                     break;
@@ -92,7 +92,7 @@ export class AvailableDeedsGenerator {
             ) {
                 available.add({
                     type: DeedType.FIGHT,
-                    handIndex: null,
+                    from: [],
                     lineIndex: null,
                     attackers: [attackerIndex],
                     defenders: [targetIndex],
@@ -118,7 +118,7 @@ export class AvailableDeedsGenerator {
 
             available.add({
                 type: DeedType.HARVEST,
-                handIndex: null,
+                from: [],
                 lineIndex,
             });
         }
@@ -137,7 +137,7 @@ export class AvailableDeedsGenerator {
 
             available.add({
                 type: DeedType.HARVEST,
-                handIndex: null,
+                from: [],
                 lineIndex: null,
             });
         }
@@ -156,7 +156,7 @@ export class AvailableDeedsGenerator {
         for (let i = 0; i < manager.hand.length; ++i) {
             available.add({
                 type: DeedType.DISCARD,
-                handIndex: i,
+                from: [{ zone: Zone.MY_HAND, index: i }],
                 lineIndex: null,
             });
         }

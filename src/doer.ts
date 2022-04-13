@@ -1,7 +1,7 @@
 import { Card, CardWithState, Deed, State } from './models';
 import { CardefPool } from './pool';
 import { StateManager } from './state';
-import { CardState, CardType, DeedType, LineEnd } from './types';
+import { CardState, CardType, DeedType, LineEnd, Zone } from './types';
 
 function doPlayEffect(state: State, card: Card): void {
     switch (card.cardId) {
@@ -34,10 +34,14 @@ function doDeedPlay(state: State, deed: Deed): void {
     const stateManager = new StateManager(state);
     const mySideManager = stateManager.getMySideManager();
 
-    const handIndex = deed.handIndex;
-    if (handIndex === null) {
-        throw new Error(`Attempted to play with no handIndex`);
+    const from = deed.from.shift();
+    if (from === null) {
+        throw new Error(`Attempted to play with no from`);
     }
+    if (from?.zone !== Zone.MY_HAND) {
+        throw new Error(`Attempted to play from other than hand: ${from}`);
+    }
+    const handIndex = from?.index;
 
     const card = mySideManager.hand[handIndex] as Card;
     const pool = CardefPool.getPool();
