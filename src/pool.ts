@@ -1,4 +1,4 @@
-import { Cardef, createCardef } from './cards';
+import { Cardef, createCardef } from './cardefs';
 import { CardId, CardType } from './types';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
@@ -37,9 +37,10 @@ export class CardefPool {
             const name = columns.shift();
             const power = parseInt(columns.shift() ?? '');
             const vp = parseInt(columns.shift() ?? '999');
+            columns.shift(); // rarity
 
             try {
-                return createCardef(
+                const cardef = createCardef(
                     setId,
                     id,
                     name,
@@ -47,6 +48,8 @@ export class CardefPool {
                     power,
                     vp
                 );
+
+                return cardef;
             } catch (e: unknown) {
                 console.log(e);
                 console.log(row);

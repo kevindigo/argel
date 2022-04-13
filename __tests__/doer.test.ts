@@ -2,7 +2,7 @@ import { doDeed } from '../src/doer';
 import { Card, CardWithState, Deed, Player, State } from '../src/models';
 import { SideManager } from '../src/side';
 import { createInitialState, StateManager } from '../src/state';
-import { CardNumber, CardState, DeedType, LineEnd } from '../src/types';
+import { CardNumber, CardState, DeedType, LineEnd, Zone } from '../src/types';
 
 const sig: Player = {
     name: 'Sig',
@@ -51,8 +51,8 @@ describe('The deed doer', () => {
 
         const deed: Deed = {
             type: DeedType.PLAY,
-            handIndex: 0,
-            lineIndex: null,
+            from: [{ zone: Zone.MY_HAND, index: 0 }],
+            to: [],
         };
         doDeed(state, deed);
 
@@ -76,8 +76,8 @@ describe('The deed doer', () => {
 
         const deed: Deed = {
             type: DeedType.PLAY,
-            handIndex: 0,
-            lineIndex: null,
+            from: [{ zone: Zone.MY_HAND, index: 0 }],
+            to: [],
         };
         doDeed(state, deed);
         expect(hand.length).toEqual(0);
@@ -102,8 +102,8 @@ describe('The deed doer', () => {
 
         const deed: Deed = {
             type: DeedType.PLAY,
-            handIndex: 0,
-            lineIndex: 0,
+            from: [{ zone: Zone.MY_HAND, index: 0 }],
+            to: [{ zone: Zone.MY_LINE, index: LineEnd.RIGHT }],
         };
         doDeed(state, deed);
         expect(hand.length).toEqual(0);
@@ -136,8 +136,8 @@ describe('The deed doer', () => {
 
         const deed: Deed = {
             type: DeedType.PLAY,
-            handIndex: 0,
-            lineIndex: LineEnd.LEFT,
+            from: [{ zone: Zone.MY_HAND, index: 0 }],
+            to: [{ zone: Zone.MY_LINE, index: LineEnd.LEFT }],
         };
         doDeed(state, deed);
         expect(hand.length).toEqual(0);
@@ -171,8 +171,8 @@ describe('The deed doer', () => {
 
         const deed: Deed = {
             type: DeedType.PLAY,
-            handIndex: 0,
-            lineIndex: LineEnd.RIGHT,
+            from: [{ zone: Zone.MY_HAND, index: 0 }],
+            to: [{ zone: Zone.MY_LINE, index: LineEnd.RIGHT }],
         };
         doDeed(state, deed);
         expect(hand.length).toEqual(0);
@@ -202,10 +202,8 @@ describe('The deed doer', () => {
 
         const deed: Deed = {
             type: DeedType.FIGHT,
-            handIndex: null,
-            lineIndex: null,
-            attackers: [0],
-            defenders: [0],
+            from: [{ zone: Zone.MY_LINE, index: 0 }],
+            to: [{ zone: Zone.ENEMY_LINE, index: 0 }],
         };
 
         doDeed(state, deed);
@@ -232,10 +230,8 @@ describe('The deed doer', () => {
 
         const deed: Deed = {
             type: DeedType.FIGHT,
-            handIndex: null,
-            lineIndex: null,
-            attackers: [0],
-            defenders: [0],
+            from: [{ zone: Zone.MY_LINE, index: 0 }],
+            to: [{ zone: Zone.ENEMY_LINE, index: 0 }],
         };
 
         doDeed(state, deed);
@@ -260,8 +256,8 @@ describe('Individual card Play effects', () => {
 
         const deed: Deed = {
             type: DeedType.PLAY,
-            handIndex: 0,
-            lineIndex: null,
+            from: [{ zone: Zone.MY_HAND, index: 0 }],
+            to: [],
         };
         doDeed(state, deed);
 
@@ -288,8 +284,8 @@ describe('Individual card Play effects', () => {
 
         const deed: Deed = {
             type: DeedType.PLAY,
-            handIndex: 0,
-            lineIndex: null,
+            from: [{ zone: Zone.MY_HAND, index: 0 }],
+            to: [],
         };
         doDeed(state, deed);
 
@@ -307,5 +303,30 @@ describe('Individual card Play effects', () => {
 
         expect(enemySideManager.line.length).toEqual(1);
         expect(enemySideManager.line[0]?.state).toEqual(CardState.MATURE);
+    });
+
+    it('can play direct deposit (a play effect with a simple choice)', () => {
+        const directDeposit = createCard('063');
+        const hand = mySideManager.hand;
+        hand.push(directDeposit);
+
+        const myVix = createCard('001');
+        hand.push(myVix);
+        const myJater = createCard('002');
+        hand.push(myJater);
+
+        const deed: Deed = {
+            type: DeedType.PLAY,
+            from: [{ zone: Zone.MY_HAND, index: 0 }],
+            to: [],
+            choices: [[{ zone: Zone.MY_HAND, index: 0 }]],
+        };
+        doDeed(state, deed);
+        expect(hand.length).toEqual(1);
+        expect(hand.shift()).toEqual(myJater);
+        expect(mySideManager.discards.length).toEqual(0);
+        expect(mySideManager.scored.length).toEqual(2);
+        expect(mySideManager.scored.shift()).toEqual(directDeposit);
+        expect(mySideManager.scored.shift()).toEqual(myVix);
     });
 });

@@ -1,7 +1,6 @@
-import { State, Side, Player, TurnState, CardWithState } from './models';
+import { State, Side, Player, TurnState, CardWithState, Slot } from './models';
 import { CardefPool } from './pool';
 import { createInitialSide, SideManager } from './side';
-import { LineIndex } from './types';
 
 export function createInitialState(player1: Player, player2: Player): State {
     const sides: Side[] = [
@@ -57,16 +56,13 @@ export class StateManager {
         return 1 - this.getMyIndex();
     }
 
-    public getEffectivePower(
-        sideIndex: number,
-        lineIndexes: LineIndex[]
-    ): number {
+    public getEffectivePower(sideIndex: number, slots: Slot[]): number {
         const line = this.state.sides[sideIndex]?.line as CardWithState[];
-        const power = lineIndexes.reduce((lineIndex, power) => {
-            const cardId = line[lineIndex]?.card.cardId;
+        const power = slots.reduce((power, slot) => {
+            const cardId = line[slot.index]?.card.cardId;
             if (!cardId) {
                 throw new Error(
-                    `No card found in line at ${sideIndex}.${lineIndex}`
+                    `No card found in line at ${sideIndex}.${slot.index}`
                 );
             }
             const cardef = this.pool.lookup(cardId);

@@ -1,6 +1,5 @@
 import { createDeck, lookupDeckList } from './decks';
-import { Card, Player, Side } from './models';
-import { LineIndex } from './types';
+import { Card, Player, Side, Slot } from './models';
 
 export class SideManager {
     private _side: Side;
@@ -55,15 +54,18 @@ export class SideManager {
         return this.side.scored;
     }
 
-    public removeFromLine(lineIndexes: LineIndex[]): Card[] {
-        const copyOfIndexes = Array.from(lineIndexes);
-        copyOfIndexes.sort().reverse();
-        const cards = copyOfIndexes.map((index) => {
+    public removeFromLine(slots: Slot[]): Card[] {
+        // ToDo: Ensure all slots are in the same zone
+        const indexes = slots.map((slot) => {
+            return slot.index;
+        });
+        indexes.sort().reverse();
+        const cards = indexes.map((index) => {
             const cardWithState = this.line.splice(index, 1).pop();
             if (!cardWithState) {
                 throw new Error(
                     `failed to remove ${JSON.stringify(
-                        lineIndexes
+                        slots
                     )} from ${JSON.stringify(this.line)}`
                 );
             }

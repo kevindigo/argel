@@ -3,7 +3,7 @@ import { Card, CardWithState, State, Side } from '../src/models';
 import { CardefPool } from '../src/pool';
 import { createEmptySide } from '../src/side';
 import { StateManager } from '../src/state';
-import { DeedType, CardState } from '../src/types';
+import { DeedType, CardState, Zone } from '../src/types';
 
 describe('getAvailableDeeds', () => {
     let state: State;
@@ -43,8 +43,8 @@ describe('getAvailableDeeds', () => {
         const deeds = Array.from(availableDeedsGetter.getAvailableDeeds());
         expect(deeds.length).toEqual(1);
         expect(deeds[0]?.type).toEqual(DeedType.PLAY);
-        expect(deeds[0]?.handIndex).toEqual(0);
-        expect(deeds[0]?.lineIndex).toEqual(-1);
+        expect(deeds[0]?.from).toEqual([{ zone: Zone.MY_HAND, index: 0 }]);
+        expect(deeds[0]?.to).toEqual([{ zone: Zone.MY_LINE, index: -1 }]);
     });
 
     it('offers 2 ways to play 1 Creature in hand to a non-empty line', () => {

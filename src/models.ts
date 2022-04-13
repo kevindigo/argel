@@ -3,9 +3,8 @@ import {
     CardId,
     CardState,
     DeckId,
-    HandIndex,
-    LineIndex,
     TopOrBottom,
+    Zone,
 } from './types';
 
 export interface Player {
@@ -29,6 +28,11 @@ export interface SideFlags {
     isNextCardActive: boolean;
 }
 
+export interface Slot {
+    zone: Zone;
+    index: number;
+}
+
 export interface Side {
     player: Player;
     drawPile: Card[];
@@ -46,18 +50,15 @@ export interface TurnFlags {
 
 export interface TurnState {
     myIndex: number;
-    handIndexBeingPlayed?: HandIndex;
     queuedAdditionalPlay?: TopOrBottom;
-    queuedFightLineIndex?: LineIndex;
     turnFlags: TurnFlags;
 }
 
 export interface Deed {
     type: DeedType;
-    handIndex: HandIndex | null;
-    lineIndex: LineIndex | null;
-    attackers?: LineIndex[];
-    defenders?: LineIndex[];
+    from: Slot[];
+    to: Slot[];
+    choices?: Slot[][];
 }
 
 export interface State {

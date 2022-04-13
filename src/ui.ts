@@ -8,17 +8,11 @@ import { DeckId } from './types';
 function getDeedString(deed: Deed): string {
     const parts: string[] = [];
     parts.push(deed.type);
-    if (deed.handIndex != null) {
-        parts.push(`MH${deed.handIndex}`);
+    if (deed.from.length > 0) {
+        parts.push(`from: ${JSON.stringify(deed.from)}`);
     }
-    if (deed.lineIndex !== null) {
-        parts.push(`ML${deed.lineIndex}`);
-    }
-    if (deed.attackers) {
-        parts.push(`F${deed.attackers}`);
-    }
-    if (deed.defenders) {
-        parts.push(`D${deed.defenders}`);
+    if (deed.to.length > 0) {
+        parts.push(`to: ${JSON.stringify(deed.to)}`);
     }
     return parts.join(' ');
 }

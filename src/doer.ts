@@ -1,11 +1,29 @@
-import { Card, CardWithState, Deed, State } from './models';
+import { Card, CardWithState, Deed, Slot, State } from './models';
 import { CardefPool } from './pool';
 import { StateManager } from './state';
-import { CardState, CardType, DeedType, LineEnd } from './types';
+import { CardState, CardType, DeedType, LineEnd, Zone } from './types';
 
-function doPlayEffect(state: State, card: Card): void {
+function doPlayEffect(state: State, card: Card, choices?: Slot[][]): void {
     switch (card.cardId) {
+        case 'OmegaCodex-063': {
+            // direct deposit
+            const stateManager = new StateManager(state);
+            const mySideManager = stateManager.getMySideManager();
+            if (!choices) {
+                throw new Error('Attempted play without choices');
+            }
+            const firstChoices = choices[0] as Slot[];
+            const moveToScored = firstChoices[0] as Slot;
+            const chosenCards = mySideManager.hand.splice(
+                moveToScored?.index,
+                1
+            );
+            const cardToScore = chosenCards.shift() as Card;
+            mySideManager.scored.push(cardToScore);
+            break;
+        }
         case 'OmegaCodex-086': {
+            // overcharge
             const stateManager = new StateManager(state);
             const mySideManager = stateManager.getMySideManager();
             mySideManager.draw();
@@ -13,6 +31,7 @@ function doPlayEffect(state: State, card: Card): void {
             break;
         }
         case 'OmegaCodex-074': {
+            // fast forward
             const stateManager = new StateManager(state);
             const mySideManager = stateManager.getMySideManager();
             const enemySideManager = stateManager.getEnemySideManager();
@@ -34,10 +53,14 @@ function doDeedPlay(state: State, deed: Deed): void {
     const stateManager = new StateManager(state);
     const mySideManager = stateManager.getMySideManager();
 
-    const handIndex = deed.handIndex;
-    if (handIndex === null) {
-        throw new Error(`Attempted to play with no handIndex`);
+    const from = deed.from.shift();
+    if (from === null) {
+        throw new Error(`Attempted to play with no from`);
     }
+    if (from?.zone !== Zone.MY_HAND) {
+        throw new Error(`Attempted to play from other than hand: ${from}`);
+    }
+    const handIndex = from?.index;
 
     const card = mySideManager.hand[handIndex] as Card;
     const pool = CardefPool.getPool();
@@ -46,23 +69,26 @@ function doDeedPlay(state: State, deed: Deed): void {
         case CardType.ACTION: {
             mySideManager.hand.splice(handIndex, 1);
             mySideManager.scored.push(card);
-            doPlayEffect(state, card);
+            doPlayEffect(state, card, deed.choices);
             break;
         }
         case CardType.CREATURE: {
-            const lineIndex = deed.lineIndex;
-            if (lineIndex === null) {
-                throw new Error('Attempted to play Creature with no lineIndex');
+            const to = deed.to.shift();
+            if (!to) {
+                throw new Error('Attempted to play Creature with no to');
+            }
+            if (to.zone !== Zone.MY_LINE) {
+                throw new Error('Attempted to play Creature with no to');
             }
             const cardWithState: CardWithState = {
                 card,
                 state: CardState.DORMANT,
             };
             mySideManager.hand.splice(handIndex, 1);
-            if (lineIndex === LineEnd.RIGHT) {
+            if (to.index === LineEnd.RIGHT) {
                 mySideManager.line.push(cardWithState);
             } else {
-                mySideManager.line.splice(lineIndex, 0, cardWithState);
+                mySideManager.line.splice(to.index, 0, cardWithState);
             }
             break;
         }
@@ -86,13 +112,13 @@ function doDeedPlay(state: State, deed: Deed): void {
 
 function doFightPlay(state: State, deed: Deed): void {
     const stateManager = new StateManager(state);
-    const attackers = deed.attackers;
+    const attackers = deed.from;
     if (!attackers) {
         throw new Error(
             `Attempted a Fight with no attackers: ${JSON.stringify(deed)}`
         );
     }
-    const defenders = deed.defenders;
+    const defenders = deed.to;
     if (!defenders) {
         throw new Error(
             `Attempted a Fight with no defenders: ${JSON.stringify(deed)}`
