@@ -3,8 +3,6 @@ import {
     CardId,
     CardState,
     DeckId,
-    HandIndex,
-    LineIndex,
     TopOrBottom,
     Zone,
 } from './types';
@@ -52,9 +50,7 @@ export interface TurnFlags {
 
 export interface TurnState {
     myIndex: number;
-    handIndexBeingPlayed?: HandIndex;
     queuedAdditionalPlay?: TopOrBottom;
-    queuedFightLineIndex?: LineIndex;
     turnFlags: TurnFlags;
 }
 
@@ -62,8 +58,6 @@ export interface Deed {
     type: DeedType;
     from: Slot[];
     to: Slot[];
-    attackers?: LineIndex[];
-    defenders?: LineIndex[];
     // A list of available deeds would include when/choose/from/filter
     // Selecting a deed would require you to also populate your choice
     choice?: Slot[];

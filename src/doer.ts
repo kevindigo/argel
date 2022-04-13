@@ -93,13 +93,13 @@ function doDeedPlay(state: State, deed: Deed): void {
 
 function doFightPlay(state: State, deed: Deed): void {
     const stateManager = new StateManager(state);
-    const attackers = deed.attackers;
+    const attackers = deed.from;
     if (!attackers) {
         throw new Error(
             `Attempted a Fight with no attackers: ${JSON.stringify(deed)}`
         );
     }
-    const defenders = deed.defenders;
+    const defenders = deed.to;
     if (!defenders) {
         throw new Error(
             `Attempted a Fight with no defenders: ${JSON.stringify(deed)}`

@@ -14,12 +14,6 @@ function getDeedString(deed: Deed): string {
     if (deed.to.length > 0) {
         parts.push(`to: ${JSON.stringify(deed.to)}`);
     }
-    if (deed.attackers) {
-        parts.push(`F${deed.attackers}`);
-    }
-    if (deed.defenders) {
-        parts.push(`D${deed.defenders}`);
-    }
     return parts.join(' ');
 }
 

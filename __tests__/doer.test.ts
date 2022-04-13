@@ -202,10 +202,8 @@ describe('The deed doer', () => {
 
         const deed: Deed = {
             type: DeedType.FIGHT,
-            from: [],
-            to: [],
-            attackers: [0],
-            defenders: [0],
+            from: [{ zone: Zone.MY_LINE, index: 0 }],
+            to: [{ zone: Zone.ENEMY_LINE, index: 0 }],
         };
 
         doDeed(state, deed);
@@ -232,10 +230,8 @@ describe('The deed doer', () => {
 
         const deed: Deed = {
             type: DeedType.FIGHT,
-            from: [],
-            to: [],
-            attackers: [0],
-            defenders: [0],
+            from: [{ zone: Zone.MY_LINE, index: 0 }],
+            to: [{ zone: Zone.ENEMY_LINE, index: 0 }],
         };
 
         doDeed(state, deed);

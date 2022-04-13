@@ -56,8 +56,6 @@ export enum Zone {
     ENEMY_ARSENAL = 'EA',
 }
 
-export type HandIndex = number;
-export type LineIndex = LineEnd;
 export type ScoredIndex = number;
 export type DeckId = string;
 export type CardId = string;

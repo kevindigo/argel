@@ -92,10 +92,8 @@ export class AvailableDeedsGenerator {
             ) {
                 available.add({
                     type: DeedType.FIGHT,
-                    from: [],
-                    to: [],
-                    attackers: [attackerIndex],
-                    defenders: [targetIndex],
+                    from: [{ zone: Zone.MY_LINE, index: attackerIndex }],
+                    to: [{ zone: Zone.ENEMY_LINE, index: targetIndex }],
                 });
             }
 

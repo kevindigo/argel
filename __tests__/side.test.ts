@@ -1,7 +1,7 @@
-import { Card, CardWithState } from '../src/models';
+import { Card, CardWithState, Slot } from '../src/models';
 import { CardefPool } from '../src/pool';
 import { createInitialSide, SideManager } from '../src/side';
-import { CardNumber, CardState, CardType } from '../src/types';
+import { CardNumber, CardState, CardType, Zone } from '../src/types';
 
 function createCard(cardNumber: CardNumber): Card {
     return {
@@ -60,7 +60,11 @@ describe('StateManager.removeFromLine', () => {
         sideManager.line.push(luminate);
         sideManager.line.push(budge);
 
-        const removed = sideManager.removeFromLine([1, 3]);
+        const slotsToRemove: Slot[] = [
+            { zone: Zone.MY_LINE, index: 1 },
+            { zone: Zone.MY_LINE, index: 3 },
+        ];
+        const removed = sideManager.removeFromLine(slotsToRemove);
         expect(removed).toEqual([budge.card, jater.card]);
         expect(sideManager.line).toEqual([vix, luminate]);
     });
