@@ -1,11 +1,29 @@
-import { Card, CardWithState, Deed, State } from './models';
+import { Card, CardWithState, Deed, Slot, State } from './models';
 import { CardefPool } from './pool';
 import { StateManager } from './state';
 import { CardState, CardType, DeedType, LineEnd, Zone } from './types';
 
-function doPlayEffect(state: State, card: Card): void {
+function doPlayEffect(state: State, card: Card, choices?: Slot[][]): void {
     switch (card.cardId) {
+        case 'OmegaCodex-063': {
+            // direct deposit
+            const stateManager = new StateManager(state);
+            const mySideManager = stateManager.getMySideManager();
+            if (!choices) {
+                throw new Error('Attempted play without choices');
+            }
+            const firstChoices = choices[0] as Slot[];
+            const moveToScored = firstChoices[0] as Slot;
+            const chosenCards = mySideManager.hand.splice(
+                moveToScored?.index,
+                1
+            );
+            const cardToScore = chosenCards.shift() as Card;
+            mySideManager.scored.push(cardToScore);
+            break;
+        }
         case 'OmegaCodex-086': {
+            // overcharge
             const stateManager = new StateManager(state);
             const mySideManager = stateManager.getMySideManager();
             mySideManager.draw();
@@ -13,6 +31,7 @@ function doPlayEffect(state: State, card: Card): void {
             break;
         }
         case 'OmegaCodex-074': {
+            // fast forward
             const stateManager = new StateManager(state);
             const mySideManager = stateManager.getMySideManager();
             const enemySideManager = stateManager.getEnemySideManager();
@@ -50,7 +69,7 @@ function doDeedPlay(state: State, deed: Deed): void {
         case CardType.ACTION: {
             mySideManager.hand.splice(handIndex, 1);
             mySideManager.scored.push(card);
-            doPlayEffect(state, card);
+            doPlayEffect(state, card, deed.choices);
             break;
         }
         case CardType.CREATURE: {

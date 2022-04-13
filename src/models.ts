@@ -58,9 +58,7 @@ export interface Deed {
     type: DeedType;
     from: Slot[];
     to: Slot[];
-    // A list of available deeds would include when/choose/from/filter
-    // Selecting a deed would require you to also populate your choice
-    choice?: Slot[];
+    choices?: Slot[][];
 }
 
 export interface State {
