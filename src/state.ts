@@ -88,17 +88,15 @@ export class StateManager {
     }
 
     public getEffectivePower(sideIndex: number, slots: Slot[]): number {
-        const line = this.state.sides[sideIndex]?.line as CardWithState[];
         const power = slots.reduce((power, slot) => {
-            const cardId = line[slot.index]?.card.cardId;
-            if (!cardId) {
-                throw new Error(
-                    `No card found in line at ${sideIndex}.${slot.index}`
-                );
-            }
-            const cardef = this.pool.lookup(cardId);
+            const cardWithState = this.getCardWithStateAtSlot(slot);
+            const cardef = this.pool.lookup(cardWithState.card.cardId);
             if (!cardef) {
-                throw new Error(`Unknown CardId ${cardId}`);
+                throw new Error(
+                    `getEffectivePower no such card: ${JSON.stringify(
+                        cardWithState
+                    )}`
+                );
             }
             const thisPower = cardef?.power ?? 0;
             return power + thisPower;
@@ -107,7 +105,11 @@ export class StateManager {
     }
 
     private getSide(sideIndex: number): Side {
-        return this.state.sides[sideIndex] as Side;
+        const side = this.state.sides[sideIndex];
+        if (!side) {
+            throw new Error(`getSide invalid sideIndex: ${sideIndex}`);
+        }
+        return side;
     }
 
     private isZoneStateful(zone: Zone): boolean {

@@ -21,7 +21,12 @@ export function getNextOptionsForDeed(
     const stateManager = new StateManager(state);
     switch (deed.type) {
         case DeedType.PLAY: {
-            const playedCardSlot = deed.from.shift() as Slot;
+            const playedCardSlot = deed.from[deed.from.length - 1];
+            if (!playedCardSlot) {
+                throw new Error(
+                    `getNextOptionsForDeed no slot: ${JSON.stringify(deed)}`
+                );
+            }
             const playedCard = stateManager.getCardAtSlot(playedCardSlot);
             if (!playedCard) {
                 throw new Error(
