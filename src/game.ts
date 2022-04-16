@@ -31,7 +31,9 @@ export class Game {
             new StateManager(copy),
             this.pool
         );
-        copy.options = Array.from(availableDeedsGetter.getAvailableDeeds());
+        copy.availableDeeds = Array.from(
+            availableDeedsGetter.getAvailableDeeds()
+        );
         return copy;
     }
 
