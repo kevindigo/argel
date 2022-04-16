@@ -108,7 +108,15 @@ export class StateManager {
 
     private getCardWithStateAtSlot(slot: Slot): CardWithState {
         const cardsInZone = this.getZoneCardsWithState(slot.zone);
-        return cardsInZone[slot.index] as CardWithState;
+        const card = cardsInZone[slot.index];
+        if (!card) {
+            throw new Error(
+                `getCardWithStateAtSlot failed: ${JSON.stringify(
+                    slot
+                )} in ${JSON.stringify(cardsInZone)}}`
+            );
+        }
+        return card;
     }
 
     private getZoneCardsWithState(zone: Zone): CardWithState[] {
@@ -133,20 +141,34 @@ export class StateManager {
 
     private getCardWithoutStateAtSlot(slot: Slot): Card {
         const cardsInZone = this.getZoneCardsWithoutState(slot.zone);
-        return cardsInZone[slot.index] as Card;
+        const card = cardsInZone[slot.index];
+        if (!card) {
+            throw new Error(
+                `getCardWithoutStateAtSlot failed: ${JSON.stringify(
+                    slot
+                )} in ${JSON.stringify(cardsInZone)}}`
+            );
+        }
+        return card;
     }
 
     private getZoneCardsWithoutState(zone: Zone): Card[] {
         switch (zone) {
             case Zone.MY_TOP: {
                 const drawPile = this.getMySideManager().drawPile;
-                const topCard = drawPile[drawPile.length - 1] as Card;
+                const topCard = drawPile[drawPile.length - 1];
+                if (!topCard) {
+                    return [];
+                }
                 return [topCard];
             }
             case Zone.MY_BOTTOM: {
                 const drawPile = this.getMySideManager().drawPile;
-                const topCard = drawPile[0] as Card;
-                return [topCard];
+                const bottomCard = drawPile[0];
+                if (!bottomCard) {
+                    return [];
+                }
+                return [bottomCard];
             }
             case Zone.MY_HAND: {
                 return this.getMySideManager().hand;
@@ -159,13 +181,19 @@ export class StateManager {
             }
             case Zone.ENEMY_TOP: {
                 const drawPile = this.getEnemySideManager().drawPile;
-                const topCard = drawPile[drawPile.length - 1] as Card;
+                const topCard = drawPile[drawPile.length - 1];
+                if (!topCard) {
+                    return [];
+                }
                 return [topCard];
             }
             case Zone.ENEMY_BOTTOM: {
                 const drawPile = this.getEnemySideManager().drawPile;
-                const topCard = drawPile[0] as Card;
-                return [topCard];
+                const bottomCard = drawPile[0];
+                if (!bottomCard) {
+                    return [];
+                }
+                return [bottomCard];
             }
             case Zone.ENEMY_HAND: {
                 return this.getEnemySideManager().hand;
