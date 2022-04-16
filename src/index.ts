@@ -17,10 +17,10 @@ const player2: Player = {
 const game = new Game(player1, player2);
 const state = game.getCopyOfStateWithOptions();
 showState(state);
-const options = state.availableDeeds;
-const deed = options[0];
+const availableDeeds = state.availableDeeds;
+const deed = availableDeeds[0];
 if (!deed) {
-    throw new Error(`Deed was undefined in ${options}`);
+    throw new Error(`Deed was undefined in ${availableDeeds}`);
 }
 console.log(`Doing ${JSON.stringify(deed)}`);
 console.log();
