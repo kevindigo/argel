@@ -66,6 +66,19 @@ export class StateManager {
         }
     }
 
+    public getCardWithStateAtSlot(slot: Slot): CardWithState {
+        const cardsInZone = this.getZoneCardsWithState(slot.zone);
+        const card = cardsInZone[slot.index];
+        if (!card) {
+            throw new Error(
+                `getCardWithStateAtSlot failed: ${JSON.stringify(
+                    slot
+                )} in ${JSON.stringify(cardsInZone)}}`
+            );
+        }
+        return card;
+    }
+
     public getMyIndex(): number {
         return this.state.turnState.myIndex;
     }
@@ -104,19 +117,6 @@ export class StateManager {
             zone === Zone.ENEMY_LINE ||
             zone === Zone.ENEMY_ARSENAL
         );
-    }
-
-    private getCardWithStateAtSlot(slot: Slot): CardWithState {
-        const cardsInZone = this.getZoneCardsWithState(slot.zone);
-        const card = cardsInZone[slot.index];
-        if (!card) {
-            throw new Error(
-                `getCardWithStateAtSlot failed: ${JSON.stringify(
-                    slot
-                )} in ${JSON.stringify(cardsInZone)}}`
-            );
-        }
-        return card;
     }
 
     private getZoneCardsWithState(zone: Zone): CardWithState[] {
