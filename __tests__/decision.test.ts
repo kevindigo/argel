@@ -20,10 +20,8 @@ describe('Top-level decisions', () => {
 
     beforeEach(() => {
         state = {
+            activeSideIndex: 0,
             sides: [createEmptySide(), createEmptySide()],
-            turnState: {
-                myIndex: 0,
-            },
             currentDeed: [],
         };
         stateManager = new StateManager(state);

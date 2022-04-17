@@ -1,5 +1,5 @@
 import { DecisionManager } from './decision';
-import { State, Side, Player, TurnState, Slot, Card, Decision } from './models';
+import { State, Side, Player, Slot, Card, Decision } from './models';
 import { CardefPool } from './pool';
 import { createInitialSide, SideManager } from './side';
 import { Zone } from './types';
@@ -10,13 +10,9 @@ export function createInitialState(player1: Player, player2: Player): State {
         createInitialSide(player2),
     ];
 
-    const turnState: TurnState = {
-        myIndex: 0,
-    };
-
     const state: State = {
+        activeSideIndex: 0,
         sides,
-        turnState,
         currentDeed: [],
     };
 
@@ -62,7 +58,7 @@ export class StateManager {
     }
 
     public getMyIndex(): number {
-        return this.state.turnState.myIndex;
+        return this.state.activeSideIndex;
     }
 
     public getEnemyIndex(): number {

@@ -34,12 +34,6 @@ export interface Side {
     flags: SideFlags;
 }
 
-export interface TurnState {
-    myIndex: number;
-    // queuedAdditionalPlay?: TopOrBottom; // or Slot?
-    // queuedFightWith?: Slot;
-}
-
 export interface Decision {
     label: string;
     availableSlots: Slot[];
@@ -49,7 +43,9 @@ export interface Decision {
 }
 
 export interface State {
+    activeSideIndex: number;
     sides: Side[];
-    turnState: TurnState;
     currentDeed: Decision[];
+    // queuedAdditionalPlay?: TopOrBottom; // or Slot?
+    // queuedFightWith?: Slot;
 }
