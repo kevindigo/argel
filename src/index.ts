@@ -17,8 +17,9 @@ const player2: Player = {
 const game = new Game(player1, player2);
 {
     const state = game.getCopyOfState();
-    const stateManager = new StateManager(state);
     showState(state);
+
+    const stateManager = new StateManager(state);
     const currentDecision = stateManager.getCurrentDecision();
     console.log(`Current decision: ${JSON.stringify(currentDecision)}`);
 
@@ -37,8 +38,9 @@ const game = new Game(player1, player2);
 
 {
     const state = game.getCopyOfState();
-    const stateManager = new StateManager(state);
     showState(state);
+
+    const stateManager = new StateManager(state);
     const currentDecision = stateManager.getCurrentDecision();
     console.log(`Current decision: ${JSON.stringify(currentDecision)}`);
 }
