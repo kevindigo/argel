@@ -21,6 +21,7 @@ describe('getAvailableDeeds', () => {
                     canDiscard: false,
                 },
             },
+            availableDeeds: [],
         };
         stateManager = new StateManager(state);
         const pool = CardefPool.getPool();

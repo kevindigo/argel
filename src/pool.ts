@@ -33,21 +33,14 @@ export class CardefPool {
             const columns = row.split('\t');
             const setId = this.forceToString(columns.shift());
             const id = columns.shift();
-            const type = columns.shift();
+            const type = columns.shift() as CardType;
             const name = columns.shift();
             const power = parseInt(columns.shift() ?? '');
             const vp = parseInt(columns.shift() ?? '999');
             columns.shift(); // rarity
 
             try {
-                const cardef = createCardef(
-                    setId,
-                    id,
-                    name,
-                    type as CardType,
-                    power,
-                    vp
-                );
+                const cardef = createCardef(setId, id, name, type, power, vp);
 
                 return cardef;
             } catch (e: unknown) {

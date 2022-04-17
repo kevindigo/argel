@@ -64,5 +64,5 @@ export interface Deed {
 export interface State {
     sides: Side[];
     turnState: TurnState;
-    options?: Deed[];
+    availableDeeds: Deed[];
 }

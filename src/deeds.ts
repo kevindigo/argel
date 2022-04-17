@@ -1,5 +1,5 @@
 import { Cardef } from './cardefs';
-import { Deed, Card, CardWithState } from './models';
+import { Deed } from './models';
 import { CardefPool } from './pool';
 import { SideManager } from './side';
 import { StateManager } from './state';
@@ -21,7 +21,10 @@ export class AvailableDeedsGenerator {
     }
 
     private getCardef(pool: CardefPool, cardId: CardId): Cardef {
-        const cardef = pool.lookup(cardId) as Cardef;
+        const cardef = pool.lookup(cardId);
+        if (!cardef) {
+            throw new Error(`Cardef not found in pool for ${cardId}`);
+        }
         return cardef;
     }
 
@@ -30,7 +33,8 @@ export class AvailableDeedsGenerator {
 
         const manager = this.getMySideManager();
         for (let i = 0; i < manager.hand.length; ++i) {
-            const card = manager.hand[i] as Card;
+            const slot = { zone: Zone.MY_HAND, index: i };
+            const card = this.stateManager.getCardAtSlot(slot);
             const cardef = this.getCardef(this.pool, card.cardId);
             switch (cardef.type) {
                 case CardType.ACTION: {
@@ -79,7 +83,9 @@ export class AvailableDeedsGenerator {
             attackerIndex < manager.line.length;
             ++attackerIndex
         ) {
-            const cardWithState = manager.line[attackerIndex] as CardWithState;
+            const slot = { zone: Zone.MY_LINE, index: attackerIndex };
+            const cardWithState =
+                this.stateManager.getCardWithStateAtSlot(slot);
             if (cardWithState.state === CardState.DORMANT) {
                 continue;
             }
@@ -107,9 +113,15 @@ export class AvailableDeedsGenerator {
     private getAvailableHarvestDeeds(): Set<Deed> {
         const available = new Set<Deed>();
 
-        const manager = this.getMySideManager();
-        for (let lineIndex = 0; lineIndex < manager.line.length; ++lineIndex) {
-            const cardWithState = manager.line[lineIndex] as CardWithState;
+        const stateManager = this.stateManager;
+        const mySideManager = this.getMySideManager();
+        for (
+            let lineIndex = 0;
+            lineIndex < mySideManager.line.length;
+            ++lineIndex
+        ) {
+            const slot = { zone: Zone.MY_LINE, index: lineIndex };
+            const cardWithState = stateManager.getCardWithStateAtSlot(slot);
             if (cardWithState.state !== CardState.MATURE) {
                 continue;
             }
@@ -123,12 +135,11 @@ export class AvailableDeedsGenerator {
 
         for (
             let arsenalIndex = 0;
-            arsenalIndex < manager.arsenal.length;
+            arsenalIndex < mySideManager.arsenal.length;
             ++arsenalIndex
         ) {
-            const cardWithState = manager.arsenal[
-                arsenalIndex
-            ] as CardWithState;
+            const slot = { zone: Zone.MY_ARSENAL, index: arsenalIndex };
+            const cardWithState = stateManager.getCardWithStateAtSlot(slot);
             if (cardWithState.state !== CardState.MATURE) {
                 continue;
             }

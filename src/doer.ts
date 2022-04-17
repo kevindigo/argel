@@ -12,13 +12,23 @@ function doPlayEffect(state: State, card: Card, choices?: Slot[][]): void {
             if (!choices) {
                 throw new Error('Attempted play without choices');
             }
-            const firstChoices = choices[0] as Slot[];
-            const moveToScored = firstChoices[0] as Slot;
+            const firstChoices = choices[0] ?? [];
+            const moveToScored = firstChoices[0];
+            if (!moveToScored) {
+                throw new Error(
+                    `No card selected to play : ${JSON.stringify(card)}`
+                );
+            }
             const chosenCards = mySideManager.hand.splice(
                 moveToScored?.index,
                 1
             );
-            const cardToScore = chosenCards.shift() as Card;
+            const cardToScore = chosenCards.shift();
+            if (!cardToScore) {
+                throw new Error(
+                    `Selected card not found: ${JSON.stringify(card)}`
+                );
+            }
             mySideManager.scored.push(cardToScore);
             break;
         }
@@ -62,7 +72,7 @@ function doDeedPlay(state: State, deed: Deed): void {
     }
     const handIndex = from?.index;
 
-    const card = mySideManager.hand[handIndex] as Card;
+    const card = stateManager.getCardAtSlot(from);
     const pool = CardefPool.getPool();
     const cardef = pool.lookup(card.cardId);
     switch (cardef?.type) {
