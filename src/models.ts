@@ -1,4 +1,3 @@
-import { Cardef } from './cardefs';
 import { CardId, Facing, DeckId, Zone, DeedType } from './types';
 
 export interface Player {
