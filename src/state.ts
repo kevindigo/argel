@@ -29,7 +29,6 @@ export function createInitialState(player1: Player, player2: Player): State {
     const state: State = {
         sides,
         turnState,
-        availableDeeds: [],
         currentDeed: [],
     };
 

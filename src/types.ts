@@ -20,6 +20,7 @@ export enum DeedType {
     FIGHT = 'Fight',
     HARVEST = 'Harvest',
     DISCARD = 'Discard',
+    // TEAMUP = 'Teamup',
 }
 
 export enum SideFlagKey {

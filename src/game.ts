@@ -1,5 +1,4 @@
 import { CardefPool } from './pool';
-import { AvailableDeedsGenerator } from './deeds';
 import { Card, CardWithState, State, Player, Slot } from './models';
 import { SideManager } from './side';
 import { createInitialState, StateManager } from './state';
@@ -28,13 +27,6 @@ export class Game {
 
     public getCopyOfStateWithOptions(): State {
         const copy: State = JSON.parse(JSON.stringify(this.stateManager.state));
-        const availableDeedsGetter = new AvailableDeedsGenerator(
-            new StateManager(copy),
-            this.pool
-        );
-        copy.availableDeeds = Array.from(
-            availableDeedsGetter.getAvailableDeeds()
-        );
         return copy;
     }
 

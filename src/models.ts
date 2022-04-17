@@ -1,11 +1,4 @@
-import {
-    DeedType,
-    CardId,
-    CardState,
-    DeckId,
-    TopOrBottom,
-    Zone,
-} from './types';
+import { CardId, CardState, DeckId, TopOrBottom, Zone } from './types';
 
 export interface Player {
     name: string;
@@ -54,13 +47,6 @@ export interface TurnState {
     turnFlags: TurnFlags;
 }
 
-export interface Deed {
-    type: DeedType;
-    from: Slot[];
-    to: Slot[];
-    choices?: Slot[][];
-}
-
 export interface Decision {
     label: string;
     availableSlots: Slot[];
@@ -72,6 +58,5 @@ export interface Decision {
 export interface State {
     sides: Side[];
     turnState: TurnState;
-    availableDeeds: Deed[];
     currentDeed: Decision[];
 }

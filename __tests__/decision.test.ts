@@ -27,7 +27,6 @@ describe('Top-level decisions', () => {
                     canDiscard: false,
                 },
             },
-            availableDeeds: [],
             currentDeed: [],
         };
         stateManager = new StateManager(state);
