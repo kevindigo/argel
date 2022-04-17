@@ -1,6 +1,5 @@
-import { Decision, Deed, Slot, State } from './models';
+import { Decision, Slot, State } from './models';
 import { CardefPool } from './pool';
-import { slotString } from './slot';
 import { StateManager } from './state';
 import { CardType, Zone } from './types';
 
@@ -102,39 +101,4 @@ export function calculateNextDecision(state: State): Decision {
         return calculateFollowupDecision(state);
     }
     throw new Error('Followups are not yet supported');
-}
-
-export class DeedManager {
-    private deed: Deed;
-
-    public constructor(deed: Deed) {
-        this.deed = deed;
-    }
-
-    public isValidSelection(slots: Slot[]): boolean {
-        if (slots.length !== 1) {
-            return false;
-        }
-        const slot = slots[0];
-        if (!slot) {
-            return false;
-        }
-        const ss = slotString(slot);
-        const decision = this.getCurrentDecision();
-        const found = decision.availableSlots.find((availableSlot) => {
-            return slotString(availableSlot) === ss;
-        });
-        return found ? true : false;
-    }
-
-    public getCurrentDecision(): Decision {
-        for (let i = 0; i < this.deed.decisions.length; ++i) {
-            const decision = this.deed.decisions[i] as Decision;
-            if (decision.selectedSlots.length === 0) {
-                return decision;
-            }
-        }
-
-        throw new Error('No current decision');
-    }
 }

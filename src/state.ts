@@ -1,4 +1,4 @@
-import { DeedManager } from './decision';
+import { DeedManager } from './deed';
 import { State, Side, Player, Slot, Card, Decision } from './models';
 import { CardefPool } from './pool';
 import { createInitialSide, SideManager } from './side';

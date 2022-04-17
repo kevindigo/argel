@@ -3,7 +3,8 @@ import { Card, State, Player, Slot } from './models';
 import { SideManager } from './side';
 import { createInitialState, StateManager } from './state';
 import { Facing, CardType } from './types';
-import { DeedManager, calculateNextDecision } from './decision';
+import { calculateNextDecision } from './decision';
+import { DeedManager } from './deed';
 
 export class Game {
     public readonly players: Player[];
