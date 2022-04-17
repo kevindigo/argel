@@ -32,7 +32,9 @@ export class Game {
 
     public applyDecision(slots: Slot[]): void {
         const state = this.stateManager.state;
-        const decisionManager = new DecisionManager(state.currentDeed);
+        const decisionManager = new DecisionManager(
+            state.currentDeed.decisions
+        );
         if (!decisionManager.isValidSelection(slots)) {
             throw new Error(
                 `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
@@ -42,15 +44,15 @@ export class Game {
         }
         decisionManager.getCurrentDecision().selectedSlots = slots;
         const newDecision = calculateNextDecision(state);
-        state.currentDeed.push(newDecision);
+        state.currentDeed.decisions.push(newDecision);
         return;
     }
 
     public startTurn() {
         const state = this.stateManager.state;
-        state.currentDeed = [];
+        state.currentDeed = { decisions: [] };
         const currentDecision = calculateNextDecision(this.stateManager.state);
-        state.currentDeed = [currentDecision];
+        state.currentDeed.decisions = [currentDecision];
     }
 
     private startGame(): void {

@@ -24,7 +24,7 @@ function calculateTopLevelDecision(state: State): Decision {
 }
 
 function getTopLevelSlot(state: State): Slot {
-    const topLevelDecision = state.currentDeed[0];
+    const topLevelDecision = state.currentDeed.decisions[0];
     if (!topLevelDecision) {
         throw new Error(
             'calculateFollowup called without a top-level decision'
@@ -92,7 +92,7 @@ function calculateFollowupDecision(state: State): Decision {
 }
 
 export function calculateNextDecision(state: State): Decision {
-    if (state.currentDeed.length === 0) {
+    if (state.currentDeed.decisions.length === 0) {
         return calculateTopLevelDecision(state);
     }
 

@@ -22,7 +22,7 @@ describe('Top-level decisions', () => {
         state = {
             activeSideIndex: 0,
             sides: [createEmptySide(), createEmptySide()],
-            currentDeed: [],
+            currentDeed: { decisions: [] },
         };
         stateManager = new StateManager(state);
         // const pool = CardefPool.getPool();

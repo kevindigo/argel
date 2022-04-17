@@ -13,7 +13,7 @@ export function createInitialState(player1: Player, player2: Player): State {
     const state: State = {
         activeSideIndex: 0,
         sides,
-        currentDeed: [],
+        currentDeed: { decisions: [] },
     };
 
     return state;
@@ -82,13 +82,13 @@ export class StateManager {
 
     public getCurrentDecision(): Decision {
         const deed = this.state.currentDeed;
-        const deedManager = new DecisionManager(deed);
+        const deedManager = new DecisionManager(deed.decisions);
         return deedManager.getCurrentDecision();
     }
 
     public getLastDecision(): Decision {
         const deed = this.state.currentDeed;
-        const last = deed[deed.length - 1];
+        const last = deed.decisions[deed.decisions.length - 1];
         if (!last) {
             throw new Error('getLastDecision called when currentDeed is empty');
         }

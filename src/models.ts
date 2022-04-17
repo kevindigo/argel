@@ -1,4 +1,5 @@
-import { CardId, Facing, DeckId, Zone } from './types';
+import { Cardef } from './cardefs';
+import { CardId, Facing, DeckId, Zone, DeedType } from './types';
 
 export interface Player {
     name: string;
@@ -42,10 +43,16 @@ export interface Decision {
     selectedSlots: Slot[];
 }
 
+export interface Deed {
+    mainCardef?: Cardef;
+    type?: DeedType;
+    decisions: Decision[];
+}
+
 export interface State {
     activeSideIndex: number;
     sides: Side[];
-    currentDeed: Decision[];
+    currentDeed: Deed;
     // queuedAdditionalPlay?: TopOrBottom; // or Slot?
     // queuedFightWith?: Slot;
 }
