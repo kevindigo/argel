@@ -52,20 +52,11 @@ export class StateManager {
     }
 
     public getCardAtSlot(slot: Slot): Card {
-        if (this.isZoneStateful(slot.zone)) {
-            const cardWithFacing = this.getCardWithFacingAtSlot(slot);
-            return cardWithFacing;
-        } else {
-            return this.getCardWithoutFacingAtSlot(slot);
-        }
-    }
-
-    public getCardWithFacingAtSlot(slot: Slot): Card {
-        const cardsInZone = this.getZoneCardsWithFacing(slot.zone);
+        const cardsInZone = this.getZoneCards(slot.zone);
         const card = cardsInZone[slot.index];
         if (!card) {
             throw new Error(
-                `getCardWithFacingAtSlot failed: ${JSON.stringify(
+                `getCardAtSlot failed: ${JSON.stringify(
                     slot
                 )} in ${JSON.stringify(cardsInZone)}}`
             );
@@ -83,13 +74,11 @@ export class StateManager {
 
     public getEffectivePower(sideIndex: number, slots: Slot[]): number {
         const power = slots.reduce((power, slot) => {
-            const cardWithFacing = this.getCardWithFacingAtSlot(slot);
-            const cardef = this.pool.lookup(cardWithFacing.cardId);
+            const card = this.getCardAtSlot(slot);
+            const cardef = this.pool.lookup(card.cardId);
             if (!cardef) {
                 throw new Error(
-                    `getEffectivePower no such card: ${JSON.stringify(
-                        cardWithFacing
-                    )}`
+                    `getEffectivePower no such card: ${JSON.stringify(card)}`
                 );
             }
             const thisPower = cardef?.power ?? 0;
@@ -121,16 +110,7 @@ export class StateManager {
         return side;
     }
 
-    private isZoneStateful(zone: Zone): boolean {
-        return (
-            zone === Zone.MY_LINE ||
-            zone === Zone.MY_ARSENAL ||
-            zone === Zone.ENEMY_LINE ||
-            zone === Zone.ENEMY_ARSENAL
-        );
-    }
-
-    private getZoneCardsWithFacing(zone: Zone): Card[] {
+    private getZoneCards(zone: Zone): Card[] {
         switch (zone) {
             case Zone.MY_LINE: {
                 return this.getMySideManager().line;
@@ -144,27 +124,6 @@ export class StateManager {
             case Zone.ENEMY_ARSENAL: {
                 return this.getEnemySideManager().line;
             }
-            default: {
-                throw new Error(`Unknown zoneWithFacing: ${zone}`);
-            }
-        }
-    }
-
-    private getCardWithoutFacingAtSlot(slot: Slot): Card {
-        const cardsInZone = this.getZoneCardsWithoutFacing(slot.zone);
-        const card = cardsInZone[slot.index];
-        if (!card) {
-            throw new Error(
-                `getCardWithoutFacingAtSlot failed: ${JSON.stringify(
-                    slot
-                )} in ${JSON.stringify(cardsInZone)}}`
-            );
-        }
-        return card;
-    }
-
-    private getZoneCardsWithoutFacing(zone: Zone): Card[] {
-        switch (zone) {
             case Zone.MY_TOP: {
                 const drawPile = this.getMySideManager().drawPile;
                 const topCard = drawPile[drawPile.length - 1];
@@ -216,7 +175,7 @@ export class StateManager {
                 return this.getEnemySideManager().scored;
             }
             default: {
-                throw new Error(`Unknown zoneWithFacing: ${zone}`);
+                throw new Error(`Unknown zone: ${zone}`);
             }
         }
     }

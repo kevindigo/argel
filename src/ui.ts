@@ -42,14 +42,14 @@ export function showState(state: State): void {
         });
         console.log(`  Hand: ${handCardNames.join(', ')}`);
 
-        const lineCardNames = sm.line.map((cardWithFacing) => {
-            const cardef = pool.lookup(cardWithFacing.cardId);
+        const lineCardNames = sm.line.map((card) => {
+            const cardef = pool.lookup(card.cardId);
             return `${cardef?.name} (${cardef?.power})`;
         });
         console.log(`  Line: ${lineCardNames.join(', ')}`);
 
-        const arsenalCardNames = sm.arsenal.map((cardWithFacing) => {
-            const cardef = pool.lookup(cardWithFacing.cardId);
+        const arsenalCardNames = sm.arsenal.map((card) => {
+            const cardef = pool.lookup(card.cardId);
             return cardef?.name;
         });
         console.log(`  Arsenal: ${arsenalCardNames.join(', ')}`);

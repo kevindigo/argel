@@ -31,9 +31,9 @@ describe('Sides', () => {
         expect(sideManager.line.length).toEqual(0);
         expect(sideManager.discards.length).toEqual(0);
         expect(sideManager.drawPile.length).toEqual(17);
-        sideManager.line.forEach((cardWithFacing) => {
-            expect(cardWithFacing.facing).toEqual(Facing.READY);
-            const cardef = pool.lookup(cardWithFacing.cardId);
+        sideManager.line.forEach((card) => {
+            expect(card.facing).toEqual(Facing.READY);
+            const cardef = pool.lookup(card.cardId);
             expect(cardef?.type).toEqual(CardType.CREATURE);
         });
     });

@@ -53,11 +53,10 @@ server know which `Deed` or other option should be executed.
 
 ### Terminology
 * Items
-    * `Card` = An instance of a card (based on a cardef)
+    * `Card` = An instance of a card (based on a cardef), including its facing
     * `Cardef` = The definition of a card (SetId, CardNumber)
     * `CardId` = The set and number of a card
     * `CardNumber` = 3-digit identifier within a set
-    * `CardWithFacing` = An in-play Creature or Relic
     * `DeckId` = UID of a deck
     * `DeckList` = A SetId, DeckId, and list of CardNumbers
     * `Game` = A session in progress; Consists of 2 Sides and a TurnState
@@ -117,11 +116,11 @@ server know which `Deed` or other option should be executed.
     * `WinFight` (WF:) = Bonus that triggers when the Creature wins a fight
 * Other
     * (=) = The card that is triggering the Effect
-    * `CardFacing` = State of an in-play Creature or Relic
-        * `Dormant` (@D) = An in-play card is turned left (can't be used)
-        * `Active` (@A) = An in-play card is upright (can Fight)
-        * `Mature` (@M) = An in-play card is turned right (can Fight or Harvest)
-        * `FaceDown` (@F) = A card is face-down
+    * `Facing` = State of a card
+        * `Dormant` (@D) = A card is turned left (can't be used)
+        * `Ready` (@R) = A card is upright (if in play, it can Fight)
+        * `Mature` (@M) = A card is turned right (if in play, it can Fight or Harvest)
+        * `Down` (@F) = A card is face-down
     * `If/Else` (if ? :) = if(cond) ? <doiftrue> : <dootherwise>
     * `Random` = If the hand is not revealed, random is automatic
     * `Repeat` (x) = "5x(MT > H)" would mean draw from top to hand 5 times
