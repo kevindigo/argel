@@ -50,10 +50,8 @@ export class Game {
     }
 
     public startTurn() {
-        this.deedManager.clear();
         const state = this.stateManager.state;
-        const currentDecision = calculateNextDecision(this.stateManager.state);
-        state.currentDeed.decisions = [currentDecision];
+        this.deedManager.startTurn(state);
     }
 
     private startGame(): void {

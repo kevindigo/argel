@@ -1,4 +1,5 @@
-import { Decision, Deed, Slot } from './models';
+import { calculateNextDecision } from './decision';
+import { Decision, Deed, Slot, State } from './models';
 import { slotString } from './slot';
 
 export class DeedManager {
@@ -8,10 +9,11 @@ export class DeedManager {
         this.deed = deed;
     }
 
-    public clear(): void {
+    public startTurn(state: State): void {
         this.deed.type = undefined;
         this.deed.mainCard = undefined;
         this.deed.decisions = [];
+        this.deed.decisions.push(calculateNextDecision(state));
     }
 
     public isValidSelection(slots: Slot[]): boolean {
