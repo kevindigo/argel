@@ -41,7 +41,7 @@ describe('DeedManager.startTurn', () => {
 
 describe('DeedManager.isValidSelection', () => {
     let deed: Deed;
-    let decisionManager: DeedManager;
+    let deedManager: DeedManager;
 
     beforeEach(() => {
         deed = {
@@ -53,11 +53,11 @@ describe('DeedManager.isValidSelection', () => {
                 },
             ],
         };
-        decisionManager = new DeedManager(deed);
+        deedManager = new DeedManager(deed);
     });
 
     it('returns false if no slots were selected', () => {
-        expect(decisionManager.isValidSelection([])).toBeFalsy();
+        expect(deedManager.isValidSelection([])).toBeFalsy();
     });
 
     it('returns false if more than one slot was selected', () => {
@@ -75,7 +75,7 @@ describe('DeedManager.isValidSelection', () => {
             JSON.parse(JSON.stringify(slot1)),
             JSON.parse(JSON.stringify(slot2)),
         ];
-        expect(decisionManager.isValidSelection(selected)).toBeFalsy();
+        expect(deedManager.isValidSelection(selected)).toBeFalsy();
     });
 
     it('returns true if a valid slot was selected', () => {
@@ -90,7 +90,7 @@ describe('DeedManager.isValidSelection', () => {
         deed.decisions[0]?.availableSlots.push(otherSlot);
         deed.decisions[0]?.availableSlots.push(selectedSlot);
         const copyOfSlot = JSON.parse(JSON.stringify(selectedSlot));
-        expect(decisionManager.isValidSelection([copyOfSlot])).toBeTruthy();
+        expect(deedManager.isValidSelection([copyOfSlot])).toBeTruthy();
     });
 
     it('returns true if a valid slot was selected', () => {
@@ -103,17 +103,17 @@ describe('DeedManager.isValidSelection', () => {
             zone: Zone.ENEMY_ARSENAL,
             index: 2,
         };
-        expect(decisionManager.isValidSelection([selected])).toBeFalsy();
+        expect(deedManager.isValidSelection([selected])).toBeFalsy();
     });
 });
 
 describe('DeedManager.getCurrentDecision', () => {
     let deed: Deed;
-    let decisionManager: DeedManager;
+    let deedManager: DeedManager;
 
     beforeEach(() => {
         deed = { decisions: [] };
-        decisionManager = new DeedManager(deed);
+        deedManager = new DeedManager(deed);
     });
 
     it('knows when the top-level decision has been made', () => {
@@ -131,7 +131,7 @@ describe('DeedManager.getCurrentDecision', () => {
             availableSlots: [slot],
             selectedSlots: [],
         });
-        const decision = decisionManager.getCurrentDecision();
+        const decision = deedManager.getCurrentDecision();
         expect(decision.selectedSlots.length).toEqual(0);
     });
 });
