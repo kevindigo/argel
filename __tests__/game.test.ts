@@ -23,6 +23,10 @@ describe('A Game', () => {
             expect(side.flags.canPlayActions).toBeTruthy();
             expect(side.flags.isNextCardActive).toBeFalsy();
         });
+        const deed = game.getCopyOfStateWithOptions().currentDeed;
+        expect(deed.length).toEqual(1);
+        const decision = deed[0];
+        expect(decision?.availableSlots.length).toEqual(3);
     });
 
     it('prevents mirror matches', () => {

@@ -1,21 +1,8 @@
 import { CardefPool } from '../src/pool';
 import { lookupDeckList } from './decks';
-import { AvailableDeedsGenerator } from './deeds';
-import { Deed, State } from './models';
+import { State } from './models';
 import { StateManager } from './state';
 import { DeckId } from './types';
-
-function getDeedString(deed: Deed): string {
-    const parts: string[] = [];
-    parts.push(deed.type);
-    if (deed.from.length > 0) {
-        parts.push(`from: ${JSON.stringify(deed.from)}`);
-    }
-    if (deed.to.length > 0) {
-        parts.push(`to: ${JSON.stringify(deed.to)}`);
-    }
-    return parts.join(' ');
-}
 
 export function showDeck(deckId: DeckId): void {
     const deckList = lookupDeckList(deckId);
@@ -49,24 +36,28 @@ export function showState(state: State): void {
     sideManagers.forEach((sm) => {
         const deckId = sm.side.player.deckId;
         console.log(`${sm.playerName()}: ${lookupDeckList(deckId)?.name}`);
+        const handCardNames = sm.hand.map((card) => {
+            const cardef = pool.lookup(card.cardId);
+            return cardef?.name;
+        });
+        console.log(`  Hand: ${handCardNames.join(', ')}`);
+
         const lineCardNames = sm.line.map((cardWithState) => {
             const cardef = pool.lookup(cardWithState.card.cardId);
             return `${cardef?.name} (${cardef?.power})`;
         });
-        console.log(`Line: ${lineCardNames.join(', ')}`);
-        const handCardNames = sm.hand.map((cardWithState) => {
-            const cardef = pool.lookup(cardWithState.cardId);
+        console.log(`  Line: ${lineCardNames.join(', ')}`);
+
+        const arsenalCardNames = sm.arsenal.map((cardWithState) => {
+            const cardef = pool.lookup(cardWithState.card.cardId);
             return cardef?.name;
         });
-        console.log(`Hand: ${handCardNames.join(', ')}`);
+        console.log(`  Arsenal: ${arsenalCardNames.join(', ')}`);
+
         console.log();
     });
     const mySideManager = stateManager.getMySideManager();
     console.log(`Active player: ${mySideManager.playerName()}`);
-    const generator = new AvailableDeedsGenerator(stateManager, pool);
-    const availableDeeds = generator.getAvailableDeeds();
-    availableDeeds.forEach((deed) => {
-        console.log(getDeedString(deed));
-    });
+    console.log(`currentDeed: ${JSON.stringify(state.currentDeed)}`);
     console.log();
 }

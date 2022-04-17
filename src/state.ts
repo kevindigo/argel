@@ -1,3 +1,4 @@
+import { DecisionManager } from './decision';
 import {
     State,
     Side,
@@ -6,6 +7,7 @@ import {
     CardWithState,
     Slot,
     Card,
+    Decision,
 } from './models';
 import { CardefPool } from './pool';
 import { createInitialSide, SideManager } from './side';
@@ -28,6 +30,7 @@ export function createInitialState(player1: Player, player2: Player): State {
         sides,
         turnState,
         availableDeeds: [],
+        currentDeed: [],
     };
 
     return state;
@@ -103,6 +106,21 @@ export class StateManager {
             return power + thisPower;
         }, 0);
         return power;
+    }
+
+    public getCurrentDecision(): Decision {
+        const deed = this.state.currentDeed;
+        const deedManager = new DecisionManager(deed);
+        return deedManager.getCurrentDecision();
+    }
+
+    public getLastDecision(): Decision {
+        const deed = this.state.currentDeed;
+        const last = deed[deed.length - 1];
+        if (!last) {
+            throw new Error('getLastDecision called when currentDeed is empty');
+        }
+        return last;
     }
 
     private getSide(sideIndex: number): Side {

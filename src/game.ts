@@ -1,9 +1,10 @@
 import { CardefPool } from './pool';
 import { AvailableDeedsGenerator } from './deeds';
-import { Card, CardWithState, State, Player } from './models';
+import { Card, CardWithState, State, Player, Slot } from './models';
 import { SideManager } from './side';
 import { createInitialState, StateManager } from './state';
 import { CardState, CardType } from './types';
+import { DecisionManager, calculateNextDecision } from './decision';
 
 export class Game {
     public readonly players: Player[];
@@ -37,10 +38,35 @@ export class Game {
         return copy;
     }
 
+    public applyDecision(slots: Slot[]): void {
+        const state = this.stateManager.state;
+        const decisionManager = new DecisionManager(state.currentDeed);
+        if (!decisionManager.isValidSelection(slots)) {
+            throw new Error(
+                `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
+                    state
+                )}`
+            );
+        }
+        decisionManager.getCurrentDecision().selectedSlots = slots;
+        const newDecision = calculateNextDecision(state);
+        state.currentDeed.push(newDecision);
+        return;
+    }
+
+    public startTurn() {
+        const state = this.stateManager.state;
+        state.currentDeed = [];
+        const currentDecision = calculateNextDecision(this.stateManager.state);
+        state.currentDeed = [currentDecision];
+    }
+
     private startGame(): void {
         this.sideManagers.forEach((manager) => {
             this.startGameForSide(manager);
         });
+
+        this.startTurn();
     }
 
     private startGameForSide(manager: SideManager): void {

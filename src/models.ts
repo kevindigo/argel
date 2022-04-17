@@ -61,8 +61,17 @@ export interface Deed {
     choices?: Slot[][];
 }
 
+export interface Decision {
+    label: string;
+    availableSlots: Slot[];
+    // minSelectionCount: number;
+    // maxSelectionCount: number;
+    selectedSlots: Slot[];
+}
+
 export interface State {
     sides: Side[];
     turnState: TurnState;
     availableDeeds: Deed[];
+    currentDeed: Decision[];
 }
