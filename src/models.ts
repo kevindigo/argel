@@ -1,4 +1,4 @@
-import { CardId, Facing, DeckId, TopOrBottom, Zone } from './types';
+import { CardId, Facing, DeckId, Zone } from './types';
 
 export interface Player {
     name: string;
@@ -39,7 +39,8 @@ export interface TurnFlags {
 
 export interface TurnState {
     myIndex: number;
-    queuedAdditionalPlay?: TopOrBottom;
+    // queuedAdditionalPlay?: TopOrBottom; // or Slot?
+    // queuedFightWith?: Slot;
     turnFlags: TurnFlags;
 }
 

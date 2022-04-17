@@ -11,11 +11,6 @@ export enum Facing {
     DOWN = 'FaceDown',
 }
 
-export enum TopOrBottom {
-    TOP = 'Top',
-    BOTTOM = 'Bottom',
-}
-
 export enum DeedType {
     PLAY = 'Play',
     FIGHT = 'Fight',
