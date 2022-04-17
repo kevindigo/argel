@@ -12,6 +12,7 @@ export interface Card {
 }
 
 export interface SideFlags {
+    canDiscard: boolean;
     canFight: boolean;
     canPlayActions: boolean;
     isNextCardActive: boolean;
@@ -33,15 +34,10 @@ export interface Side {
     flags: SideFlags;
 }
 
-export interface TurnFlags {
-    canDiscard: boolean;
-}
-
 export interface TurnState {
     myIndex: number;
     // queuedAdditionalPlay?: TopOrBottom; // or Slot?
     // queuedFightWith?: Slot;
-    turnFlags: TurnFlags;
 }
 
 export interface Decision {

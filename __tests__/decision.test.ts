@@ -23,9 +23,6 @@ describe('Top-level decisions', () => {
             sides: [createEmptySide(), createEmptySide()],
             turnState: {
                 myIndex: 0,
-                turnFlags: {
-                    canDiscard: false,
-                },
             },
             currentDeed: [],
         };

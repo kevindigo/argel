@@ -12,9 +12,6 @@ export function createInitialState(player1: Player, player2: Player): State {
 
     const turnState: TurnState = {
         myIndex: 0,
-        turnFlags: {
-            canDiscard: false,
-        },
     };
 
     const state: State = {
@@ -48,7 +45,7 @@ export class StateManager {
     }
 
     public canDiscard(): boolean {
-        return this.state.turnState.turnFlags.canDiscard;
+        return this.getMySideManager().canDiscard();
     }
 
     public getCardAtSlot(slot: Slot): Card {

@@ -54,6 +54,10 @@ export class SideManager {
         return this.side.scored;
     }
 
+    public canDiscard(): boolean {
+        return this.side.flags.canDiscard;
+    }
+
     public removeFromLine(slots: Slot[]): Card[] {
         // ToDo: Ensure all slots are in the same zone
         const indexes = slots.map((slot) => {
@@ -91,6 +95,7 @@ export function createInitialSide(player: Player): Side {
         line: [],
         arsenal: [],
         flags: {
+            canDiscard: false,
             canFight: false,
             canPlayActions: false,
             isNextCardActive: false,
@@ -109,6 +114,7 @@ export function createEmptySide(): Side {
         discards: [],
         drawPile: [],
         flags: {
+            canDiscard: false,
             canFight: true,
             canPlayActions: true,
             isNextCardActive: false,
