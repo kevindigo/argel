@@ -43,8 +43,8 @@ export interface Decision {
 }
 
 export interface Deed {
-    mainCard?: Card;
-    type?: DeedType;
+    mainCard?: Card | undefined;
+    type?: DeedType | undefined;
     decisions: Decision[];
 }
 

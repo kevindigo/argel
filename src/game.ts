@@ -10,7 +10,8 @@ export class Game {
     public readonly players: Player[];
     public readonly sideManagers: SideManager[];
     public readonly pool: CardefPool;
-    private stateManager: StateManager;
+    private readonly stateManager: StateManager;
+    private readonly deedManager: DeedManager;
 
     public constructor(player1: Player, player2: Player) {
         const state = createInitialState(player1, player2);
@@ -21,8 +22,10 @@ export class Game {
         this.sideManagers = state.sides.map((side) => {
             return new SideManager(side);
         });
-        this.stateManager = new StateManager(state);
         this.pool = CardefPool.getPool();
+
+        this.stateManager = new StateManager(state);
+        this.deedManager = new DeedManager(state.currentDeed);
         this.startGame();
     }
 
@@ -33,23 +36,22 @@ export class Game {
 
     public applyDecision(slots: Slot[]): void {
         const state = this.stateManager.state;
-        const decisionManager = new DeedManager(state.currentDeed);
-        if (!decisionManager.isValidSelection(slots)) {
+        if (!this.deedManager.isValidSelection(slots)) {
             throw new Error(
                 `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
                     state
                 )}`
             );
         }
-        decisionManager.getCurrentDecision().selectedSlots = slots;
+        this.deedManager.getCurrentDecision().selectedSlots = slots;
         const newDecision = calculateNextDecision(state);
         state.currentDeed.decisions.push(newDecision);
         return;
     }
 
     public startTurn() {
+        this.deedManager.clear();
         const state = this.stateManager.state;
-        state.currentDeed = { decisions: [] };
         const currentDecision = calculateNextDecision(this.stateManager.state);
         state.currentDeed.decisions = [currentDecision];
     }

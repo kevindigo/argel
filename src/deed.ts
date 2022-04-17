@@ -8,6 +8,12 @@ export class DeedManager {
         this.deed = deed;
     }
 
+    public clear(): void {
+        this.deed.type = undefined;
+        this.deed.mainCard = undefined;
+        this.deed.decisions = [];
+    }
+
     public isValidSelection(slots: Slot[]): boolean {
         if (slots.length !== 1) {
             return false;
