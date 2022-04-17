@@ -1,8 +1,8 @@
 import { CardefPool } from './pool';
-import { Card, CardWithState, State, Player, Slot } from './models';
+import { Card, CardWithFacing, State, Player, Slot } from './models';
 import { SideManager } from './side';
 import { createInitialState, StateManager } from './state';
-import { CardState, CardType } from './types';
+import { Facing, CardType } from './types';
 import { DecisionManager, calculateNextDecision } from './decision';
 
 export class Game {
@@ -73,9 +73,9 @@ export class Game {
             }
             const cardef = pool.lookup(card.cardId);
             if (cardef?.type === CardType.CREATURE) {
-                const readyCard: CardWithState = {
+                const readyCard: CardWithFacing = {
                     card,
-                    state: CardState.READY,
+                    facing: Facing.READY,
                 };
                 manager.line.push(readyCard);
             } else {

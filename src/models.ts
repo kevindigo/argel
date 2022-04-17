@@ -1,4 +1,4 @@
-import { CardId, CardState, DeckId, TopOrBottom, Zone } from './types';
+import { CardId, Facing, DeckId, TopOrBottom, Zone } from './types';
 
 export interface Player {
     name: string;
@@ -10,9 +10,9 @@ export interface Card {
     cardId: CardId;
 }
 
-export interface CardWithState {
+export interface CardWithFacing {
     card: Card;
-    state: CardState;
+    facing: Facing;
 }
 
 export interface SideFlags {
@@ -32,8 +32,8 @@ export interface Side {
     discards: Card[];
     hand: Card[];
     scored: Card[];
-    line: CardWithState[];
-    arsenal: CardWithState[];
+    line: CardWithFacing[];
+    arsenal: CardWithFacing[];
     flags: SideFlags;
 }
 

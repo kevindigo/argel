@@ -1,7 +1,7 @@
-import { Card, CardWithState, Slot } from '../src/models';
+import { Card, CardWithFacing, Slot } from '../src/models';
 import { CardefPool } from '../src/pool';
 import { createInitialSide, SideManager } from '../src/side';
-import { CardNumber, CardState, CardType, Zone } from '../src/types';
+import { CardNumber, Facing, CardType, Zone } from '../src/types';
 
 function createCard(cardNumber: CardNumber): Card {
     return {
@@ -10,14 +10,14 @@ function createCard(cardNumber: CardNumber): Card {
     };
 }
 
-function createCardWithState(
+function createCardWithFacing(
     cardNumber: CardNumber,
-    cardState: CardState
-): CardWithState {
+    facing: Facing
+): CardWithFacing {
     const card = createCard(cardNumber);
     return {
         card,
-        state: cardState,
+        facing: facing,
     };
 }
 
@@ -35,9 +35,9 @@ describe('Sides', () => {
         expect(sideManager.line.length).toEqual(0);
         expect(sideManager.discards.length).toEqual(0);
         expect(sideManager.drawPile.length).toEqual(17);
-        sideManager.line.forEach((cardWithState) => {
-            expect(cardWithState.state).toEqual(CardState.READY);
-            const cardef = pool.lookup(cardWithState.card.cardId);
+        sideManager.line.forEach((cardWithFacing) => {
+            expect(cardWithFacing.facing).toEqual(Facing.READY);
+            const cardef = pool.lookup(cardWithFacing.card.cardId);
             expect(cardef?.type).toEqual(CardType.CREATURE);
         });
     });
@@ -51,10 +51,10 @@ describe('StateManager.removeFromLine', () => {
         };
         const sideManager = new SideManager(createInitialSide(player));
 
-        const vix = createCardWithState('OmegaCodex-001', CardState.READY);
-        const jater = createCardWithState('OmegaCodex-002', CardState.READY);
-        const luminate = createCardWithState('OmegaCodex-003', CardState.READY);
-        const budge = createCardWithState('OmegaCodex-004', CardState.READY);
+        const vix = createCardWithFacing('OmegaCodex-001', Facing.READY);
+        const jater = createCardWithFacing('OmegaCodex-002', Facing.READY);
+        const luminate = createCardWithFacing('OmegaCodex-003', Facing.READY);
+        const budge = createCardWithFacing('OmegaCodex-004', Facing.READY);
         sideManager.line.push(vix);
         sideManager.line.push(jater);
         sideManager.line.push(luminate);

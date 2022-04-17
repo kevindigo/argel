@@ -61,15 +61,15 @@ export class SideManager {
         });
         indexes.sort().reverse();
         const cards = indexes.map((index) => {
-            const cardWithState = this.line.splice(index, 1).pop();
-            if (!cardWithState) {
+            const cardWithFacing = this.line.splice(index, 1).pop();
+            if (!cardWithFacing) {
                 throw new Error(
                     `failed to remove ${JSON.stringify(
                         slots
                     )} from ${JSON.stringify(this.line)}`
                 );
             }
-            return cardWithState.card;
+            return cardWithFacing.card;
         });
         return cards;
     }

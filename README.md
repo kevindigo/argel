@@ -57,7 +57,7 @@ server know which `Deed` or other option should be executed.
     * `Cardef` = The definition of a card (SetId, CardNumber)
     * `CardId` = The set and number of a card
     * `CardNumber` = 3-digit identifier within a set
-    * `CardWithState` = An in-play Creature or Relic
+    * `CardWithFacing` = An in-play Creature or Relic
     * `DeckId` = UID of a deck
     * `DeckList` = A SetId, DeckId, and list of CardNumbers
     * `Game` = A session in progress; Consists of 2 Sides and a TurnState
@@ -97,7 +97,7 @@ server know which `Deed` or other option should be executed.
     * `Play` = Move a Card from Hand to Line (position -1 means the right end)
     * `Queue` (Q) = Queue a Play or Fight for after this Deed
     * `Reveal` (%) = Make a current hand visible to the other Player
-    * `Rotate` (@) = Change the orientation/state of an in-play Card
+    * `Rotate` (@) = Change the facing of an in-play Card
 * Qualifiers
     * `Any` (A) = Any (location), used to mean either of My (M) and Opp (O)
     * `Controller` (C) = Whose line or arsenal the card is in
@@ -117,10 +117,11 @@ server know which `Deed` or other option should be executed.
     * `WinFight` (WF:) = Bonus that triggers when the Creature wins a fight
 * Other
     * (=) = The card that is triggering the Effect
-    * `CardState` = State of an in-play Creature or Relic
+    * `CardFacing` = State of an in-play Creature or Relic
         * `Dormant` (@D) = An in-play card is turned left (can't be used)
         * `Active` (@A) = An in-play card is upright (can Fight)
         * `Mature` (@M) = An in-play card is turned right (can Fight or Harvest)
+        * `FaceDown` (@F) = A card is face-down
     * `If/Else` (if ? :) = if(cond) ? <doiftrue> : <dootherwise>
     * `Random` = If the hand is not revealed, random is automatic
     * `Repeat` (x) = "5x(MT > H)" would mean draw from top to hand 5 times

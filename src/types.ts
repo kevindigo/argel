@@ -4,10 +4,11 @@ export enum CardType {
     RELIC = 'Relic',
 }
 
-export enum CardState {
+export enum Facing {
     DORMANT = 'Dormant',
     READY = 'Ready',
     MATURE = 'Mature',
+    // FACE_DOWN = 'FaceDown',
 }
 
 export enum TopOrBottom {
