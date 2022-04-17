@@ -1,6 +1,43 @@
 import { DeedManager } from '../src/deed';
-import { Deed, Slot } from '../src/models';
-import { Zone } from '../src/types';
+import { Deed, Slot, State } from '../src/models';
+import { createEmptySide } from '../src/side';
+import { Facing, Zone } from '../src/types';
+
+describe('DeedManager.startTurn', () => {
+    it('Should clear existing data', () => {
+        const deed: Deed = {
+            mainCard: {
+                cardId: 'whatever',
+                deckId: 'anything',
+                facing: Facing.READY,
+            },
+            decisions: [
+                {
+                    label: 'Should get removed',
+                    availableSlots: [],
+                    selectedSlots: [],
+                },
+                {
+                    label: 'Should also get removed',
+                    availableSlots: [],
+                    selectedSlots: [],
+                },
+            ],
+        };
+        const deedManager = new DeedManager(deed);
+        const state: State = {
+            sides: [createEmptySide(), createEmptySide()],
+            activeSideIndex: 0,
+            currentDeed: deed,
+        };
+        expect(state.currentDeed.decisions.length).toEqual(2);
+        deedManager.startTurn(state);
+        expect(state.currentDeed.mainCard).toBeUndefined();
+        expect(state.currentDeed.type).toBeUndefined();
+        console.log(JSON.stringify(state.currentDeed.decisions));
+        expect(state.currentDeed.decisions.length).toEqual(1);
+    });
+});
 
 describe('DeedManager.isValidSelection', () => {
     let deed: Deed;

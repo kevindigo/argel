@@ -59,6 +59,8 @@ export class Game {
             this.startGameForSide(manager);
         });
 
+        // ToDo: Set correct active player
+
         this.startTurn();
     }
 
