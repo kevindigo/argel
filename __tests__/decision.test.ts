@@ -3,7 +3,7 @@ import { Game } from '../src/game';
 import { Card, Decision, Player, Slot } from '../src/models';
 import { SideManager } from '../src/side';
 import { StateManager } from '../src/state';
-import { Facing, Zone } from '../src/types';
+import { CardId, Facing, Zone } from '../src/types';
 
 const sig: Player = {
     name: 'Sig',
@@ -13,6 +13,14 @@ const marla: Player = {
     name: 'Marla',
     deckId: '679a6701-d7c3-494e-becb-04e9178aca30',
 };
+
+function createBogusReadyCard(cardId: CardId): Card {
+    return {
+        cardId,
+        deckId: 'bogus',
+        facing: Facing.READY,
+    };
+}
 
 describe('Top-level decisions', () => {
     let stateManager: StateManager;
@@ -25,21 +33,13 @@ describe('Top-level decisions', () => {
     it('should offer all playable hand cards', () => {
         const mySideManager = stateManager.getMySideManager();
         const hand = mySideManager.hand;
-        const vix: Card = {
-            cardId: 'OmegaCodex-001',
-            deckId: 'bogus',
-            facing: Facing.READY,
-        };
-        const jater: Card = {
-            cardId: 'OmegaCodex-001',
-            deckId: 'bogus',
-            facing: Facing.READY,
-        };
+        const vix: Card = createBogusReadyCard('OmegaCodex-001');
+        const jater: Card = createBogusReadyCard('OmegaCodex-001');
 
         hand.push(vix);
         hand.push(jater);
 
-        const decisions: Decision = calculateNextDecision(state);
+        const decisions: Decision = calculateNextDecision(stateManager.state);
         expect(decisions.availableSlots.length).toEqual(2);
         const playVix: Slot = {
             zone: Zone.MY_HAND,
@@ -63,15 +63,11 @@ describe('calculateNextDecision', () => {
 
     it('Follow-up for playing actions only offers scored', () => {
         const mySideManager = game.sideManagers[0] as SideManager;
-        const nothingToSeeHere: Card = {
-            deckId: 'bogus',
-            cardId: 'OmegaCodex-100',
-            facing: Facing.READY,
-        };
+        const nothingToSee = createBogusReadyCard('OmegaCodex-100');
         while (mySideManager.hand.length) {
             mySideManager.hand.pop();
         }
-        mySideManager.hand.push(nothingToSeeHere);
+        mySideManager.hand.push(nothingToSee);
         while (mySideManager.line.length) {
             mySideManager.line.pop();
         }
