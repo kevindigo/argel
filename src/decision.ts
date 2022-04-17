@@ -1,4 +1,4 @@
-import { Decision, Slot, State } from './models';
+import { Decision, Deed, Slot, State } from './models';
 import { CardefPool } from './pool';
 import { slotString } from './slot';
 import { StateManager } from './state';
@@ -104,10 +104,10 @@ export function calculateNextDecision(state: State): Decision {
     throw new Error('Followups are not yet supported');
 }
 
-export class DecisionManager {
-    private deed;
+export class DeedManager {
+    private deed: Deed;
 
-    public constructor(deed: Decision[]) {
+    public constructor(deed: Deed) {
         this.deed = deed;
     }
 
@@ -128,8 +128,8 @@ export class DecisionManager {
     }
 
     public getCurrentDecision(): Decision {
-        for (let i = 0; i < this.deed.length; ++i) {
-            const decision = this.deed[i] as Decision;
+        for (let i = 0; i < this.deed.decisions.length; ++i) {
+            const decision = this.deed.decisions[i] as Decision;
             if (decision.selectedSlots.length === 0) {
                 return decision;
             }

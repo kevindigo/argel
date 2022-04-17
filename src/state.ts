@@ -1,4 +1,4 @@
-import { DecisionManager } from './decision';
+import { DeedManager } from './decision';
 import { State, Side, Player, Slot, Card, Decision } from './models';
 import { CardefPool } from './pool';
 import { createInitialSide, SideManager } from './side';
@@ -82,7 +82,7 @@ export class StateManager {
 
     public getCurrentDecision(): Decision {
         const deed = this.state.currentDeed;
-        const deedManager = new DecisionManager(deed.decisions);
+        const deedManager = new DeedManager(deed);
         return deedManager.getCurrentDecision();
     }
 

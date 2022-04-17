@@ -1,6 +1,6 @@
-import { DecisionManager, calculateNextDecision } from '../src/decision';
+import { DeedManager, calculateNextDecision } from '../src/decision';
 import { Game } from '../src/game';
-import { Card, Decision, Player, Slot, State } from '../src/models';
+import { Card, Decision, Deed, Player, Slot, State } from '../src/models';
 import { createEmptySide, SideManager } from '../src/side';
 import { StateManager } from '../src/state';
 import { Facing, Zone } from '../src/types';
@@ -61,18 +61,20 @@ describe('Top-level decisions', () => {
 });
 
 describe('DecisionManager.isValidSelection', () => {
-    let deed: Decision[];
-    let decisionManager: DecisionManager;
+    let deed: Deed;
+    let decisionManager: DeedManager;
 
     beforeEach(() => {
-        deed = [
-            {
-                label: 'n/a',
-                availableSlots: [],
-                selectedSlots: [],
-            },
-        ];
-        decisionManager = new DecisionManager(deed);
+        deed = {
+            decisions: [
+                {
+                    label: 'n/a',
+                    availableSlots: [],
+                    selectedSlots: [],
+                },
+            ],
+        };
+        decisionManager = new DeedManager(deed);
     });
 
     it('returns false if no slots were selected', () => {
@@ -88,8 +90,8 @@ describe('DecisionManager.isValidSelection', () => {
             zone: Zone.ENEMY_ARSENAL,
             index: 2,
         };
-        deed[0]?.availableSlots.push(slot1);
-        deed[0]?.availableSlots.push(slot2);
+        deed.decisions[0]?.availableSlots.push(slot1);
+        deed.decisions[0]?.availableSlots.push(slot2);
         const selected: Slot[] = [
             JSON.parse(JSON.stringify(slot1)),
             JSON.parse(JSON.stringify(slot2)),
@@ -106,8 +108,8 @@ describe('DecisionManager.isValidSelection', () => {
             zone: Zone.ENEMY_ARSENAL,
             index: 0,
         };
-        deed[0]?.availableSlots.push(otherSlot);
-        deed[0]?.availableSlots.push(selectedSlot);
+        deed.decisions[0]?.availableSlots.push(otherSlot);
+        deed.decisions[0]?.availableSlots.push(selectedSlot);
         const copyOfSlot = JSON.parse(JSON.stringify(selectedSlot));
         expect(decisionManager.isValidSelection([copyOfSlot])).toBeTruthy();
     });
@@ -117,7 +119,7 @@ describe('DecisionManager.isValidSelection', () => {
             zone: Zone.ENEMY_ARSENAL,
             index: 0,
         };
-        deed[0]?.availableSlots.push(slot);
+        deed.decisions[0]?.availableSlots.push(slot);
         const selected: Slot = {
             zone: Zone.ENEMY_ARSENAL,
             index: 2,
@@ -127,12 +129,12 @@ describe('DecisionManager.isValidSelection', () => {
 });
 
 describe('DecisionManager.getCurrentDecision', () => {
-    let deed: Decision[];
-    let decisionManager: DecisionManager;
+    let deed: Deed;
+    let decisionManager: DeedManager;
 
     beforeEach(() => {
-        deed = [];
-        decisionManager = new DecisionManager(deed);
+        deed = { decisions: [] };
+        decisionManager = new DeedManager(deed);
     });
 
     it('knows when the top-level decision has been made', () => {
@@ -140,12 +142,12 @@ describe('DecisionManager.getCurrentDecision', () => {
             zone: Zone.ENEMY_ARSENAL,
             index: 0,
         };
-        deed.push({
+        deed.decisions.push({
             label: 'top-level',
             availableSlots: [slot],
             selectedSlots: [slot],
         });
-        deed.push({
+        deed.decisions.push({
             label: 'follow-up',
             availableSlots: [slot],
             selectedSlots: [],
