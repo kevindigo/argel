@@ -44,7 +44,7 @@ export interface Decision {
 }
 
 export interface Deed {
-    mainCardef?: Cardef;
+    mainCard?: Card;
     type?: DeedType;
     decisions: Decision[];
 }
