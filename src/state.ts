@@ -1,7 +1,7 @@
 import { DeedManager } from './deed';
 import { State, Side, Player, Slot, Card, Decision } from './models';
 import { CardefPool } from './pool';
-import { createInitialSide, SideManager } from './side';
+import { createEmptySide, createInitialSide, SideManager } from './side';
 import { Zone } from './types';
 
 export function createInitialState(player1: Player, player2: Player): State {
@@ -22,6 +22,15 @@ export function createInitialState(player1: Player, player2: Player): State {
 export class StateManager {
     private _state: State;
     private pool: CardefPool;
+
+    public static createWithEmptyState() {
+        const state = {
+            activeSideIndex: 0,
+            sides: [createEmptySide(), createEmptySide()],
+            currentDeed: { decisions: [] },
+        };
+        return new StateManager(state);
+    }
 
     public constructor(state: State) {
         this._state = state;

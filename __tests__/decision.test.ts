@@ -1,7 +1,7 @@
 import { calculateNextDecision } from '../src/decision';
 import { Game } from '../src/game';
-import { Card, Decision, Player, Slot, State } from '../src/models';
-import { createEmptySide, SideManager } from '../src/side';
+import { Card, Decision, Player, Slot } from '../src/models';
+import { SideManager } from '../src/side';
 import { StateManager } from '../src/state';
 import { Facing, Zone } from '../src/types';
 
@@ -15,16 +15,10 @@ const marla: Player = {
 };
 
 describe('Top-level decisions', () => {
-    let state: State;
     let stateManager: StateManager;
 
     beforeEach(() => {
-        state = {
-            activeSideIndex: 0,
-            sides: [createEmptySide(), createEmptySide()],
-            currentDeed: { decisions: [] },
-        };
-        stateManager = new StateManager(state);
+        stateManager = StateManager.createWithEmptyState();
         // const pool = CardefPool.getPool();
     });
 
