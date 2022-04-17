@@ -25,7 +25,7 @@ export class Game {
         this.startGame();
     }
 
-    public getCopyOfStateWithOptions(): State {
+    public getCopyOfState(): State {
         const copy: State = JSON.parse(JSON.stringify(this.stateManager.state));
         return copy;
     }

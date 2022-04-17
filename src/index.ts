@@ -16,7 +16,7 @@ const player2: Player = {
 
 const game = new Game(player1, player2);
 {
-    const state = game.getCopyOfStateWithOptions();
+    const state = game.getCopyOfState();
     const stateManager = new StateManager(state);
     showState(state);
     const currentDecision = stateManager.getCurrentDecision();
@@ -36,7 +36,7 @@ const game = new Game(player1, player2);
 }
 
 {
-    const state = game.getCopyOfStateWithOptions();
+    const state = game.getCopyOfState();
     const stateManager = new StateManager(state);
     showState(state);
     const currentDecision = stateManager.getCurrentDecision();

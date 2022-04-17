@@ -179,7 +179,7 @@ describe('calculateNextDecision', () => {
         game.startTurn();
 
         {
-            const state = game.getCopyOfStateWithOptions();
+            const state = game.getCopyOfState();
             expect(state.sides[0]?.hand.length).toEqual(1);
             expect(state.sides[0]?.line.length).toEqual(0);
 
@@ -191,7 +191,7 @@ describe('calculateNextDecision', () => {
         }
 
         {
-            const state = game.getCopyOfStateWithOptions();
+            const state = game.getCopyOfState();
             const stateManager = new StateManager(state);
             const followUp = stateManager.getCurrentDecision();
             expect(followUp.availableSlots.length).toEqual(1);
@@ -202,7 +202,7 @@ describe('calculateNextDecision', () => {
     });
 
     it('throws if the last decision remains incomplete', () => {
-        const state = game.getCopyOfStateWithOptions();
+        const state = game.getCopyOfState();
         expect(() => calculateNextDecision(state)).toThrowError();
     });
 });
