@@ -1,4 +1,4 @@
-import { Card, CardWithFacing, Slot } from '../src/models';
+import { Card, Slot } from '../src/models';
 import { CardefPool } from '../src/pool';
 import { createInitialSide, SideManager } from '../src/side';
 import { CardNumber, Facing, CardType, Zone } from '../src/types';
@@ -7,18 +7,14 @@ function createCard(cardNumber: CardNumber): Card {
     return {
         cardId: `OmegaCodex-${cardNumber}`,
         deckId: 'Whatever',
+        facing: Facing.READY,
     };
 }
 
-function createCardWithFacing(
-    cardNumber: CardNumber,
-    facing: Facing
-): CardWithFacing {
+function createCardWithFacing(cardNumber: CardNumber, facing: Facing): Card {
     const card = createCard(cardNumber);
-    return {
-        card,
-        facing: facing,
-    };
+    card.facing = facing;
+    return card;
 }
 
 describe('Sides', () => {
@@ -37,7 +33,7 @@ describe('Sides', () => {
         expect(sideManager.drawPile.length).toEqual(17);
         sideManager.line.forEach((cardWithFacing) => {
             expect(cardWithFacing.facing).toEqual(Facing.READY);
-            const cardef = pool.lookup(cardWithFacing.card.cardId);
+            const cardef = pool.lookup(cardWithFacing.cardId);
             expect(cardef?.type).toEqual(CardType.CREATURE);
         });
     });
@@ -65,7 +61,7 @@ describe('StateManager.removeFromLine', () => {
             { zone: Zone.MY_LINE, index: 3 },
         ];
         const removed = sideManager.removeFromLine(slotsToRemove);
-        expect(removed).toEqual([budge.card, jater.card]);
+        expect(removed).toEqual([budge, jater]);
         expect(sideManager.line).toEqual([vix, luminate]);
     });
 });

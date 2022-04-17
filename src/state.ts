@@ -1,14 +1,5 @@
 import { DecisionManager } from './decision';
-import {
-    State,
-    Side,
-    Player,
-    TurnState,
-    CardWithFacing,
-    Slot,
-    Card,
-    Decision,
-} from './models';
+import { State, Side, Player, TurnState, Slot, Card, Decision } from './models';
 import { CardefPool } from './pool';
 import { createInitialSide, SideManager } from './side';
 import { Zone } from './types';
@@ -63,13 +54,13 @@ export class StateManager {
     public getCardAtSlot(slot: Slot): Card {
         if (this.isZoneStateful(slot.zone)) {
             const cardWithFacing = this.getCardWithFacingAtSlot(slot);
-            return cardWithFacing.card;
+            return cardWithFacing;
         } else {
             return this.getCardWithoutFacingAtSlot(slot);
         }
     }
 
-    public getCardWithFacingAtSlot(slot: Slot): CardWithFacing {
+    public getCardWithFacingAtSlot(slot: Slot): Card {
         const cardsInZone = this.getZoneCardsWithFacing(slot.zone);
         const card = cardsInZone[slot.index];
         if (!card) {
@@ -93,7 +84,7 @@ export class StateManager {
     public getEffectivePower(sideIndex: number, slots: Slot[]): number {
         const power = slots.reduce((power, slot) => {
             const cardWithFacing = this.getCardWithFacingAtSlot(slot);
-            const cardef = this.pool.lookup(cardWithFacing.card.cardId);
+            const cardef = this.pool.lookup(cardWithFacing.cardId);
             if (!cardef) {
                 throw new Error(
                     `getEffectivePower no such card: ${JSON.stringify(
@@ -139,7 +130,7 @@ export class StateManager {
         );
     }
 
-    private getZoneCardsWithFacing(zone: Zone): CardWithFacing[] {
+    private getZoneCardsWithFacing(zone: Zone): Card[] {
         switch (zone) {
             case Zone.MY_LINE: {
                 return this.getMySideManager().line;

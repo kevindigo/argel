@@ -1,6 +1,6 @@
 import { OMEGA_CODEX } from './constants';
 import { Card } from './models';
-import { CardId, CardNumber, DeckId, SetId } from './types';
+import { CardId, CardNumber, DeckId, Facing, SetId } from './types';
 
 export class DeckList {
     private _id: DeckId;
@@ -56,6 +56,7 @@ export function createDeck(deckList: DeckList): Card[] {
         return {
             deckId: deckList.id,
             cardId,
+            facing: Facing.DOWN,
         };
     });
 

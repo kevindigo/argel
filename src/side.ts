@@ -69,7 +69,7 @@ export class SideManager {
                     )} from ${JSON.stringify(this.line)}`
                 );
             }
-            return cardWithFacing.card;
+            return cardWithFacing;
         });
         return cards;
     }

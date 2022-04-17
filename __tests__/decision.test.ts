@@ -3,7 +3,7 @@ import { Game } from '../src/game';
 import { Card, Decision, Player, Slot, State } from '../src/models';
 import { createEmptySide, SideManager } from '../src/side';
 import { StateManager } from '../src/state';
-import { Zone } from '../src/types';
+import { Facing, Zone } from '../src/types';
 
 const sig: Player = {
     name: 'Sig',
@@ -39,10 +39,12 @@ describe('Top-level decisions', () => {
         const vix: Card = {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
+            facing: Facing.READY,
         };
         const jater: Card = {
             cardId: 'OmegaCodex-001',
             deckId: 'bogus',
+            facing: Facing.READY,
         };
 
         hand.push(vix);
@@ -170,6 +172,7 @@ describe('calculateNextDecision', () => {
         const nothingToSeeHere: Card = {
             deckId: 'bogus',
             cardId: 'OmegaCodex-100',
+            facing: Facing.READY,
         };
         while (mySideManager.hand.length) {
             mySideManager.hand.pop();

@@ -8,10 +8,6 @@ export interface Player {
 export interface Card {
     deckId: DeckId;
     cardId: CardId;
-}
-
-export interface CardWithFacing {
-    card: Card;
     facing: Facing;
 }
 
@@ -32,8 +28,8 @@ export interface Side {
     discards: Card[];
     hand: Card[];
     scored: Card[];
-    line: CardWithFacing[];
-    arsenal: CardWithFacing[];
+    line: Card[];
+    arsenal: Card[];
     flags: SideFlags;
 }
 
