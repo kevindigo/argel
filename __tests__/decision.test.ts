@@ -1,4 +1,4 @@
-import { calculateNextDecision } from '../src/decision';
+import { DeedManager } from '../src/deed';
 import { Game } from '../src/game';
 import { Card, Decision, Player, Slot } from '../src/models';
 import { SideManager } from '../src/side';
@@ -39,7 +39,10 @@ describe('Top-level decisions', () => {
         hand.push(vix);
         hand.push(jater);
 
-        const decisions: Decision = calculateNextDecision(stateManager.state);
+        const deedManager = new DeedManager(stateManager.state.currentDeed);
+        const decisions: Decision = deedManager.calculateNextDecision(
+            stateManager.state
+        );
         expect(decisions.availableSlots.length).toEqual(2);
         const playVix: Slot = {
             zone: Zone.MY_HAND,
@@ -98,6 +101,8 @@ describe('calculateNextDecision', () => {
 
     it('throws if the last decision remains incomplete', () => {
         const state = game.getCopyOfState();
-        expect(() => calculateNextDecision(state)).toThrowError();
+        const stateManager = new StateManager(state);
+        const deedManager = new DeedManager(stateManager.state.currentDeed);
+        expect(() => deedManager.calculateNextDecision(state)).toThrowError();
     });
 });

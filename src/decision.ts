@@ -3,7 +3,7 @@ import { CardefPool } from './pool';
 import { StateManager } from './state';
 import { CardType, Zone } from './types';
 
-function calculateTopLevelDecision(state: State): Decision {
+export function calculateTopLevelDecision(state: State): Decision {
     const stateManager = new StateManager(state);
     const mySideManager = stateManager.getMySideManager();
     const hand = mySideManager.hand;
@@ -81,24 +81,11 @@ function calculateFollowupDecisionHand(state: State): Decision {
     }
 }
 
-function calculateFollowupDecision(state: State): Decision {
+export function calculateFollowupDecision(state: State): Decision {
     const mainCardSlot = getTopLevelSlot(state);
     if (mainCardSlot.zone === Zone.MY_HAND) {
         return calculateFollowupDecisionHand(state);
     }
 
     throw new Error('calculateFollowup called for non-hand slot');
-}
-
-export function calculateNextDecision(state: State): Decision {
-    if (state.currentDeed.decisions.length === 0) {
-        return calculateTopLevelDecision(state);
-    }
-
-    const stateManager = new StateManager(state);
-    const latestDecision: Decision = stateManager.getLastDecision();
-    if (latestDecision.selectedSlots.length !== 0) {
-        return calculateFollowupDecision(state);
-    }
-    throw new Error('Followups are not yet supported');
 }

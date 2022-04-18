@@ -1,6 +1,10 @@
-import { calculateNextDecision } from './decision';
+import {
+    calculateFollowupDecision,
+    calculateTopLevelDecision,
+} from './decision';
 import { Decision, Deed, Slot, State } from './models';
 import { slotString } from './slot';
+import { StateManager } from './state';
 
 export class DeedManager {
     private deed: Deed;
@@ -13,7 +17,7 @@ export class DeedManager {
         this.deed.type = undefined;
         this.deed.mainCard = undefined;
         this.deed.decisions = [];
-        this.deed.decisions.push(calculateNextDecision(state));
+        this.deed.decisions.push(this.calculateNextDecision(state));
     }
 
     public isValidSelection(slots: Slot[]): boolean {
@@ -52,7 +56,20 @@ export class DeedManager {
             );
         }
         this.getCurrentDecision().selectedSlots = slots;
-        const newDecision = calculateNextDecision(state);
+        const newDecision = this.calculateNextDecision(state);
         state.currentDeed.decisions.push(newDecision);
+    }
+
+    public calculateNextDecision(state: State): Decision {
+        if (state.currentDeed.decisions.length === 0) {
+            return calculateTopLevelDecision(state);
+        }
+
+        const stateManager = new StateManager(state);
+        const latestDecision: Decision = stateManager.getLastDecision();
+        if (latestDecision.selectedSlots.length !== 0) {
+            return calculateFollowupDecision(state);
+        }
+        throw new Error('Followups are not yet supported');
     }
 }
