@@ -3,7 +3,6 @@ import { Card, State, Player, Slot } from './models';
 import { SideManager } from './side';
 import { createInitialState, StateManager } from './state';
 import { Facing, CardType } from './types';
-import { calculateNextDecision } from './decision';
 import { DeedManager } from './deed';
 
 export class Game {
@@ -36,17 +35,7 @@ export class Game {
 
     public applyDecision(slots: Slot[]): void {
         const state = this.stateManager.state;
-        if (!this.deedManager.isValidSelection(slots)) {
-            throw new Error(
-                `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
-                    state
-                )}`
-            );
-        }
-        this.deedManager.getCurrentDecision().selectedSlots = slots;
-        const newDecision = calculateNextDecision(state);
-        state.currentDeed.decisions.push(newDecision);
-        return;
+        this.deedManager.applyDecision(state, slots);
     }
 
     public startTurn() {

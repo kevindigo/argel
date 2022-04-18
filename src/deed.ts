@@ -42,4 +42,17 @@ export class DeedManager {
 
         throw new Error('No current decision');
     }
+
+    public applyDecision(state: State, slots: Slot[]): void {
+        if (!this.isValidSelection(slots)) {
+            throw new Error(
+                `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
+                    state
+                )}`
+            );
+        }
+        this.getCurrentDecision().selectedSlots = slots;
+        const newDecision = calculateNextDecision(state);
+        state.currentDeed.decisions.push(newDecision);
+    }
 }

@@ -1,6 +1,7 @@
 import { DeedManager } from '../src/deed';
 import { Deed, Slot, State } from '../src/models';
 import { createEmptySide } from '../src/side';
+import { StateManager } from '../src/state';
 import { Facing, Zone } from '../src/types';
 
 describe('DeedManager.startTurn', () => {
@@ -34,7 +35,6 @@ describe('DeedManager.startTurn', () => {
         deedManager.startTurn(state);
         expect(state.currentDeed.mainCard).toBeUndefined();
         expect(state.currentDeed.type).toBeUndefined();
-        console.log(JSON.stringify(state.currentDeed.decisions));
         expect(state.currentDeed.decisions.length).toEqual(1);
     });
 });
@@ -133,5 +133,31 @@ describe('DeedManager.getCurrentDecision', () => {
         });
         const decision = deedManager.getCurrentDecision();
         expect(decision.selectedSlots.length).toEqual(0);
+    });
+});
+
+describe('DeedManager.applyDecision', () => {
+    let deed: Deed;
+    let deedManager: DeedManager;
+
+    beforeEach(() => {
+        deed = { decisions: [] };
+        deedManager = new DeedManager(deed);
+    });
+
+    it('Should throw if the selection was not available', () => {
+        const slot: Slot = {
+            zone: Zone.ENEMY_ARSENAL,
+            index: 0,
+        };
+        deed.decisions.push({
+            label: 'top-level',
+            availableSlots: [],
+            selectedSlots: [slot],
+        });
+        const emptyState = StateManager.createWithEmptyState().state;
+        expect(() =>
+            deedManager.applyDecision(emptyState, [slot])
+        ).toThrowError();
     });
 });
