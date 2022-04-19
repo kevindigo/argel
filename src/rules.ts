@@ -112,17 +112,8 @@ export class Rules {
 
         const firstSlot = slots[0];
         const stateManager = new StateManager(state);
-        if (deed.completedDecisions.length === 0) {
-            if (!firstSlot) {
-                throw new Error(
-                    `Unable to extract mainCard ${JSON.stringify(deed)}`
-                );
-            }
-            deed.mainCard = stateManager.getCardAtSlot(firstSlot);
-            deed.mainZone = firstSlot.zone;
-        }
 
-        if (deed.completedDecisions.length === 1) {
+        if (deed.mainCard && !deed.type) {
             if (!firstSlot) {
                 throw new Error(
                     `Unable to determine type ${JSON.stringify(deed)}`
@@ -132,6 +123,16 @@ export class Rules {
                 deed.mainZone,
                 firstSlot.zone
             );
+        }
+
+        if (!deed.mainCard) {
+            if (!firstSlot) {
+                throw new Error(
+                    `Unable to extract mainCard ${JSON.stringify(deed)}`
+                );
+            }
+            deed.mainCard = stateManager.getCardAtSlot(firstSlot);
+            deed.mainZone = firstSlot.zone;
         }
 
         deed.completedDecisions.push(deed.pendingDecision);
