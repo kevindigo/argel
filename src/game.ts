@@ -4,7 +4,7 @@ import { SideManager } from './side';
 import { createInitialState, StateManager } from './state';
 import { Facing, CardType } from './types';
 import { DeedManager } from './deed';
-import { calculateTopLevelDecision } from './rules';
+import { Rules } from './rules';
 
 export class Game {
     public readonly players: Player[];
@@ -12,6 +12,7 @@ export class Game {
     public readonly pool: CardefPool;
     private readonly stateManager: StateManager;
     private readonly deedManager: DeedManager;
+    private readonly rules: Rules;
 
     public constructor(player1: Player, player2: Player) {
         const state = createInitialState(player1, player2);
@@ -26,6 +27,7 @@ export class Game {
 
         this.stateManager = new StateManager(state);
         this.deedManager = new DeedManager(state.currentDeed);
+        this.rules = new Rules();
         this.startGame();
     }
 
@@ -40,7 +42,7 @@ export class Game {
 
     public startTurn() {
         const state = this.stateManager.state;
-        const decision = calculateTopLevelDecision(state);
+        const decision = this.rules.calculateTopLevelDecision(state);
         this.deedManager.startTurn(decision);
     }
 

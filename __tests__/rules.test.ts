@@ -1,5 +1,5 @@
 import { Card, Decision, Slot } from '../src/models';
-import { calculateTopLevelDecision } from '../src/rules';
+import { Rules } from '../src/rules';
 import { StateManager } from '../src/state';
 import { CardId, Facing, Zone } from '../src/types';
 
@@ -28,7 +28,8 @@ describe('Top-level decisions', () => {
         hand.push(vix);
         hand.push(jater);
 
-        const decisions: Decision = calculateTopLevelDecision(
+        const rules = new Rules();
+        const decisions: Decision = rules.calculateTopLevelDecision(
             stateManager.state
         );
         expect(decisions.availableSlots.length).toEqual(2);
