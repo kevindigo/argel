@@ -44,6 +44,7 @@ export interface Decision {
 
 export interface Deed {
     mainCard?: Card | undefined;
+    mainZone?: Zone | undefined;
     type?: DeedType | undefined;
     decisions: Decision[];
 }

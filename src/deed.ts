@@ -4,6 +4,7 @@ import {
 } from './decision';
 import { Decision, Deed, Slot, State } from './models';
 import { slotString } from './slot';
+import { StateManager } from './state';
 
 export class DeedManager {
     private deed: Deed;
@@ -56,7 +57,19 @@ export class DeedManager {
         }
         this.getCurrentDecision().selectedSlots = slots;
         const newDecision = this.calculateNextDecision(state);
-        state.currentDeed.decisions.push(newDecision);
+        this.deed.decisions.push(newDecision);
+
+        const stateManager = new StateManager(state);
+        if (state.currentDeed.decisions.length === 0) {
+            const firstSlot = slots[0];
+            if (!firstSlot) {
+                throw new Error(
+                    `Unable to extract mainCard ${JSON.stringify(this.deed)}`
+                );
+            }
+            this.deed.mainCard = stateManager.getCardAtSlot(firstSlot);
+            this.deed.mainZone = firstSlot.zone;
+        }
     }
 
     public calculateNextDecision(state: State): Decision {

@@ -1,5 +1,5 @@
 import { DeedManager } from '../src/deed';
-import { Deed, Slot, State } from '../src/models';
+import { Card, Decision, Deed, Slot, State } from '../src/models';
 import { createEmptySide } from '../src/side';
 import { StateManager } from '../src/state';
 import { Facing, Zone } from '../src/types';
@@ -33,9 +33,11 @@ describe('DeedManager.startTurn', () => {
         };
         expect(state.currentDeed.decisions.length).toEqual(2);
         deedManager.startTurn(state);
-        expect(state.currentDeed.mainCard).toBeUndefined();
-        expect(state.currentDeed.type).toBeUndefined();
-        expect(state.currentDeed.decisions.length).toEqual(1);
+        expect(deed.mainCard).toBeUndefined();
+        expect(deed.type).toBeUndefined();
+        expect(deed.decisions.length).toEqual(1);
+        expect(deed.mainCard).toBeUndefined();
+        expect(deed.mainZone).toBeUndefined();
     });
 });
 
@@ -145,7 +147,7 @@ describe('DeedManager.applyDecision', () => {
         deedManager = new DeedManager(deed);
     });
 
-    it('Should throw if the selection was not available', () => {
+    it('should throw if the selection was not available', () => {
         const slot: Slot = {
             zone: Zone.ENEMY_ARSENAL,
             index: 0,
@@ -159,5 +161,43 @@ describe('DeedManager.applyDecision', () => {
         expect(() =>
             deedManager.applyDecision(emptyState, [slot])
         ).toThrowError();
+    });
+
+    it('should correctly apply a decision', () => {
+        class MockNext extends DeedManager {
+            public override calculateNextDecision(state: State): Decision {
+                state.sides;
+                return {
+                    label: `mock`,
+                    availableSlots: [],
+                    selectedSlots: [],
+                };
+            }
+        }
+        const slot: Slot = {
+            zone: Zone.MY_HAND,
+            index: 0,
+        };
+        deed.decisions.push({
+            label: 'top-level',
+            availableSlots: [slot],
+            selectedSlots: [],
+        });
+        const state = StateManager.createWithEmptyState().state;
+        const stateManager = new StateManager(state);
+        const hand = stateManager.getMySideManager().hand;
+        const card: Card = {
+            cardId: 'OmegaCodex-001',
+            deckId: 'anydeck',
+            facing: Facing.READY,
+        };
+        hand.push(card);
+        deedManager = new MockNext(deed);
+        deedManager.applyDecision(state, [slot]);
+        expect(deed.decisions[0]?.selectedSlots.length).toEqual(1);
+        expect(deed.decisions.length).toEqual(2);
+        expect(deed.decisions[1]?.label).toEqual('mock');
+        expect(deed.mainCard).toEqual(card);
+        expect(deed.mainZone).toEqual(Zone.MY_HAND);
     });
 });
