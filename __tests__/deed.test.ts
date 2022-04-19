@@ -194,7 +194,7 @@ describe('DeedManager.applyDecision', () => {
         expect(deed.decisions[0]?.selectedSlots.length).toEqual(1);
         expect(deed.decisions.length).toEqual(2);
 
-        expect(deed.decisions[1]?.label).toEqual('Play');
+        expect(deed.decisions[1]?.label).toEqual('Play action');
 
         expect(deed.mainCard).toEqual(card);
         expect(deed.mainZone).toEqual(Zone.MY_HAND);
