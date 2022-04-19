@@ -1,5 +1,5 @@
 import { Player } from '../src/models';
-import { createInitialState } from '../src/state';
+import { createInitialState, StateManager } from '../src/state';
 
 const sig: Player = {
     name: 'Sig',
@@ -17,5 +17,13 @@ describe('createInitialState', () => {
             return side.player;
         });
         expect(statePlayers).toEqual([sig, marla]);
+    });
+});
+
+describe('stateManager', () => {
+    it('throws if the last decision remains incomplete', () => {
+        const state = createInitialState(sig, marla);
+        const stateManager = new StateManager(state);
+        expect(() => stateManager.calculateNextDecision(state)).toThrowError();
     });
 });

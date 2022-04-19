@@ -1,3 +1,4 @@
+import { calculateFollowupDecisionHand, getTopLevelSlot } from './decision';
 import { DeedManager } from './deed';
 import { State, Side, Player, Slot, Card, Decision } from './models';
 import { CardefPool } from './pool';
@@ -171,5 +172,14 @@ export class StateManager {
                 throw new Error(`Unknown zone: ${zone}`);
             }
         }
+    }
+
+    public calculateNextDecision(state: State): Decision {
+        const mainCardSlot = getTopLevelSlot(state);
+        if (mainCardSlot.zone === Zone.MY_HAND) {
+            return calculateFollowupDecisionHand(state);
+        }
+
+        throw new Error('calculateFollowup called for non-hand slot');
     }
 }

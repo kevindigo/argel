@@ -1,4 +1,3 @@
-import { calculateFollowupDecisionHand, getTopLevelSlot } from './decision';
 import { Decision, Deed, Slot, State } from './models';
 import { slotString } from './slot';
 import { StateManager } from './state';
@@ -79,17 +78,8 @@ export class DeedManager {
             );
         }
 
-        const newDecision = this.calculateNextDecision(state);
+        const newDecision = stateManager.calculateNextDecision(state);
         this.deed.decisions.push(newDecision);
-    }
-
-    public calculateNextDecision(state: State): Decision {
-        const mainCardSlot = getTopLevelSlot(state);
-        if (mainCardSlot.zone === Zone.MY_HAND) {
-            return calculateFollowupDecisionHand(state);
-        }
-
-        throw new Error('calculateFollowup called for non-hand slot');
     }
 
     private calculateType(from?: Zone, to?: Zone): DeedType {

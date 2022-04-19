@@ -1,5 +1,4 @@
 import { calculateTopLevelDecision } from '../src/decision';
-import { DeedManager } from '../src/deed';
 import { Game } from '../src/game';
 import { Card, Decision, Player, Slot } from '../src/models';
 import { SideManager } from '../src/side';
@@ -97,12 +96,5 @@ describe('calculateNextDecision', () => {
             expect(dest.zone).toEqual(Zone.MY_SCORED);
             expect(dest.index).toEqual(-1);
         }
-    });
-
-    it('throws if the last decision remains incomplete', () => {
-        const state = game.getCopyOfState();
-        const stateManager = new StateManager(state);
-        const deedManager = new DeedManager(stateManager.state.currentDeed);
-        expect(() => deedManager.calculateNextDecision(state)).toThrowError();
     });
 });
