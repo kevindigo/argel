@@ -66,7 +66,23 @@ export function calculateFollowupDecisionHand(state: State): Decision {
             return decision;
         }
         case CardType.CREATURE: {
-            throw new Error('Followup for creature not available yet');
+            const lineRight: Slot = {
+                zone: Zone.MY_LINE,
+                index: -1,
+            };
+            const decision: Decision = {
+                label: 'Play to line',
+                availableSlots: [lineRight],
+                selectedSlots: [],
+            };
+            if (stateManager.getMySideManager().line.length > 0) {
+                const lineLeft: Slot = {
+                    zone: Zone.MY_LINE,
+                    index: 0,
+                };
+                decision.availableSlots.unshift(lineLeft);
+            }
+            return decision;
         }
         case CardType.RELIC: {
             throw new Error('Followup for relic not available yet');
