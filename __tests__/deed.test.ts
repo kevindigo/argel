@@ -1,5 +1,5 @@
 import { DeedManager } from '../src/deed';
-import { Card, Deed, Slot, State } from '../src/models';
+import { Card, Decision, Deed, Slot, State } from '../src/models';
 import { createEmptySide } from '../src/side';
 import { StateManager } from '../src/state';
 import { DeedType, Facing, Zone } from '../src/types';
@@ -32,7 +32,12 @@ describe('DeedManager.startTurn', () => {
             currentDeed: deed,
         };
         expect(state.currentDeed.decisions.length).toEqual(2);
-        deedManager.startTurn(state);
+        const topLevelDecision: Decision = {
+            label: 'irrelevant',
+            availableSlots: [],
+            selectedSlots: [],
+        };
+        deedManager.startTurn(topLevelDecision);
         expect(deed.mainCard).toBeUndefined();
         expect(deed.type).toBeUndefined();
         expect(deed.decisions.length).toEqual(1);
@@ -147,22 +152,6 @@ describe('DeedManager.applyDecision', () => {
         deedManager = new DeedManager(deed);
     });
 
-    it('should throw if the selection was not available', () => {
-        const slot: Slot = {
-            zone: Zone.ENEMY_ARSENAL,
-            index: 0,
-        };
-        deed.decisions.push({
-            label: 'top-level',
-            availableSlots: [],
-            selectedSlots: [slot],
-        });
-        const emptyState = StateManager.createWithEmptyState().state;
-        expect(() =>
-            deedManager.applyDecision(emptyState, [slot])
-        ).toThrowError();
-    });
-
     it('should correctly apply a decision', () => {
         const slot: Slot = {
             zone: Zone.MY_HAND,
@@ -179,12 +168,17 @@ describe('DeedManager.applyDecision', () => {
         hand.push(card);
         deed = state.currentDeed;
         deedManager = new DeedManager(deed);
-        deedManager.startTurn(state);
-        deedManager.applyDecision(state, [slot]);
+        const decision: Decision = {
+            label: 'irrelevant',
+            availableSlots: [slot],
+            selectedSlots: [],
+        };
+        deedManager.startTurn(decision);
+        stateManager.applyDecision([slot]);
         expect(deed.decisions[0]?.selectedSlots.length).toEqual(1);
         expect(deed.decisions.length).toEqual(2);
 
-        expect(deed.decisions[1]?.label).toEqual('Play');
+        expect(deed.decisions[1]?.label).toEqual('Play action');
 
         expect(deed.mainCard).toEqual(card);
         expect(deed.mainZone).toEqual(Zone.MY_HAND);
@@ -206,15 +200,20 @@ describe('DeedManager.applyDecision', () => {
         hand.push(card);
         deed = state.currentDeed;
         deedManager = new DeedManager(deed);
-        deedManager.startTurn(state);
-        deedManager.applyDecision(state, [slot]);
+        const topLevelDecision: Decision = {
+            label: 'top-level',
+            availableSlots: [slot],
+            selectedSlots: [],
+        };
+        deedManager.startTurn(topLevelDecision);
+        stateManager.applyDecision([slot]);
         const decision = deedManager.getCurrentDecision();
         const scored: Slot = {
             zone: Zone.MY_SCORED,
             index: -1,
         };
         expect(decision.availableSlots).toEqual([scored]);
-        deedManager.applyDecision(state, decision.availableSlots);
+        stateManager.applyDecision(decision.availableSlots);
         expect(deed.type).toEqual(DeedType.PLAY);
     });
 });

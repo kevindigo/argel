@@ -59,7 +59,7 @@ export function calculateFollowupDecisionHand(state: State): Decision {
                 index: -1,
             };
             const decision: Decision = {
-                label: 'Play',
+                label: 'Play action',
                 availableSlots: [scoredSlot],
                 selectedSlots: [],
             };
@@ -85,7 +85,16 @@ export function calculateFollowupDecisionHand(state: State): Decision {
             return decision;
         }
         case CardType.RELIC: {
-            throw new Error('Followup for relic not available yet');
+            const arsenalRight: Slot = {
+                zone: Zone.MY_ARSENAL,
+                index: -1,
+            };
+            const decision: Decision = {
+                label: 'Play to arsenal',
+                availableSlots: [arsenalRight],
+                selectedSlots: [],
+            };
+            return decision;
         }
         default: {
             throw new Error(
