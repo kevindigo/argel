@@ -1,7 +1,6 @@
 import { calculateFollowupDecisionHand, getTopLevelSlot } from './decision';
 import { DeedManager } from './deed';
 import { State, Side, Player, Slot, Card, Decision } from './models';
-import { CardefPool } from './pool';
 import { createEmptySide, createInitialSide, SideManager } from './side';
 import { Zone } from './types';
 
@@ -22,7 +21,6 @@ export function createInitialState(player1: Player, player2: Player): State {
 
 export class StateManager {
     private _state: State;
-    private pool: CardefPool;
 
     public static createWithEmptyState() {
         const state = {
@@ -35,7 +33,6 @@ export class StateManager {
 
     public constructor(state: State) {
         this._state = state;
-        this.pool = CardefPool.getPool();
     }
 
     public get state(): State {
@@ -73,21 +70,6 @@ export class StateManager {
 
     public getEnemyIndex(): number {
         return 1 - this.getMyIndex();
-    }
-
-    public getEffectivePower(sideIndex: number, slots: Slot[]): number {
-        const power = slots.reduce((power, slot) => {
-            const card = this.getCardAtSlot(slot);
-            const cardef = this.pool.lookup(card.cardId);
-            if (!cardef) {
-                throw new Error(
-                    `getEffectivePower no such card: ${JSON.stringify(card)}`
-                );
-            }
-            const thisPower = cardef?.power ?? 0;
-            return power + thisPower;
-        }, 0);
-        return power;
     }
 
     public getCurrentDecision(): Decision {
