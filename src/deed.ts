@@ -16,7 +16,7 @@ export class DeedManager {
         this.deed.type = undefined;
         this.deed.mainCard = undefined;
         this.deed.decisions = [];
-        this.deed.decisions.push(this.calculateNextDecision(state));
+        this.deed.decisions.push(calculateTopLevelDecision(state));
     }
 
     public isValidSelection(slots: Slot[]): boolean {
