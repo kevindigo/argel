@@ -1,15 +1,16 @@
 import { CardefPool } from './pool';
-import { AvailableDeedsGenerator } from './deeds';
-import { Card, CardWithState, State, Player } from './models';
+import { Card, State, Player, Slot } from './models';
 import { SideManager } from './side';
 import { createInitialState, StateManager } from './state';
-import { CardState, CardType } from './types';
+import { Facing, CardType } from './types';
+import { DeedManager } from './deed';
 
 export class Game {
     public readonly players: Player[];
     public readonly sideManagers: SideManager[];
     public readonly pool: CardefPool;
-    private stateManager: StateManager;
+    private readonly stateManager: StateManager;
+    private readonly deedManager: DeedManager;
 
     public constructor(player1: Player, player2: Player) {
         const state = createInitialState(player1, player2);
@@ -20,27 +21,36 @@ export class Game {
         this.sideManagers = state.sides.map((side) => {
             return new SideManager(side);
         });
-        this.stateManager = new StateManager(state);
         this.pool = CardefPool.getPool();
+
+        this.stateManager = new StateManager(state);
+        this.deedManager = new DeedManager(state.currentDeed);
         this.startGame();
     }
 
-    public getCopyOfStateWithOptions(): State {
+    public getCopyOfState(): State {
         const copy: State = JSON.parse(JSON.stringify(this.stateManager.state));
-        const availableDeedsGetter = new AvailableDeedsGenerator(
-            new StateManager(copy),
-            this.pool
-        );
-        copy.availableDeeds = Array.from(
-            availableDeedsGetter.getAvailableDeeds()
-        );
         return copy;
+    }
+
+    public applyDecision(slots: Slot[]): void {
+        const state = this.stateManager.state;
+        this.deedManager.applyDecision(state, slots);
+    }
+
+    public startTurn() {
+        const state = this.stateManager.state;
+        this.deedManager.startTurn(state);
     }
 
     private startGame(): void {
         this.sideManagers.forEach((manager) => {
             this.startGameForSide(manager);
         });
+
+        // ToDo: Set correct active player
+
+        this.startTurn();
     }
 
     private startGameForSide(manager: SideManager): void {
@@ -55,11 +65,8 @@ export class Game {
             }
             const cardef = pool.lookup(card.cardId);
             if (cardef?.type === CardType.CREATURE) {
-                const readyCard: CardWithState = {
-                    card,
-                    state: CardState.READY,
-                };
-                manager.line.push(readyCard);
+                card.facing = Facing.READY;
+                manager.line.push(card);
             } else {
                 manager.discards.push(card);
             }

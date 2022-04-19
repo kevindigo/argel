@@ -1,6 +1,6 @@
-import { doDeed } from './doer';
 import { Game } from './game';
 import { Player } from './models';
+import { StateManager } from './state';
 import { showState } from './ui';
 
 console.log('Argel');
@@ -15,15 +15,32 @@ const player2: Player = {
 };
 
 const game = new Game(player1, player2);
-const state = game.getCopyOfStateWithOptions();
-showState(state);
-const availableDeeds = state.availableDeeds;
-const deed = availableDeeds[0];
-if (!deed) {
-    throw new Error(`Deed was undefined in ${availableDeeds}`);
-}
-console.log(`Doing ${JSON.stringify(deed)}`);
-console.log();
+{
+    const state = game.getCopyOfState();
+    showState(state);
 
-doDeed(state, deed);
-showState(state);
+    const stateManager = new StateManager(state);
+    const currentDecision = stateManager.getCurrentDecision();
+    console.log(`Current decision: ${JSON.stringify(currentDecision)}`);
+
+    const selectedSlot = currentDecision.availableSlots[0];
+    if (!selectedSlot) {
+        throw new Error(
+            `Expected an available slot in ${JSON.stringify(
+                currentDecision.availableSlots
+            )}`
+        );
+    }
+
+    console.log(`calling applyDecision ${JSON.stringify(selectedSlot)}`);
+    game.applyDecision([selectedSlot]);
+}
+
+{
+    const state = game.getCopyOfState();
+    showState(state);
+
+    const stateManager = new StateManager(state);
+    const currentDecision = stateManager.getCurrentDecision();
+    console.log(`Current decision: ${JSON.stringify(currentDecision)}`);
+}

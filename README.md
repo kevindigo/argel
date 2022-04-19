@@ -47,17 +47,22 @@ Docs for the specific calls aren't available yet. Stay tuned.
 `Game` only runs on the server. Each client can use the model objects and their helpers. 
 Only `Game` can update the official game `State`. 
 
-The `State` object that the client receives will always have a list of legal `Deed`s, 
-or other choices that need to be made as a result of effects. The client will let the 
-server know which `Deed` or other option should be executed. 
+The `State` object that the client receives will always have a current `Deed`, 
+which contains the decisions made so far, as well as the current decision to be made. 
+The client will let the server know which of the available options should be applied. 
+Options in a decision are always slots. 
+
+Most data structures are plain objects, so they can be serialized. When it makes sense, 
+There are wrappers (known as managers) that provide functions. So to manipulate a 
+State object, you would typically wrap it in a StateManager. Same for Side (SideManager) 
+and Deed (DeedManager).
 
 ### Terminology
 * Items
-    * `Card` = An instance of a card (based on a cardef)
+    * `Card` = An instance of a card, including its facing, identified by CardId
     * `Cardef` = The definition of a card (SetId, CardNumber)
     * `CardId` = The set and number of a card
     * `CardNumber` = 3-digit identifier within a set
-    * `CardWithState` = An in-play Creature or Relic
     * `DeckId` = UID of a deck
     * `DeckList` = A SetId, DeckId, and list of CardNumbers
     * `Game` = A session in progress; Consists of 2 Sides and a TurnState
@@ -84,11 +89,19 @@ server know which `Deed` or other option should be executed.
     * `Purgatory` (P) = A temporary holding place during a Deed
     * `Arsenal` (A) = A player's in-play Relics
     * `Scored` (S) = A players's score pile
-* Deeds
-    * `Discard` = Move a Card from Hand to Discards
-    * `Fight` = Initiate a battle
-    * `Harvest` = Score a Mature card
-    * `Play` = Play a card from hand
+* Deeds (Each play/harvest/discard/fight is a "deed")
+    * `Decision` = A single user choice
+        * `Label` = Short description of the choice being made
+        * `availableSlots` = All legal options for this decision
+        * `selectedSlots` = The slot(s) chosen by the user
+    * `decisions` = An array of the decisions the user made to construct the deed
+    * `DeedType`
+        * `Discard` = Move a Card from Hand to Discards
+        * `Fight` = Initiate a battle
+        * `Harvest` = Score a Mature card
+        * `Play` = Play a card from hand
+        * `Teamup` = Team up in a fight
+    * `mainCard` = The card being played, harvested, discarded, or used to fight
 * Effects
     * `ChooseNumber` (N) = Choose a number / chosen number
     * `Draw` = Move a Card from a DrawPile to that Side's Hand
@@ -97,7 +110,7 @@ server know which `Deed` or other option should be executed.
     * `Play` = Move a Card from Hand to Line (position -1 means the right end)
     * `Queue` (Q) = Queue a Play or Fight for after this Deed
     * `Reveal` (%) = Make a current hand visible to the other Player
-    * `Rotate` (@) = Change the orientation/state of an in-play Card
+    * `Rotate` (@) = Change the facing of a Card
 * Qualifiers
     * `Any` (A) = Any (location), used to mean either of My (M) and Opp (O)
     * `Controller` (C) = Whose line or arsenal the card is in
@@ -117,17 +130,18 @@ server know which `Deed` or other option should be executed.
     * `WinFight` (WF:) = Bonus that triggers when the Creature wins a fight
 * Other
     * (=) = The card that is triggering the Effect
-    * `CardState` = State of an in-play Creature or Relic
-        * `Dormant` (@D) = An in-play card is turned left (can't be used)
-        * `Active` (@A) = An in-play card is upright (can Fight)
-        * `Mature` (@M) = An in-play card is turned right (can Fight or Harvest)
+    * `Facing` = State of a card
+        * `Dormant` (@D) = A card is turned left (can't be used)
+        * `Ready` (@R) = A card is upright (if in play, it can Fight)
+        * `Mature` (@M) = A card is turned right (if in play, it can Fight or Harvest)
+        * `Down` (@F) = A card is face-down
     * `If/Else` (if ? :) = if(cond) ? <doiftrue> : <dootherwise>
     * `Random` = If the hand is not revealed, random is automatic
     * `Repeat` (x) = "5x(MT > H)" would mean draw from top to hand 5 times
     * `ShuffleLocation` (&) = Shuffle the cards in the specified location
     * `ShuffleInto` (~) = Shuffle a card into its owner's DrawPile
 
-When identifying the "from", most locations must be prefixed with `M` or `O` to indicate the Side. 
+When identifying the "from", most locations must be prefixed with `M` or `E` to indicate the Side. 
 
 When identifying the "to", a Side does not have to be specified for DrawPile, Discards, or Hand, 
 because Cards will always go to their Owner's respective location. 

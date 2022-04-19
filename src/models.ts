@@ -1,11 +1,4 @@
-import {
-    DeedType,
-    CardId,
-    CardState,
-    DeckId,
-    TopOrBottom,
-    Zone,
-} from './types';
+import { CardId, Facing, DeckId, Zone, DeedType } from './types';
 
 export interface Player {
     name: string;
@@ -15,14 +8,11 @@ export interface Player {
 export interface Card {
     deckId: DeckId;
     cardId: CardId;
-}
-
-export interface CardWithState {
-    card: Card;
-    state: CardState;
+    facing: Facing;
 }
 
 export interface SideFlags {
+    canDiscard: boolean;
     canFight: boolean;
     canPlayActions: boolean;
     isNextCardActive: boolean;
@@ -39,30 +29,30 @@ export interface Side {
     discards: Card[];
     hand: Card[];
     scored: Card[];
-    line: CardWithState[];
-    arsenal: CardWithState[];
+    line: Card[];
+    arsenal: Card[];
     flags: SideFlags;
 }
 
-export interface TurnFlags {
-    canDiscard: boolean;
-}
-
-export interface TurnState {
-    myIndex: number;
-    queuedAdditionalPlay?: TopOrBottom;
-    turnFlags: TurnFlags;
+export interface Decision {
+    label: string;
+    availableSlots: Slot[];
+    // minSelectionCount: number;
+    // maxSelectionCount: number;
+    selectedSlots: Slot[];
 }
 
 export interface Deed {
-    type: DeedType;
-    from: Slot[];
-    to: Slot[];
-    choices?: Slot[][];
+    mainCard?: Card | undefined;
+    mainZone?: Zone | undefined;
+    type?: DeedType | undefined;
+    decisions: Decision[];
 }
 
 export interface State {
+    activeSideIndex: number;
     sides: Side[];
-    turnState: TurnState;
-    availableDeeds: Deed[];
+    currentDeed: Deed;
+    // queuedAdditionalPlay?: TopOrBottom; // or Slot?
+    // queuedFightWith?: Slot;
 }

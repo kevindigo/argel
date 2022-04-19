@@ -13,7 +13,7 @@ const marla: Player = {
 describe('A Game', () => {
     it('can be started', () => {
         const game = new Game(sig, marla);
-        game.getCopyOfStateWithOptions().sides.forEach((side) => {
+        game.getCopyOfState().sides.forEach((side) => {
             expect(side.line.length).toEqual(2);
             expect(side.hand.length).toEqual(3);
             expect(side.discards.length + side.drawPile.length).toEqual(12);
@@ -23,6 +23,10 @@ describe('A Game', () => {
             expect(side.flags.canPlayActions).toBeTruthy();
             expect(side.flags.isNextCardActive).toBeFalsy();
         });
+        const deed = game.getCopyOfState().currentDeed;
+        expect(deed.decisions.length).toEqual(1);
+        const decision = deed.decisions[0];
+        expect(decision?.availableSlots.length).toEqual(3);
     });
 
     it('prevents mirror matches', () => {

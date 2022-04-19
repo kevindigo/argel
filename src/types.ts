@@ -4,15 +4,11 @@ export enum CardType {
     RELIC = 'Relic',
 }
 
-export enum CardState {
+export enum Facing {
     DORMANT = 'Dormant',
     READY = 'Ready',
     MATURE = 'Mature',
-}
-
-export enum TopOrBottom {
-    TOP = 'Top',
-    BOTTOM = 'Bottom',
+    DOWN = 'FaceDown',
 }
 
 export enum DeedType {
@@ -20,6 +16,7 @@ export enum DeedType {
     FIGHT = 'Fight',
     HARVEST = 'Harvest',
     DISCARD = 'Discard',
+    // TEAMUP = 'Teamup',
 }
 
 export enum SideFlagKey {
