@@ -200,4 +200,29 @@ describe('DeedManager.applyDecision', () => {
         expect(deed.mainCard).toEqual(card);
         expect(deed.mainZone).toEqual(Zone.MY_HAND);
     });
+
+    it('sets up next decision when choosing a hand action', () => {
+        const slot: Slot = {
+            zone: Zone.MY_HAND,
+            index: 0,
+        };
+        const state = StateManager.createWithEmptyState().state;
+        const stateManager = new StateManager(state);
+        deedManager = new DeedManager(state.currentDeed);
+        const hand = stateManager.getMySideManager().hand;
+        const card: Card = {
+            cardId: 'OmegaCodex-100',
+            deckId: 'anydeck',
+            facing: Facing.READY,
+        };
+        hand.push(card);
+        deedManager.startTurn(state);
+        deedManager.applyDecision(state, [slot]);
+        const decision = deedManager.getCurrentDecision();
+        const scored: Slot = {
+            zone: Zone.MY_SCORED,
+            index: -1,
+        };
+        expect(decision.availableSlots).toEqual([scored]);
+    });
 });

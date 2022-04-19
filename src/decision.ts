@@ -22,7 +22,7 @@ export function calculateTopLevelDecision(state: State): Decision {
     };
 }
 
-function getTopLevelSlot(state: State): Slot {
+export function getTopLevelSlot(state: State): Slot {
     const topLevelDecision = state.currentDeed.decisions[0];
     if (!topLevelDecision) {
         throw new Error(
@@ -46,7 +46,7 @@ function getTopLevelSlot(state: State): Slot {
     return mainCardSlot;
 }
 
-function calculateFollowupDecisionHand(state: State): Decision {
+export function calculateFollowupDecisionHand(state: State): Decision {
     const stateManager = new StateManager(state);
     const mainCardSlot = getTopLevelSlot(state);
     const mainCard = stateManager.getCardAtSlot(mainCardSlot);
@@ -79,13 +79,4 @@ function calculateFollowupDecisionHand(state: State): Decision {
             );
         }
     }
-}
-
-export function calculateFollowupDecision(state: State): Decision {
-    const mainCardSlot = getTopLevelSlot(state);
-    if (mainCardSlot.zone === Zone.MY_HAND) {
-        return calculateFollowupDecisionHand(state);
-    }
-
-    throw new Error('calculateFollowup called for non-hand slot');
 }

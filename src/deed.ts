@@ -1,10 +1,12 @@
 import {
-    calculateFollowupDecision,
+    calculateFollowupDecisionHand,
     calculateTopLevelDecision,
+    getTopLevelSlot,
 } from './decision';
 import { Decision, Deed, Slot, State } from './models';
 import { slotString } from './slot';
 import { StateManager } from './state';
+import { Zone } from './types';
 
 export class DeedManager {
     private deed: Deed;
@@ -75,9 +77,18 @@ export class DeedManager {
     public calculateNextDecision(state: State): Decision {
         const latestDecision: Decision = this.getLastDecision(state);
         if (latestDecision.selectedSlots.length !== 0) {
-            return calculateFollowupDecision(state);
+            return this.calculateFollowupDecision(state);
         }
         throw new Error('Followups are not yet supported');
+    }
+
+    private calculateFollowupDecision(state: State): Decision {
+        const mainCardSlot = getTopLevelSlot(state);
+        if (mainCardSlot.zone === Zone.MY_HAND) {
+            return calculateFollowupDecisionHand(state);
+        }
+
+        throw new Error('calculateFollowup called for non-hand slot');
     }
 
     private getLastDecision(state: State): Decision {
