@@ -28,9 +28,8 @@ export class Rules {
         const deed = state.currentDeed;
         const deedManager = new DeedManager(deed);
         const mainCardSlot = deedManager.getTopLevelSlot();
-        const rules = new Rules();
         if (mainCardSlot.zone === Zone.MY_HAND) {
-            return rules.calculateFollowupDecisionHand(state);
+            return this.calculateFollowupDecisionHand(state);
         }
 
         throw new Error('calculateFollowup called for non-hand slot');
@@ -134,8 +133,7 @@ export class Rules {
             );
         }
 
-        const rules = new Rules();
-        const newDecision = rules.calculateNextDecision(state);
+        const newDecision = this.calculateNextDecision(state);
         deed.decisions.push(newDecision);
     }
 }
