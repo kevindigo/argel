@@ -1,6 +1,6 @@
-import { calculateFollowupDecisionHand } from './decision';
 import { DeedManager } from './deed';
 import { State, Side, Player, Slot, Card, Decision } from './models';
+import { Rules } from './rules';
 import { createEmptySide, createInitialSide, SideManager } from './side';
 import { Zone } from './types';
 
@@ -160,8 +160,9 @@ export class StateManager {
         const deed = this.state.currentDeed;
         const deedManager = new DeedManager(deed);
         const mainCardSlot = deedManager.getTopLevelSlot();
+        const rules = new Rules();
         if (mainCardSlot.zone === Zone.MY_HAND) {
-            return calculateFollowupDecisionHand(this.state);
+            return rules.calculateFollowupDecisionHand(this.state);
         }
 
         throw new Error('calculateFollowup called for non-hand slot');
