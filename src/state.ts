@@ -1,7 +1,5 @@
-import { calculateFollowupDecisionHand, getTopLevelSlot } from './decision';
 import { DeedManager } from './deed';
 import { State, Side, Player, Slot, Card, Decision } from './models';
-import { CardefPool } from './pool';
 import { createEmptySide, createInitialSide, SideManager } from './side';
 import { Zone } from './types';
 
@@ -22,7 +20,6 @@ export function createInitialState(player1: Player, player2: Player): State {
 
 export class StateManager {
     private _state: State;
-    private pool: CardefPool;
 
     public static createWithEmptyState() {
         const state = {
@@ -35,7 +32,6 @@ export class StateManager {
 
     public constructor(state: State) {
         this._state = state;
-        this.pool = CardefPool.getPool();
     }
 
     public get state(): State {
@@ -73,21 +69,6 @@ export class StateManager {
 
     public getEnemyIndex(): number {
         return 1 - this.getMyIndex();
-    }
-
-    public getEffectivePower(sideIndex: number, slots: Slot[]): number {
-        const power = slots.reduce((power, slot) => {
-            const card = this.getCardAtSlot(slot);
-            const cardef = this.pool.lookup(card.cardId);
-            if (!cardef) {
-                throw new Error(
-                    `getEffectivePower no such card: ${JSON.stringify(card)}`
-                );
-            }
-            const thisPower = cardef?.power ?? 0;
-            return power + thisPower;
-        }, 0);
-        return power;
     }
 
     public getCurrentDecision(): Decision {
@@ -172,54 +153,5 @@ export class StateManager {
                 throw new Error(`Unknown zone: ${zone}`);
             }
         }
-    }
-
-    public calculateNextDecision(): Decision {
-        const mainCardSlot = getTopLevelSlot(this.state);
-        if (mainCardSlot.zone === Zone.MY_HAND) {
-            return calculateFollowupDecisionHand(this.state);
-        }
-
-        throw new Error('calculateFollowup called for non-hand slot');
-    }
-
-    public applyDecision(slots: Slot[]): void {
-        const deedManager = new DeedManager(this.state.currentDeed);
-        if (!deedManager.isValidSelection(slots)) {
-            throw new Error(
-                `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
-                    this.state
-                )}`
-            );
-        }
-        this.getCurrentDecision().selectedSlots = slots;
-
-        const firstSlot = slots[0];
-        const stateManager = new StateManager(this.state);
-        const deed = this.state.currentDeed;
-        if (deed.decisions.length === 1) {
-            if (!firstSlot) {
-                throw new Error(
-                    `Unable to extract mainCard ${JSON.stringify(deed)}`
-                );
-            }
-            deed.mainCard = stateManager.getCardAtSlot(firstSlot);
-            deed.mainZone = firstSlot.zone;
-        }
-
-        if (deed.decisions.length === 2) {
-            if (!firstSlot) {
-                throw new Error(
-                    `Unable to determine type ${JSON.stringify(deed)}`
-                );
-            }
-            deed.type = deedManager.calculateType(
-                deed.mainZone,
-                firstSlot.zone
-            );
-        }
-
-        const newDecision = stateManager.calculateNextDecision();
-        deed.decisions.push(newDecision);
     }
 }

@@ -1,8 +1,7 @@
 import { DeedManager } from '../src/deed';
-import { Card, Decision, Deed, Slot, State } from '../src/models';
+import { Decision, Deed, Slot, State } from '../src/models';
 import { createEmptySide } from '../src/side';
-import { StateManager } from '../src/state';
-import { DeedType, Facing, Zone } from '../src/types';
+import { Facing, Zone } from '../src/types';
 
 describe('DeedManager.startTurn', () => {
     it('Should clear existing data', () => {
@@ -140,80 +139,5 @@ describe('DeedManager.getCurrentDecision', () => {
         });
         const decision = deedManager.getCurrentDecision();
         expect(decision.selectedSlots.length).toEqual(0);
-    });
-});
-
-describe('DeedManager.applyDecision', () => {
-    let deed: Deed;
-    let deedManager: DeedManager;
-
-    beforeEach(() => {
-        deed = { decisions: [] };
-        deedManager = new DeedManager(deed);
-    });
-
-    it('should correctly apply a decision', () => {
-        const slot: Slot = {
-            zone: Zone.MY_HAND,
-            index: 0,
-        };
-        const state = StateManager.createWithEmptyState().state;
-        const stateManager = new StateManager(state);
-        const hand = stateManager.getMySideManager().hand;
-        const card: Card = {
-            cardId: 'OmegaCodex-100',
-            deckId: 'anydeck',
-            facing: Facing.READY,
-        };
-        hand.push(card);
-        deed = state.currentDeed;
-        deedManager = new DeedManager(deed);
-        const decision: Decision = {
-            label: 'irrelevant',
-            availableSlots: [slot],
-            selectedSlots: [],
-        };
-        deedManager.startTurn(decision);
-        stateManager.applyDecision([slot]);
-        expect(deed.decisions[0]?.selectedSlots.length).toEqual(1);
-        expect(deed.decisions.length).toEqual(2);
-
-        expect(deed.decisions[1]?.label).toEqual('Play action');
-
-        expect(deed.mainCard).toEqual(card);
-        expect(deed.mainZone).toEqual(Zone.MY_HAND);
-    });
-
-    it('knows when we chose a hand action', () => {
-        const slot: Slot = {
-            zone: Zone.MY_HAND,
-            index: 0,
-        };
-        const state = StateManager.createWithEmptyState().state;
-        const stateManager = new StateManager(state);
-        const hand = stateManager.getMySideManager().hand;
-        const card: Card = {
-            cardId: 'OmegaCodex-100',
-            deckId: 'anydeck',
-            facing: Facing.READY,
-        };
-        hand.push(card);
-        deed = state.currentDeed;
-        deedManager = new DeedManager(deed);
-        const topLevelDecision: Decision = {
-            label: 'top-level',
-            availableSlots: [slot],
-            selectedSlots: [],
-        };
-        deedManager.startTurn(topLevelDecision);
-        stateManager.applyDecision([slot]);
-        const decision = deedManager.getCurrentDecision();
-        const scored: Slot = {
-            zone: Zone.MY_SCORED,
-            index: -1,
-        };
-        expect(decision.availableSlots).toEqual([scored]);
-        stateManager.applyDecision(decision.availableSlots);
-        expect(deed.type).toEqual(DeedType.PLAY);
     });
 });
