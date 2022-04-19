@@ -156,18 +156,6 @@ export class StateManager {
         }
     }
 
-    public calculateNextDecision(): Decision {
-        const deed = this.state.currentDeed;
-        const deedManager = new DeedManager(deed);
-        const mainCardSlot = deedManager.getTopLevelSlot();
-        const rules = new Rules();
-        if (mainCardSlot.zone === Zone.MY_HAND) {
-            return rules.calculateFollowupDecisionHand(this.state);
-        }
-
-        throw new Error('calculateFollowup called for non-hand slot');
-    }
-
     public applyDecision(slots: Slot[]): void {
         const deedManager = new DeedManager(this.state.currentDeed);
         if (!deedManager.isValidSelection(slots)) {
@@ -204,7 +192,8 @@ export class StateManager {
             );
         }
 
-        const newDecision = stateManager.calculateNextDecision();
+        const rules = new Rules();
+        const newDecision = rules.calculateNextDecision(this.state);
         deed.decisions.push(newDecision);
     }
 }

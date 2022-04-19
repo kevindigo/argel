@@ -1,7 +1,16 @@
-import { Card, Decision, Slot } from '../src/models';
+import { Card, Decision, Player, Slot } from '../src/models';
 import { Rules } from '../src/rules';
-import { StateManager } from '../src/state';
+import { createInitialState, StateManager } from '../src/state';
 import { CardId, Facing, Zone } from '../src/types';
+
+const sig: Player = {
+    name: 'Sig',
+    deckId: '59bd26ac-7450-4f60-a0b0-44628a5b28d4',
+};
+const marla: Player = {
+    name: 'Marla',
+    deckId: '679a6701-d7c3-494e-becb-04e9178aca30',
+};
 
 function createBogusReadyCard(cardId: CardId): Card {
     return {
@@ -43,5 +52,13 @@ describe('Top-level decisions', () => {
             index: 1,
         };
         expect(decisions.availableSlots).toContainEqual(playJater);
+    });
+});
+
+describe('Rules.applyDecision', () => {
+    it('throws if the last decision remains incomplete', () => {
+        const state = createInitialState(sig, marla);
+        const rules = new Rules();
+        expect(() => rules.calculateNextDecision(state)).toThrowError();
     });
 });

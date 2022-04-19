@@ -21,14 +21,6 @@ describe('createInitialState', () => {
     });
 });
 
-describe('stateManager', () => {
-    it('throws if the last decision remains incomplete', () => {
-        const state = createInitialState(sig, marla);
-        const stateManager = new StateManager(state);
-        expect(() => stateManager.calculateNextDecision()).toThrowError();
-    });
-});
-
 describe('StateManager.applyDecision', () => {
     it('should throw if the selection was not available', () => {
         const state = createInitialState(sig, marla);

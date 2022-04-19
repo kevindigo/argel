@@ -1,3 +1,4 @@
+import { DeedManager } from './deed';
 import { Decision, Slot, State } from './models';
 import { CardefPool } from './pool';
 import { StateManager } from './state';
@@ -21,6 +22,18 @@ export class Rules {
             availableSlots,
             selectedSlots: [],
         };
+    }
+
+    public calculateNextDecision(state: State): Decision {
+        const deed = state.currentDeed;
+        const deedManager = new DeedManager(deed);
+        const mainCardSlot = deedManager.getTopLevelSlot();
+        const rules = new Rules();
+        if (mainCardSlot.zone === Zone.MY_HAND) {
+            return rules.calculateFollowupDecisionHand(state);
+        }
+
+        throw new Error('calculateFollowup called for non-hand slot');
     }
 
     public calculateFollowupDecisionHand(state: State): Decision {
