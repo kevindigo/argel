@@ -4,7 +4,7 @@ import { SideManager } from './side';
 import { createInitialState, StateManager } from './state';
 import { Facing, CardType } from './types';
 import { DeedManager } from './deed';
-import { calculateTopLevelDecision } from './decision';
+import { calculateTopLevelDecision } from './rules';
 
 export class Game {
     public readonly players: Player[];
