@@ -24,6 +24,6 @@ describe('stateManager', () => {
     it('throws if the last decision remains incomplete', () => {
         const state = createInitialState(sig, marla);
         const stateManager = new StateManager(state);
-        expect(() => stateManager.calculateNextDecision(state)).toThrowError();
+        expect(() => stateManager.calculateNextDecision()).toThrowError();
     });
 });

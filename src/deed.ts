@@ -78,7 +78,7 @@ export class DeedManager {
             );
         }
 
-        const newDecision = stateManager.calculateNextDecision(state);
+        const newDecision = stateManager.calculateNextDecision();
         this.deed.decisions.push(newDecision);
     }
 

@@ -174,10 +174,10 @@ export class StateManager {
         }
     }
 
-    public calculateNextDecision(state: State): Decision {
-        const mainCardSlot = getTopLevelSlot(state);
+    public calculateNextDecision(): Decision {
+        const mainCardSlot = getTopLevelSlot(this.state);
         if (mainCardSlot.zone === Zone.MY_HAND) {
-            return calculateFollowupDecisionHand(state);
+            return calculateFollowupDecisionHand(this.state);
         }
 
         throw new Error('calculateFollowup called for non-hand slot');
