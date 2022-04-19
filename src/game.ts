@@ -4,6 +4,7 @@ import { SideManager } from './side';
 import { createInitialState, StateManager } from './state';
 import { Facing, CardType } from './types';
 import { DeedManager } from './deed';
+import { calculateTopLevelDecision } from './decision';
 
 export class Game {
     public readonly players: Player[];
@@ -40,7 +41,8 @@ export class Game {
 
     public startTurn() {
         const state = this.stateManager.state;
-        this.deedManager.startTurn(state);
+        const decision = calculateTopLevelDecision(state);
+        this.deedManager.startTurn(decision);
     }
 
     private startGame(): void {

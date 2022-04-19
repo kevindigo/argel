@@ -1,8 +1,4 @@
-import {
-    calculateFollowupDecisionHand,
-    calculateTopLevelDecision,
-    getTopLevelSlot,
-} from './decision';
+import { calculateFollowupDecisionHand, getTopLevelSlot } from './decision';
 import { Decision, Deed, Slot, State } from './models';
 import { slotString } from './slot';
 import { StateManager } from './state';
@@ -15,11 +11,11 @@ export class DeedManager {
         this.deed = deed;
     }
 
-    public startTurn(state: State): void {
+    public startTurn(topLevelDecision: Decision): void {
         this.deed.type = undefined;
         this.deed.mainCard = undefined;
         this.deed.decisions = [];
-        this.deed.decisions.push(calculateTopLevelDecision(state));
+        this.deed.decisions.push(topLevelDecision);
     }
 
     public isValidSelection(slots: Slot[]): boolean {

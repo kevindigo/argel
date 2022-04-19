@@ -1,5 +1,5 @@
 import { DeedManager } from '../src/deed';
-import { Card, Deed, Slot, State } from '../src/models';
+import { Card, Decision, Deed, Slot, State } from '../src/models';
 import { createEmptySide } from '../src/side';
 import { StateManager } from '../src/state';
 import { DeedType, Facing, Zone } from '../src/types';
@@ -32,7 +32,12 @@ describe('DeedManager.startTurn', () => {
             currentDeed: deed,
         };
         expect(state.currentDeed.decisions.length).toEqual(2);
-        deedManager.startTurn(state);
+        const topLevelDecision: Decision = {
+            label: 'irrelevant',
+            availableSlots: [],
+            selectedSlots: [],
+        };
+        deedManager.startTurn(topLevelDecision);
         expect(deed.mainCard).toBeUndefined();
         expect(deed.type).toBeUndefined();
         expect(deed.decisions.length).toEqual(1);
@@ -179,7 +184,12 @@ describe('DeedManager.applyDecision', () => {
         hand.push(card);
         deed = state.currentDeed;
         deedManager = new DeedManager(deed);
-        deedManager.startTurn(state);
+        const decision: Decision = {
+            label: 'irrelevant',
+            availableSlots: [slot],
+            selectedSlots: [],
+        };
+        deedManager.startTurn(decision);
         deedManager.applyDecision(state, [slot]);
         expect(deed.decisions[0]?.selectedSlots.length).toEqual(1);
         expect(deed.decisions.length).toEqual(2);
@@ -206,7 +216,12 @@ describe('DeedManager.applyDecision', () => {
         hand.push(card);
         deed = state.currentDeed;
         deedManager = new DeedManager(deed);
-        deedManager.startTurn(state);
+        const topLevelDecision: Decision = {
+            label: 'top-level',
+            availableSlots: [slot],
+            selectedSlots: [],
+        };
+        deedManager.startTurn(topLevelDecision);
         deedManager.applyDecision(state, [slot]);
         const decision = deedManager.getCurrentDecision();
         const scored: Slot = {
