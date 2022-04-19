@@ -1,5 +1,6 @@
-import { Player } from '../src/models';
+import { Player, Slot } from '../src/models';
 import { createInitialState, StateManager } from '../src/state';
+import { Zone } from '../src/types';
 
 const sig: Player = {
     name: 'Sig',
@@ -25,5 +26,25 @@ describe('stateManager', () => {
         const state = createInitialState(sig, marla);
         const stateManager = new StateManager(state);
         expect(() => stateManager.calculateNextDecision()).toThrowError();
+    });
+});
+
+describe('StateManager.applyDecision', () => {
+    it('should throw if the selection was not available', () => {
+        const state = createInitialState(sig, marla);
+        const stateManager = new StateManager(state);
+        const slot: Slot = {
+            zone: Zone.ENEMY_ARSENAL,
+            index: 0,
+        };
+        state.currentDeed.decisions.push({
+            label: 'top-level',
+            availableSlots: [],
+            selectedSlots: [slot],
+        });
+        const emptyState = StateManager.createWithEmptyState().state;
+        expect(() =>
+            stateManager.applyDecision(emptyState, [slot])
+        ).toThrowError();
     });
 });

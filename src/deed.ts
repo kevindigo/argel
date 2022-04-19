@@ -1,6 +1,5 @@
-import { Decision, Deed, Slot, State } from './models';
+import { Decision, Deed, Slot } from './models';
 import { slotString } from './slot';
-import { StateManager } from './state';
 import { DeedType, Zone } from './types';
 
 export class DeedManager {
@@ -44,45 +43,7 @@ export class DeedManager {
         throw new Error('No current decision');
     }
 
-    public applyDecision(state: State, slots: Slot[]): void {
-        if (!this.isValidSelection(slots)) {
-            throw new Error(
-                `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
-                    state
-                )}`
-            );
-        }
-        this.getCurrentDecision().selectedSlots = slots;
-
-        const firstSlot = slots[0];
-        const stateManager = new StateManager(state);
-        if (this.deed.decisions.length === 1) {
-            if (!firstSlot) {
-                throw new Error(
-                    `Unable to extract mainCard ${JSON.stringify(this.deed)}`
-                );
-            }
-            this.deed.mainCard = stateManager.getCardAtSlot(firstSlot);
-            this.deed.mainZone = firstSlot.zone;
-        }
-
-        if (this.deed.decisions.length === 2) {
-            if (!firstSlot) {
-                throw new Error(
-                    `Unable to determine type ${JSON.stringify(this.deed)}`
-                );
-            }
-            this.deed.type = this.calculateType(
-                this.deed.mainZone,
-                firstSlot.zone
-            );
-        }
-
-        const newDecision = stateManager.calculateNextDecision();
-        this.deed.decisions.push(newDecision);
-    }
-
-    private calculateType(from?: Zone, to?: Zone): DeedType {
+    public calculateType(from?: Zone, to?: Zone): DeedType {
         if (from === Zone.MY_HAND && to === Zone.MY_SCORED) {
             return DeedType.PLAY;
         }
