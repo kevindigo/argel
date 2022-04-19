@@ -60,10 +60,6 @@ export class DeedManager {
     }
 
     public calculateNextDecision(state: State): Decision {
-        if (state.currentDeed.decisions.length === 0) {
-            return calculateTopLevelDecision(state);
-        }
-
         const latestDecision: Decision = this.getLastDecision(state);
         if (latestDecision.selectedSlots.length !== 0) {
             return calculateFollowupDecision(state);

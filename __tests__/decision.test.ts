@@ -1,3 +1,4 @@
+import { calculateTopLevelDecision } from '../src/decision';
 import { DeedManager } from '../src/deed';
 import { Game } from '../src/game';
 import { Card, Decision, Player, Slot } from '../src/models';
@@ -39,8 +40,7 @@ describe('Top-level decisions', () => {
         hand.push(vix);
         hand.push(jater);
 
-        const deedManager = new DeedManager(stateManager.state.currentDeed);
-        const decisions: Decision = deedManager.calculateNextDecision(
+        const decisions: Decision = calculateTopLevelDecision(
             stateManager.state
         );
         expect(decisions.availableSlots.length).toEqual(2);
