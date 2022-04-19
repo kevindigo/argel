@@ -1,6 +1,5 @@
 import { DeedManager } from './deed';
 import { State, Side, Player, Slot, Card, Decision } from './models';
-import { Rules } from './rules';
 import { createEmptySide, createInitialSide, SideManager } from './side';
 import { Zone } from './types';
 
@@ -154,46 +153,5 @@ export class StateManager {
                 throw new Error(`Unknown zone: ${zone}`);
             }
         }
-    }
-
-    public applyDecision(slots: Slot[]): void {
-        const deedManager = new DeedManager(this.state.currentDeed);
-        if (!deedManager.isValidSelection(slots)) {
-            throw new Error(
-                `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
-                    this.state
-                )}`
-            );
-        }
-        this.getCurrentDecision().selectedSlots = slots;
-
-        const firstSlot = slots[0];
-        const stateManager = new StateManager(this.state);
-        const deed = this.state.currentDeed;
-        if (deed.decisions.length === 1) {
-            if (!firstSlot) {
-                throw new Error(
-                    `Unable to extract mainCard ${JSON.stringify(deed)}`
-                );
-            }
-            deed.mainCard = stateManager.getCardAtSlot(firstSlot);
-            deed.mainZone = firstSlot.zone;
-        }
-
-        if (deed.decisions.length === 2) {
-            if (!firstSlot) {
-                throw new Error(
-                    `Unable to determine type ${JSON.stringify(deed)}`
-                );
-            }
-            deed.type = deedManager.calculateType(
-                deed.mainZone,
-                firstSlot.zone
-            );
-        }
-
-        const rules = new Rules();
-        const newDecision = rules.calculateNextDecision(this.state);
-        deed.decisions.push(newDecision);
     }
 }

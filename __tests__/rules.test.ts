@@ -1,7 +1,8 @@
-import { Card, Decision, Player, Slot } from '../src/models';
+import { DeedManager } from '../src/deed';
+import { Card, Decision, Deed, Player, Slot } from '../src/models';
 import { Rules } from '../src/rules';
 import { createInitialState, StateManager } from '../src/state';
-import { CardId, Facing, Zone } from '../src/types';
+import { CardId, DeedType, Facing, Zone } from '../src/types';
 
 const sig: Player = {
     name: 'Sig',
@@ -56,9 +57,96 @@ describe('Top-level decisions', () => {
 });
 
 describe('Rules.applyDecision', () => {
+    let deed: Deed;
+    let deedManager: DeedManager;
+    const rules = new Rules();
+
+    it('should throw if the selection was not available', () => {
+        const state = createInitialState(sig, marla);
+        const slot: Slot = {
+            zone: Zone.ENEMY_ARSENAL,
+            index: 0,
+        };
+        state.currentDeed.decisions.push({
+            label: 'top-level',
+            availableSlots: [],
+            selectedSlots: [],
+        });
+        expect(() => rules.applyDecision(state, [slot])).toThrowError();
+    });
+
     it('throws if the last decision remains incomplete', () => {
         const state = createInitialState(sig, marla);
-        const rules = new Rules();
         expect(() => rules.calculateNextDecision(state)).toThrowError();
+    });
+
+    beforeEach(() => {
+        deed = { decisions: [] };
+        deedManager = new DeedManager(deed);
+    });
+
+    it('should correctly apply a decision', () => {
+        const slot: Slot = {
+            zone: Zone.MY_HAND,
+            index: 0,
+        };
+        const state = StateManager.createWithEmptyState().state;
+        const stateManager = new StateManager(state);
+        const hand = stateManager.getMySideManager().hand;
+        const card: Card = {
+            cardId: 'OmegaCodex-100',
+            deckId: 'anydeck',
+            facing: Facing.READY,
+        };
+        hand.push(card);
+        deed = state.currentDeed;
+        deedManager = new DeedManager(deed);
+        const decision: Decision = {
+            label: 'irrelevant',
+            availableSlots: [slot],
+            selectedSlots: [],
+        };
+        deedManager.startTurn(decision);
+        rules.applyDecision(state, [slot]);
+        expect(deed.decisions[0]?.selectedSlots.length).toEqual(1);
+        expect(deed.decisions.length).toEqual(2);
+
+        expect(deed.decisions[1]?.label).toEqual('Play action');
+
+        expect(deed.mainCard).toEqual(card);
+        expect(deed.mainZone).toEqual(Zone.MY_HAND);
+    });
+
+    it('knows when we chose a hand action', () => {
+        const slot: Slot = {
+            zone: Zone.MY_HAND,
+            index: 0,
+        };
+        const state = StateManager.createWithEmptyState().state;
+        const stateManager = new StateManager(state);
+        const hand = stateManager.getMySideManager().hand;
+        const card: Card = {
+            cardId: 'OmegaCodex-100',
+            deckId: 'anydeck',
+            facing: Facing.READY,
+        };
+        hand.push(card);
+        deed = state.currentDeed;
+        deedManager = new DeedManager(deed);
+        const topLevelDecision: Decision = {
+            label: 'top-level',
+            availableSlots: [slot],
+            selectedSlots: [],
+        };
+        deedManager.startTurn(topLevelDecision);
+        rules.applyDecision(state, [slot]);
+        const decision = deedManager.getCurrentDecision();
+        const scored: Slot = {
+            zone: Zone.MY_SCORED,
+            index: -1,
+        };
+        expect(decision.availableSlots).toEqual([scored]);
+        rules.applyDecision(state, decision.availableSlots);
+        expect(deed.type).toEqual(DeedType.PLAY);
     });
 });

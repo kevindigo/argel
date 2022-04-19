@@ -97,4 +97,45 @@ export class Rules {
             }
         }
     }
+
+    public applyDecision(state: State, slots: Slot[]): void {
+        const deedManager = new DeedManager(state.currentDeed);
+        if (!deedManager.isValidSelection(slots)) {
+            throw new Error(
+                `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
+                    state
+                )}`
+            );
+        }
+        deedManager.getCurrentDecision().selectedSlots = slots;
+
+        const firstSlot = slots[0];
+        const stateManager = new StateManager(state);
+        const deed = state.currentDeed;
+        if (deed.decisions.length === 1) {
+            if (!firstSlot) {
+                throw new Error(
+                    `Unable to extract mainCard ${JSON.stringify(deed)}`
+                );
+            }
+            deed.mainCard = stateManager.getCardAtSlot(firstSlot);
+            deed.mainZone = firstSlot.zone;
+        }
+
+        if (deed.decisions.length === 2) {
+            if (!firstSlot) {
+                throw new Error(
+                    `Unable to determine type ${JSON.stringify(deed)}`
+                );
+            }
+            deed.type = deedManager.calculateType(
+                deed.mainZone,
+                firstSlot.zone
+            );
+        }
+
+        const rules = new Rules();
+        const newDecision = rules.calculateNextDecision(state);
+        deed.decisions.push(newDecision);
+    }
 }
