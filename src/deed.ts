@@ -50,4 +50,28 @@ export class DeedManager {
 
         throw new Error(`Could not calculate type from ${from} to ${to}`);
     }
+
+    public getTopLevelSlot(): Slot {
+        const topLevelDecision = this.deed.decisions[0];
+        if (!topLevelDecision) {
+            throw new Error(
+                'calculateFollowup called without a top-level decision'
+            );
+        }
+        const slots = topLevelDecision.selectedSlots;
+        if (slots.length === 0) {
+            throw new Error(
+                'calculateFollowup called with no top-level slot selected'
+            );
+        }
+        if (slots.length > 1) {
+            throw new Error(
+                `calculateFollowup called with more than 1 top-level slot. Decision: ${JSON.stringify(
+                    topLevelDecision
+                )}`
+            );
+        }
+        const mainCardSlot = slots[0] as Slot;
+        return mainCardSlot;
+    }
 }

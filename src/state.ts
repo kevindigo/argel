@@ -1,4 +1,4 @@
-import { calculateFollowupDecisionHand, getTopLevelSlot } from './decision';
+import { calculateFollowupDecisionHand } from './decision';
 import { DeedManager } from './deed';
 import { State, Side, Player, Slot, Card, Decision } from './models';
 import { createEmptySide, createInitialSide, SideManager } from './side';
@@ -157,7 +157,9 @@ export class StateManager {
     }
 
     public calculateNextDecision(): Decision {
-        const mainCardSlot = getTopLevelSlot(this.state);
+        const deed = this.state.currentDeed;
+        const deedManager = new DeedManager(deed);
+        const mainCardSlot = deedManager.getTopLevelSlot();
         if (mainCardSlot.zone === Zone.MY_HAND) {
             return calculateFollowupDecisionHand(this.state);
         }
