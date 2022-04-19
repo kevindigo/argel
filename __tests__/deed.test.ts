@@ -174,7 +174,7 @@ describe('DeedManager.applyDecision', () => {
             selectedSlots: [],
         };
         deedManager.startTurn(decision);
-        stateManager.applyDecision(state, [slot]);
+        stateManager.applyDecision([slot]);
         expect(deed.decisions[0]?.selectedSlots.length).toEqual(1);
         expect(deed.decisions.length).toEqual(2);
 
@@ -206,14 +206,14 @@ describe('DeedManager.applyDecision', () => {
             selectedSlots: [],
         };
         deedManager.startTurn(topLevelDecision);
-        stateManager.applyDecision(state, [slot]);
+        stateManager.applyDecision([slot]);
         const decision = deedManager.getCurrentDecision();
         const scored: Slot = {
             zone: Zone.MY_SCORED,
             index: -1,
         };
         expect(decision.availableSlots).toEqual([scored]);
-        stateManager.applyDecision(state, decision.availableSlots);
+        stateManager.applyDecision(decision.availableSlots);
         expect(deed.type).toEqual(DeedType.PLAY);
     });
 });

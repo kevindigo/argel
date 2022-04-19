@@ -183,20 +183,20 @@ export class StateManager {
         throw new Error('calculateFollowup called for non-hand slot');
     }
 
-    public applyDecision(state: State, slots: Slot[]): void {
-        const deedManager = new DeedManager(state.currentDeed);
+    public applyDecision(slots: Slot[]): void {
+        const deedManager = new DeedManager(this.state.currentDeed);
         if (!deedManager.isValidSelection(slots)) {
             throw new Error(
                 `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
-                    state
+                    this.state
                 )}`
             );
         }
         this.getCurrentDecision().selectedSlots = slots;
 
         const firstSlot = slots[0];
-        const stateManager = new StateManager(state);
-        const deed = state.currentDeed;
+        const stateManager = new StateManager(this.state);
+        const deed = this.state.currentDeed;
         if (deed.decisions.length === 1) {
             if (!firstSlot) {
                 throw new Error(

@@ -35,8 +35,7 @@ export class Game {
     }
 
     public applyDecision(slots: Slot[]): void {
-        const state = this.stateManager.state;
-        this.stateManager.applyDecision(state, slots);
+        this.stateManager.applyDecision(slots);
     }
 
     public startTurn() {

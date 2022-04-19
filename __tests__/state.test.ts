@@ -40,11 +40,8 @@ describe('StateManager.applyDecision', () => {
         state.currentDeed.decisions.push({
             label: 'top-level',
             availableSlots: [],
-            selectedSlots: [slot],
+            selectedSlots: [],
         });
-        const emptyState = StateManager.createWithEmptyState().state;
-        expect(() =>
-            stateManager.applyDecision(emptyState, [slot])
-        ).toThrowError();
+        expect(() => stateManager.applyDecision([slot])).toThrowError();
     });
 });
