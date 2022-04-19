@@ -95,15 +95,6 @@ export class StateManager {
         return deedManager.getCurrentDecision();
     }
 
-    public getLastDecision(): Decision {
-        const deed = this.state.currentDeed;
-        const last = deed.decisions[deed.decisions.length - 1];
-        if (!last) {
-            throw new Error('getLastDecision called when currentDeed is empty');
-        }
-        return last;
-    }
-
     private getSide(sideIndex: number): Side {
         const side = this.state.sides[sideIndex];
         if (!side) {

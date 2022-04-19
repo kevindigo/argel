@@ -4,7 +4,6 @@ import {
 } from './decision';
 import { Decision, Deed, Slot, State } from './models';
 import { slotString } from './slot';
-import { StateManager } from './state';
 
 export class DeedManager {
     private deed: Deed;
@@ -65,11 +64,19 @@ export class DeedManager {
             return calculateTopLevelDecision(state);
         }
 
-        const stateManager = new StateManager(state);
-        const latestDecision: Decision = stateManager.getLastDecision();
+        const latestDecision: Decision = this.getLastDecision(state);
         if (latestDecision.selectedSlots.length !== 0) {
             return calculateFollowupDecision(state);
         }
         throw new Error('Followups are not yet supported');
+    }
+
+    private getLastDecision(state: State): Decision {
+        const deed = state.currentDeed;
+        const last = deed.decisions[deed.decisions.length - 1];
+        if (!last) {
+            throw new Error('getLastDecision called when currentDeed is empty');
+        }
+        return last;
     }
 }
