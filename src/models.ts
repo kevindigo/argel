@@ -46,7 +46,8 @@ export interface Deed {
     mainCard?: Card | undefined;
     mainZone?: Zone | undefined;
     type?: DeedType | undefined;
-    decisions: Decision[];
+    pendingDecision: Decision;
+    completedDecisions: Decision[];
 }
 
 export interface State {

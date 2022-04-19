@@ -24,8 +24,8 @@ describe('A Game', () => {
             expect(side.flags.isNextCardActive).toBeFalsy();
         });
         const deed = game.getCopyOfState().currentDeed;
-        expect(deed.decisions.length).toEqual(1);
-        const decision = deed.decisions[0];
+        expect(deed.completedDecisions.length).toEqual(0);
+        const decision = deed.pendingDecision;
         expect(decision?.availableSlots.length).toEqual(3);
     });
 

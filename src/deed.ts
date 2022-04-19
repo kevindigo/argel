@@ -12,8 +12,8 @@ export class DeedManager {
     public startTurn(topLevelDecision: Decision): void {
         this.deed.type = undefined;
         this.deed.mainCard = undefined;
-        this.deed.decisions = [];
-        this.deed.decisions.push(topLevelDecision);
+        this.deed.pendingDecision = topLevelDecision;
+        this.deed.completedDecisions = [];
     }
 
     public isValidSelection(slots: Slot[]): boolean {
@@ -33,14 +33,7 @@ export class DeedManager {
     }
 
     public getCurrentDecision(): Decision {
-        for (let i = 0; i < this.deed.decisions.length; ++i) {
-            const decision = this.deed.decisions[i] as Decision;
-            if (decision.selectedSlots.length === 0) {
-                return decision;
-            }
-        }
-
-        throw new Error('No current decision');
+        return this.deed.pendingDecision;
     }
 
     public calculateType(from?: Zone, to?: Zone): DeedType {
@@ -52,21 +45,19 @@ export class DeedManager {
     }
 
     public getTopLevelSlot(): Slot {
-        const topLevelDecision = this.deed.decisions[0];
+        const topLevelDecision = this.deed.completedDecisions[0];
         if (!topLevelDecision) {
-            throw new Error(
-                'calculateFollowup called without a top-level decision'
-            );
+            throw new Error('getTopLevelSlot called no completed decisions');
         }
         const slots = topLevelDecision.selectedSlots;
         if (slots.length === 0) {
             throw new Error(
-                'calculateFollowup called with no top-level slot selected'
+                'getTopLevelSlot called with no top-level slot selected'
             );
         }
         if (slots.length > 1) {
             throw new Error(
-                `calculateFollowup called with more than 1 top-level slot. Decision: ${JSON.stringify(
+                `getTopLevelSlot called with more than 1 top-level slot. Decision: ${JSON.stringify(
                     topLevelDecision
                 )}`
             );

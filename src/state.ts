@@ -12,7 +12,14 @@ export function createInitialState(player1: Player, player2: Player): State {
     const state: State = {
         activeSideIndex: 0,
         sides,
-        currentDeed: { decisions: [] },
+        currentDeed: {
+            pendingDecision: {
+                label: 'top-level',
+                availableSlots: [],
+                selectedSlots: [],
+            },
+            completedDecisions: [],
+        },
     };
 
     return state;
@@ -25,7 +32,14 @@ export class StateManager {
         const state = {
             activeSideIndex: 0,
             sides: [createEmptySide(), createEmptySide()],
-            currentDeed: { decisions: [] },
+            currentDeed: {
+                pendingDecision: {
+                    label: 'top-level',
+                    availableSlots: [],
+                    selectedSlots: [],
+                },
+                completedDecisions: [],
+            },
         };
         return new StateManager(state);
     }
