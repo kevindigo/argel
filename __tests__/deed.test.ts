@@ -1,8 +1,8 @@
 import { DeedManager } from '../src/deed';
-import { Card, Decision, Deed, Slot, State } from '../src/models';
+import { Card, Deed, Slot, State } from '../src/models';
 import { createEmptySide } from '../src/side';
 import { StateManager } from '../src/state';
-import { Facing, Zone } from '../src/types';
+import { DeedType, Facing, Zone } from '../src/types';
 
 describe('DeedManager.startTurn', () => {
     it('Should clear existing data', () => {
@@ -164,51 +164,12 @@ describe('DeedManager.applyDecision', () => {
     });
 
     it('should correctly apply a decision', () => {
-        class MockNext extends DeedManager {
-            public override calculateNextDecision(state: State): Decision {
-                state.sides;
-                return {
-                    label: `mock`,
-                    availableSlots: [],
-                    selectedSlots: [],
-                };
-            }
-        }
-        const slot: Slot = {
-            zone: Zone.MY_HAND,
-            index: 0,
-        };
-        deed.decisions.push({
-            label: 'top-level',
-            availableSlots: [slot],
-            selectedSlots: [],
-        });
-        const state = StateManager.createWithEmptyState().state;
-        const stateManager = new StateManager(state);
-        const hand = stateManager.getMySideManager().hand;
-        const card: Card = {
-            cardId: 'OmegaCodex-001',
-            deckId: 'anydeck',
-            facing: Facing.READY,
-        };
-        hand.push(card);
-        deedManager = new MockNext(deed);
-        deedManager.applyDecision(state, [slot]);
-        expect(deed.decisions[0]?.selectedSlots.length).toEqual(1);
-        expect(deed.decisions.length).toEqual(2);
-        expect(deed.decisions[1]?.label).toEqual('mock');
-        expect(deed.mainCard).toEqual(card);
-        expect(deed.mainZone).toEqual(Zone.MY_HAND);
-    });
-
-    it('sets up next decision when choosing a hand action', () => {
         const slot: Slot = {
             zone: Zone.MY_HAND,
             index: 0,
         };
         const state = StateManager.createWithEmptyState().state;
         const stateManager = new StateManager(state);
-        deedManager = new DeedManager(state.currentDeed);
         const hand = stateManager.getMySideManager().hand;
         const card: Card = {
             cardId: 'OmegaCodex-100',
@@ -216,6 +177,35 @@ describe('DeedManager.applyDecision', () => {
             facing: Facing.READY,
         };
         hand.push(card);
+        deed = state.currentDeed;
+        deedManager = new DeedManager(deed);
+        deedManager.startTurn(state);
+        deedManager.applyDecision(state, [slot]);
+        expect(deed.decisions[0]?.selectedSlots.length).toEqual(1);
+        expect(deed.decisions.length).toEqual(2);
+
+        expect(deed.decisions[1]?.label).toEqual('Play');
+
+        expect(deed.mainCard).toEqual(card);
+        expect(deed.mainZone).toEqual(Zone.MY_HAND);
+    });
+
+    it('knows when we chose a hand action', () => {
+        const slot: Slot = {
+            zone: Zone.MY_HAND,
+            index: 0,
+        };
+        const state = StateManager.createWithEmptyState().state;
+        const stateManager = new StateManager(state);
+        const hand = stateManager.getMySideManager().hand;
+        const card: Card = {
+            cardId: 'OmegaCodex-100',
+            deckId: 'anydeck',
+            facing: Facing.READY,
+        };
+        hand.push(card);
+        deed = state.currentDeed;
+        deedManager = new DeedManager(deed);
         deedManager.startTurn(state);
         deedManager.applyDecision(state, [slot]);
         const decision = deedManager.getCurrentDecision();
@@ -224,5 +214,7 @@ describe('DeedManager.applyDecision', () => {
             index: -1,
         };
         expect(decision.availableSlots).toEqual([scored]);
+        deedManager.applyDecision(state, decision.availableSlots);
+        expect(deed.type).toEqual(DeedType.PLAY);
     });
 });

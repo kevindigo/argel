@@ -6,7 +6,7 @@ import {
 import { Decision, Deed, Slot, State } from './models';
 import { slotString } from './slot';
 import { StateManager } from './state';
-import { Zone } from './types';
+import { DeedType, Zone } from './types';
 
 export class DeedManager {
     private deed: Deed;
@@ -58,12 +58,10 @@ export class DeedManager {
             );
         }
         this.getCurrentDecision().selectedSlots = slots;
-        const newDecision = this.calculateNextDecision(state);
-        this.deed.decisions.push(newDecision);
 
+        const firstSlot = slots[0];
         const stateManager = new StateManager(state);
-        if (state.currentDeed.decisions.length === 0) {
-            const firstSlot = slots[0];
+        if (this.deed.decisions.length === 1) {
             if (!firstSlot) {
                 throw new Error(
                     `Unable to extract mainCard ${JSON.stringify(this.deed)}`
@@ -72,10 +70,25 @@ export class DeedManager {
             this.deed.mainCard = stateManager.getCardAtSlot(firstSlot);
             this.deed.mainZone = firstSlot.zone;
         }
+
+        if (this.deed.decisions.length === 2) {
+            if (!firstSlot) {
+                throw new Error(
+                    `Unable to determine type ${JSON.stringify(this.deed)}`
+                );
+            }
+            this.deed.type = this.calculateType(
+                this.deed.mainZone,
+                firstSlot.zone
+            );
+        }
+
+        const newDecision = this.calculateNextDecision(state);
+        this.deed.decisions.push(newDecision);
     }
 
     public calculateNextDecision(state: State): Decision {
-        const latestDecision: Decision = this.getLastDecision(state);
+        const latestDecision: Decision = this.getLastDecision();
         if (latestDecision.selectedSlots.length !== 0) {
             return this.calculateFollowupDecision(state);
         }
@@ -91,12 +104,19 @@ export class DeedManager {
         throw new Error('calculateFollowup called for non-hand slot');
     }
 
-    private getLastDecision(state: State): Decision {
-        const deed = state.currentDeed;
-        const last = deed.decisions[deed.decisions.length - 1];
+    private getLastDecision(): Decision {
+        const last = this.deed.decisions[this.deed.decisions.length - 1];
         if (!last) {
             throw new Error('getLastDecision called when currentDeed is empty');
         }
         return last;
+    }
+
+    private calculateType(from?: Zone, to?: Zone): DeedType {
+        if (from === Zone.MY_HAND && to === Zone.MY_SCORED) {
+            return DeedType.PLAY;
+        }
+
+        throw new Error(`Could not calculate type from ${from} to ${to}`);
     }
 }
