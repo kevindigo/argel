@@ -84,28 +84,12 @@ export class DeedManager {
     }
 
     public calculateNextDecision(state: State): Decision {
-        const latestDecision: Decision = this.getLastDecision();
-        if (latestDecision.selectedSlots.length !== 0) {
-            return this.calculateFollowupDecision(state);
-        }
-        throw new Error('Followups are not yet supported');
-    }
-
-    private calculateFollowupDecision(state: State): Decision {
         const mainCardSlot = getTopLevelSlot(state);
         if (mainCardSlot.zone === Zone.MY_HAND) {
             return calculateFollowupDecisionHand(state);
         }
 
         throw new Error('calculateFollowup called for non-hand slot');
-    }
-
-    private getLastDecision(): Decision {
-        const last = this.deed.decisions[this.deed.decisions.length - 1];
-        if (!last) {
-            throw new Error('getLastDecision called when currentDeed is empty');
-        }
-        return last;
     }
 
     private calculateType(from?: Zone, to?: Zone): DeedType {
