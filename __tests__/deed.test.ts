@@ -11,7 +11,12 @@ describe('DeedManager.startTurn', () => {
                 deckId: 'anything',
                 facing: Facing.READY,
             },
-            decisions: [
+            pendingDecision: {
+                label: 'old pending',
+                availableSlots: [],
+                selectedSlots: [],
+            },
+            completedDecisions: [
                 {
                     label: 'Should get removed',
                     availableSlots: [],
@@ -30,7 +35,7 @@ describe('DeedManager.startTurn', () => {
             activeSideIndex: 0,
             currentDeed: deed,
         };
-        expect(state.currentDeed.decisions.length).toEqual(2);
+        expect(state.currentDeed.completedDecisions.length).toEqual(2);
         const topLevelDecision: Decision = {
             label: 'irrelevant',
             availableSlots: [],
@@ -39,7 +44,8 @@ describe('DeedManager.startTurn', () => {
         deedManager.startTurn(topLevelDecision);
         expect(deed.mainCard).toBeUndefined();
         expect(deed.type).toBeUndefined();
-        expect(deed.decisions.length).toEqual(1);
+        expect(deed.pendingDecision.availableSlots.length).toEqual(0);
+        expect(deed.completedDecisions.length).toEqual(0);
         expect(deed.mainCard).toBeUndefined();
         expect(deed.mainZone).toBeUndefined();
     });
@@ -51,13 +57,12 @@ describe('DeedManager.isValidSelection', () => {
 
     beforeEach(() => {
         deed = {
-            decisions: [
-                {
-                    label: 'n/a',
-                    availableSlots: [],
-                    selectedSlots: [],
-                },
-            ],
+            pendingDecision: {
+                label: 'n/a',
+                availableSlots: [],
+                selectedSlots: [],
+            },
+            completedDecisions: [],
         };
         deedManager = new DeedManager(deed);
     });
@@ -75,8 +80,8 @@ describe('DeedManager.isValidSelection', () => {
             zone: Zone.ENEMY_ARSENAL,
             index: 2,
         };
-        deed.decisions[0]?.availableSlots.push(slot1);
-        deed.decisions[0]?.availableSlots.push(slot2);
+        deed.pendingDecision.availableSlots.push(slot1);
+        deed.pendingDecision.availableSlots.push(slot2);
         const selected: Slot[] = [
             JSON.parse(JSON.stringify(slot1)),
             JSON.parse(JSON.stringify(slot2)),
@@ -93,8 +98,8 @@ describe('DeedManager.isValidSelection', () => {
             zone: Zone.ENEMY_ARSENAL,
             index: 0,
         };
-        deed.decisions[0]?.availableSlots.push(otherSlot);
-        deed.decisions[0]?.availableSlots.push(selectedSlot);
+        deed.pendingDecision.availableSlots.push(otherSlot);
+        deed.pendingDecision.availableSlots.push(selectedSlot);
         const copyOfSlot = JSON.parse(JSON.stringify(selectedSlot));
         expect(deedManager.isValidSelection([copyOfSlot])).toBeTruthy();
     });
@@ -104,40 +109,11 @@ describe('DeedManager.isValidSelection', () => {
             zone: Zone.ENEMY_ARSENAL,
             index: 0,
         };
-        deed.decisions[0]?.availableSlots.push(slot);
+        deed.pendingDecision.availableSlots.push(slot);
         const selected: Slot = {
             zone: Zone.ENEMY_ARSENAL,
             index: 2,
         };
         expect(deedManager.isValidSelection([selected])).toBeFalsy();
-    });
-});
-
-describe('DeedManager.getCurrentDecision', () => {
-    let deed: Deed;
-    let deedManager: DeedManager;
-
-    beforeEach(() => {
-        deed = { decisions: [] };
-        deedManager = new DeedManager(deed);
-    });
-
-    it('knows when the top-level decision has been made', () => {
-        const slot: Slot = {
-            zone: Zone.ENEMY_ARSENAL,
-            index: 0,
-        };
-        deed.decisions.push({
-            label: 'top-level',
-            availableSlots: [slot],
-            selectedSlots: [slot],
-        });
-        deed.decisions.push({
-            label: 'follow-up',
-            availableSlots: [slot],
-            selectedSlots: [],
-        });
-        const decision = deedManager.getCurrentDecision();
-        expect(decision.selectedSlots.length).toEqual(0);
     });
 });

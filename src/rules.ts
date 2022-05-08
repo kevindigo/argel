@@ -9,7 +9,7 @@ export class Rules {
         const stateManager = new StateManager(state);
         const mySideManager = stateManager.getMySideManager();
         const hand = mySideManager.hand;
-        // ToDo: Don't offer hand cards that can't be played or discarded
+        // ToDo: Don't offer hand cards unless they can be played or discarded
         const availableSlots = hand.map((card, index) => {
             const slot: Slot = {
                 zone: Zone.MY_HAND,
@@ -98,7 +98,8 @@ export class Rules {
     }
 
     public applyDecision(state: State, slots: Slot[]): void {
-        const deedManager = new DeedManager(state.currentDeed);
+        const deed = state.currentDeed;
+        const deedManager = new DeedManager(deed);
         if (!deedManager.isValidSelection(slots)) {
             throw new Error(
                 `Invalid slots ${JSON.stringify(slots)} for ${JSON.stringify(
@@ -106,22 +107,13 @@ export class Rules {
                 )}`
             );
         }
-        deedManager.getCurrentDecision().selectedSlots = slots;
+
+        deed.pendingDecision.selectedSlots = slots;
 
         const firstSlot = slots[0];
         const stateManager = new StateManager(state);
-        const deed = state.currentDeed;
-        if (deed.decisions.length === 1) {
-            if (!firstSlot) {
-                throw new Error(
-                    `Unable to extract mainCard ${JSON.stringify(deed)}`
-                );
-            }
-            deed.mainCard = stateManager.getCardAtSlot(firstSlot);
-            deed.mainZone = firstSlot.zone;
-        }
 
-        if (deed.decisions.length === 2) {
+        if (deed.mainCard && !deed.type) {
             if (!firstSlot) {
                 throw new Error(
                     `Unable to determine type ${JSON.stringify(deed)}`
@@ -133,7 +125,17 @@ export class Rules {
             );
         }
 
-        const newDecision = this.calculateNextDecision(state);
-        deed.decisions.push(newDecision);
+        if (!deed.mainCard) {
+            if (!firstSlot) {
+                throw new Error(
+                    `Unable to extract mainCard ${JSON.stringify(deed)}`
+                );
+            }
+            deed.mainCard = stateManager.getCardAtSlot(firstSlot);
+            deed.mainZone = firstSlot.zone;
+        }
+
+        deed.completedDecisions.push(deed.pendingDecision);
+        deed.pendingDecision = this.calculateNextDecision(state);
     }
 }

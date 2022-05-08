@@ -67,11 +67,11 @@ describe('Rules.applyDecision', () => {
             zone: Zone.ENEMY_ARSENAL,
             index: 0,
         };
-        state.currentDeed.decisions.push({
+        state.currentDeed.pendingDecision = {
             label: 'top-level',
             availableSlots: [],
             selectedSlots: [],
-        });
+        };
         expect(() => rules.applyDecision(state, [slot])).toThrowError();
     });
 
@@ -81,7 +81,14 @@ describe('Rules.applyDecision', () => {
     });
 
     beforeEach(() => {
-        deed = { decisions: [] };
+        deed = {
+            pendingDecision: {
+                label: 'n/a',
+                availableSlots: [],
+                selectedSlots: [],
+            },
+            completedDecisions: [],
+        };
         deedManager = new DeedManager(deed);
     });
 
@@ -108,10 +115,9 @@ describe('Rules.applyDecision', () => {
         };
         deedManager.startTurn(decision);
         rules.applyDecision(state, [slot]);
-        expect(deed.decisions[0]?.selectedSlots.length).toEqual(1);
-        expect(deed.decisions.length).toEqual(2);
-
-        expect(deed.decisions[1]?.label).toEqual('Play action');
+        expect(deed.completedDecisions.length).toEqual(1);
+        expect(deed.completedDecisions[0]?.selectedSlots).toEqual([slot]);
+        expect(deed.completedDecisions[0]?.label).toEqual(decision.label);
 
         expect(deed.mainCard).toEqual(card);
         expect(deed.mainZone).toEqual(Zone.MY_HAND);
